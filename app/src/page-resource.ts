@@ -11,5 +11,6 @@ export const Home = undefined
 
 export const Demo = import('./views/demo/demo1')
 export const PageParams = import('./views/demo/page-params')
+export const ImportingBills = import('./views/importing-bills/importing-bills')
 export const Accounting = import('./views/accounting/accounting')
 export const About = import('./views/about/about')

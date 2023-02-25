@@ -1,9 +1,10 @@
 import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Table } from 'antd'
-import type { TableColumnsType } from 'antd'
+import type { TableRowSelection } from 'antd/es/table/interface'
 
 import React, { useState } from 'react'
 import './log-viewer.less'
+import { ColumnsType } from 'antd/es/table/interface'
 const { Option } = Select
 
 const AdvancedSearchForm = () => {
