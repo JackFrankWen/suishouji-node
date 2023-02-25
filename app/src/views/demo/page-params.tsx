@@ -1,6 +1,6 @@
 import { Tabs } from 'antd'
 import React from 'react'
-import TableView from '../log-viewer/log-viewer'
+import TableView from '../accounting/accounting'
 import './page-params.less'
 
 const items = [

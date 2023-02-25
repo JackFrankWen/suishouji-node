@@ -1,9 +1,9 @@
 const routes: RouteConfig[] = [
   {
-    name: 'LogViewer',
-    path: '/log-viewer',
+    name: 'Accounting',
+    path: '/accounting',
     windowOptions: {
-      title: 'LogViewer',
+      title: 'Accounting',
     },
     createConfig: {
       saveWindowBounds: true,

@@ -21,7 +21,7 @@ const TYPE_COLORS = {
   error: 'text-error',
 }
 
-class LogViewerClass extends React.Component<Props, State> {
+class AccountingClass extends React.Component<Props, State> {
   private logReader = new LogReader()
   private logDetailRef = React.createRef<HTMLDivElement>()
 
@@ -87,7 +87,7 @@ class LogViewerClass extends React.Component<Props, State> {
   render(): JSX.Element {
     const { logFiles, activeFile, logDetail } = this.state
     return (
-      <div className="flex log-viewer">
+      <div className="flex accounting">
         <div className="log-list-container flex column">
           <ul className="log-list flex-1">
             {logFiles.map((v) => (
@@ -163,6 +163,6 @@ class LogViewerClass extends React.Component<Props, State> {
     this.logReader.resetDetailHistory()
     this.logReader.closeWatcher()
   }
-} // class LogViewer end
+} // class Accounting end
 
-export default LogViewerClass
+export default AccountingClass

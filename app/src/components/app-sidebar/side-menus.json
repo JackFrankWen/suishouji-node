@@ -6,8 +6,8 @@
     "icon": "home-3"
   },
   {
-    "key": "LogViewer",
-    "href": "#/log-viewer",
+    "key": "Accounting",
+    "href": "#/Accounting",
     "title": "记一笔",
     "icon": "edit-box"
   },
