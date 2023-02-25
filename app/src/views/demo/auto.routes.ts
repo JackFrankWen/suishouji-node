@@ -1,15 +1,11 @@
 const routes: RouteConfig[] = [
   {
-    name: 'Demo',
-    path: '/demo',
+    name: 'Home',
+    path: '/home',
     createConfig: {
       single: false,
       showCustomTitlebar: false,
     },
-  },
-  {
-    name: 'PageParams',
-    path: '/page-params/:test',
   },
 ]
 

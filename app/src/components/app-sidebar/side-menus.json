@@ -1,6 +1,6 @@
 [
   {
-    "key": "Demo",
+    "key": "Home",
     "href": "#/",
     "title": "Home",
     "icon": "home-3"
@@ -12,8 +12,8 @@
     "icon": "edit-box"
   },
   {
-    "key": "PageParams",
-    "href": "#/page-params/ok?obj={\"ss\":[\"1\",2,3]}",
+    "key": "Report",
+    "href": "#/report/ok?obj={\"ss\":[\"1\",2,3]}",
     "title": "报表",
     "icon": "numbers"
   },
