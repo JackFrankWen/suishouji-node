@@ -83,7 +83,6 @@
   "homepage": "https://github.com/lanten/electron-antd#readme",
   "dependencies": {
     "csv": "^6.2.7",
-    "echarts": "^5.4.1",
     "echarts-for-react": "^3.0.2",
     "papaparse": "^5.3.2",
     "react-echarts": "^0.1.1"

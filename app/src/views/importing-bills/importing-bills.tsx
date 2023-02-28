@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { InboxOutlined } from '@ant-design/icons'
 import type { UploadProps } from 'antd'
-import { message, Upload } from 'antd'
-import { ipcRenderer } from 'electron'
+import { message, Upload, Tabs } from 'antd'
 import Papa from 'papaparse'
 
 const { Dragger } = Upload
@@ -39,7 +38,7 @@ const props: UploadProps = {
   },
 }
 
-const Home: React.FC = () => {
+const WechatUpload: React.FC = () => {
   return (
     <Dragger {...props}>
       <p className="ant-upload-drag-icon">
@@ -52,5 +51,37 @@ const Home: React.FC = () => {
     </Dragger>
   )
 }
+
+const items = [
+  {
+    label: (
+      <span>
+        <a style={{ color: '#17c317' }} className="ri-wechat-fill"></a>
+        微信导入
+      </span>
+    ),
+    key: '1',
+    children: (
+      <>
+        <WechatUpload />
+      </>
+    ),
+  },
+  {
+    label: (
+      <span>
+        <a style={{ width: '32px' }} className="ri-alipay-fill"></a>
+        支付宝导入
+      </span>
+    ),
+    key: '2',
+    children: (
+      <>
+        <WechatUpload />
+      </>
+    ),
+  },
+]
+const Home: React.FC = () => <Tabs defaultActiveKey="1" centered items={items} />
 
 export default Home

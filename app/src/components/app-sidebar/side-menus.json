@@ -15,7 +15,7 @@
     "key": "Report",
     "href": "#/report/ok?obj={\"ss\":[\"1\",2,3]}",
     "title": "报表",
-    "icon": "numbers"
+    "icon": "newspaper"
   },
   {
     "key": "ImportingBills",
