@@ -14,6 +14,7 @@ const webpackConfig: Configuration = {
 
   entry: {
     main: path.join(appPath, 'index.ts'),
+    preload: path.join(appPath, 'preload.ts'),
   },
 
   output: {
