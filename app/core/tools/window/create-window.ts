@@ -1,8 +1,6 @@
 import path from 'path'
-import { BrowserWindow, BrowserWindowConstructorOptions, ipcMain } from 'electron'
-import fs from 'fs'
+import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron'
 import { enable as enableRemote } from '@electron/remote/main'
-import csv from 'csv'
 import { log } from '../log'
 import routes from '@/src/auto-routes'
 
@@ -80,22 +78,6 @@ export function createWindow(key: RouteName, options: CreateWindowOptions = {}):
     }
 
     const win = new BrowserWindow(windowOptions)
-    ipcMain.on('sendMessage', (event, args) => {
-      console.log('收到渲染进程的消息', event, args)
-      win.webContents.send('receiveMessage', '我是主进程已收到消息' + args)
-    })
-    ipcMain.handle('get-file-contents', (event, filePath) => {
-      fs.createReadStream(filePath)
-        .pipe(csv.parse())
-        .on('data', function (csvrow) {
-          console.log(csvrow, 'yoyoyo')
-          //do something with csvrow
-        })
-        .on('end', function () {
-          //do something with csvData
-        })
-      return fs.readFileSync(filePath, 'utf-8')
-    })
 
     const url = getWindowUrl(key, options)
     windowList.set(key, win)
