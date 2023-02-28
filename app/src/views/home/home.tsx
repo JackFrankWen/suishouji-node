@@ -30,8 +30,16 @@ const ChartComponent = () => {
 }
 const PieComponent = (props: any) => {
   const [chartOptions, setChartOptions] = useState({})
-
+  const test = async () => {
+    try {
+      const res = await $api.getView()
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
+    test()
     setChartOptions({
       title: {
         text: 'Referer of a Website',
