@@ -1,7 +1,7 @@
 import { MongoClient, Db } from 'mongodb'
 
 const uri = 'mongodb://localhost:27017'
-const dbName = 'test1'
+const dbName = 'bookkeepprop2'
 
 let client: MongoClient | null = null
 let db: Db | null = null

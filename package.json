@@ -13,6 +13,7 @@
     "ts:dev": "npm run ts:compile && node build/.out/tasks/dev-server.js",
     "ts:build": "npm run ts:compile && node build/.out/tasks/build.js",
     "ts:compile": "tsc --project build/build.tsconfig.json",
+    "log": "Electron --trace-warnings ...",
     "lint": "eslint --ext .ts,.tsx src"
   },
   "devDependencies": {
