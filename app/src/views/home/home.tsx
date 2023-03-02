@@ -1,45 +1,52 @@
-import { Card, Col, Row, Modal } from 'antd'
+import { Card, Col, Row, Modal, Space, DatePicker } from 'antd'
 import React, { useEffect, useState } from 'react'
+import moment from 'moment'
+
 import ReactECharts from 'echarts-for-react'
 import './home.less'
+const { RangePicker } = DatePicker
 
-const ChartComponent = () => {
+const ChartComponent = (props: { label: string[]; value: string[] }) => {
   const [chartOptions, setChartOptions] = useState({})
-
+  const { label, value } = props
   useEffect(() => {
     setChartOptions({
-      title: {
-        text: 'Sample Chart',
-      },
-      tooltip: {},
+      title: {},
       xAxis: {
-        data: ['A', 'B', 'C', 'D', 'E', 'F'],
+        data: label,
       },
-      yAxis: {},
+      yAxis: {
+        type: 'value',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
       series: [
         {
-          name: 'Sample Data',
           type: 'bar',
-          data: [5, 20, 36, 10, 10, 20],
+          itemStyle: {
+            normal: {
+              label: {
+                show: true,
+                position: 'inside',
+              },
+            },
+          },
+
+          data: value,
         },
       ],
     })
-  }, [])
+  }, [label, value])
 
   return <ReactECharts option={chartOptions} />
 }
 const PieComponent = (props: any) => {
   const [chartOptions, setChartOptions] = useState({})
-  const test = async () => {
-    try {
-      const res = await $api.getView()
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
   useEffect(() => {
-    test()
     setChartOptions({
       title: {
         text: 'Referer of a Website',
@@ -88,9 +95,80 @@ const PieComponent = (props: any) => {
 }
 
 import './home.less'
+function getFirstDayAndLastDay(month: number, type: 'year' | 'month') {
+  const now = moment() // get the current date/time in Moment.js format
 
+  const lastYear = now.clone().subtract(1, 'year') // go back one year
+  const firstDayOfLastYear = lastYear.clone().startOf('year') // get the first day of the previous year
+  const lastDayOfLastYear = lastYear.clone().endOf('year') // get the last day of the previous year
+
+  const firstDateOfLastMonth = now
+    .clone()
+    .subtract(month, 'months')
+    .startOf('month')
+  const lastDayOfLastMonth = now
+    .clone()
+    .subtract(month, 'months')
+    .endOf('month')
+  if (type === 'month') {
+    return [firstDateOfLastMonth, lastDayOfLastMonth]
+  }
+  return [firstDayOfLastYear, lastDayOfLastYear]
+}
+
+const Extra: React.FC = () => {
+  const now = moment() // get the current date/time in Moment.js format
+
+  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
+  const lastDayOfYear = now.clone().endOf('year') // get
+  const [date, setDate] = useState<any>([firstDayOfYear, lastDayOfYear])
+  const renderExtraFooter = () => {
+    const lastMonth = getFirstDayAndLastDay(1, 'month')
+    const lastTwoMonth = getFirstDayAndLastDay(2, 'month')
+    const lastYear = getFirstDayAndLastDay(1, 'year')
+    const lastTwoyear = getFirstDayAndLastDay(2, 'year')
+    return (
+      <Space>
+        <a onClick={() => setDate(lastMonth)}>上月</a>
+        <a onClick={() => setDate(lastTwoMonth)}>上上月</a>
+        <a onClick={() => setDate(lastYear)}>去年</a>
+        <a onClick={() => setDate(lastTwoyear)}>前年</a>
+      </Space>
+    )
+  }
+  return (
+    <Space size={12}>
+      <RangePicker
+        value={date}
+        format="YYYY-MM-DD"
+        onChange={(dates) => {
+          console.log(dates, 'sss')
+          setDate(dates)
+        }}
+        bordered={false}
+        renderExtraFooter={renderExtraFooter}
+      />
+    </Space>
+  )
+}
 const App: React.FC = () => {
+  const [monthBar, setMonthbar] = useState<{
+    label: string[]
+    value: string[]
+  }>({ label: [], value: [] })
+  const test = async () => {
+    try {
+      const res = await $api.getView()
+      console.log(res)
+      if (res) {
+        setMonthbar(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
+    test()
     Modal.success({
       title: '使用手册',
       content: (
@@ -123,14 +201,14 @@ const App: React.FC = () => {
       </Row>
       <Row className="lvl-2">
         <Col span={24}>
-          <Card title="Card title" bordered={false} extra={<a href="#">quni</a>}>
-            <ChartComponent />
+          <Card title="每月开支" bordered={false} extra={<Extra />}>
+            <ChartComponent {...monthBar} />
           </Card>
         </Col>
       </Row>
       <Row gutter={16} className="lvl-3">
         <Col span={12}>
-          <Card title="消费行为" bordered={false} extra={<a href="#">quni</a>}>
+          <Card title="消费行为" bordered={false} extra={<Extra />}>
             <PieComponent
               data={[
                 { value: 1048, name: 'Search Engine' },
@@ -141,7 +219,11 @@ const App: React.FC = () => {
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="ABC类消费分析" bordered={false} extra={<a href="#">quni</a>}>
+          <Card
+            title="ABC类消费分析"
+            bordered={false}
+            extra={<a href="#">quni</a>}
+          >
             <PieComponent
               data={[
                 { value: 1048, name: 'A类（必须开支）' },
@@ -165,7 +247,11 @@ const App: React.FC = () => {
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="ABC类消费分析" bordered={false} extra={<a href="#">quni</a>}>
+          <Card
+            title="ABC类消费分析"
+            bordered={false}
+            extra={<a href="#">quni</a>}
+          >
             <PieComponent
               data={[
                 { value: 1048, name: 'A类（必须开支）' },
