@@ -1,27 +1,47 @@
-import React from 'react'
-import { shell } from 'electron'
+import React, { useState } from 'react'
+import { Card } from 'antd'
+import { Button, Form, Input, Radio } from 'antd'
 
-import './about.less'
+type LayoutType = Parameters<typeof Form>[0]['layout']
+
+const App: React.FC = () => {
+  const [form] = Form.useForm()
+
+  const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {}
+
+  return (
+    <Form
+      layout="vertical"
+      form={form}
+      onValuesChange={onFormLayoutChange}
+      style={{ maxWidth: 600 }}
+    >
+      <Form.Item label="Form Layout" name="layout">
+        <Radio.Group>
+          <Radio.Button value="horizontal">Horizontal</Radio.Button>
+          <Radio.Button value="vertical">Vertical</Radio.Button>
+          <Radio.Button value="inline">Inline</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="Field A">
+        <Input placeholder="input placeholder" />
+      </Form.Item>
+      <Form.Item label="Field B">
+        <Input placeholder="input placeholder" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary">Submit</Button>
+      </Form.Item>
+    </Form>
+  )
+}
 
 const About: React.FC<PageProps> = () => {
   return (
     <div className="about flex column center" style={{ height: '100%' }}>
-      <img src={$tools.APP_ICON} width="88" />
-      <h2 style={{ marginTop: 8 }}>{$tools.APP_TITLE}</h2>
-      <p className="fs-12 text-gray" style={{ margin: 4 }}>
-        {$tools.APP_NAME} Version {$tools.APP_VERSION}
-      </p>
-      <p className="fs-12 text-gray">
-        Copyright © {new Date().getFullYear()}{' '}
-        <a
-          onClick={() => {
-            shell.openExternal('https://github.com/lanten')
-          }}
-        >
-          lanten.
-        </a>{' '}
-        All rights (demo)
-      </p>
+      <Card title="去分析" hoverable>
+        <App />
+      </Card>
     </div>
   )
 }

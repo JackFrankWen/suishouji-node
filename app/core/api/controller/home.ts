@@ -22,17 +22,21 @@ function convertToChineseNum(num: string): string {
     '九',
   ]
   const units: string[] = ['', '十', '百', '千', '万', '亿']
-  let result: string = ''
+  let result = ''
 
   for (let i = 0; i < num.length; i++) {
-    let digit: number = parseInt(num.charAt(i))
-    let unit: string = units[num.length - 1 - i]
+    const digit: number = parseInt(num.charAt(i))
+    const unit: string = units[num.length - 1 - i]
     if (digit === 0) {
       if (i !== num.length - 1 && parseInt(num.charAt(i + 1)) !== 0) {
         result += chineseNums[digit]
       }
     } else {
-      result += chineseNums[digit] + unit
+      if (unit === '十' && digit === 1 && i === 0 && num.length === 2) {
+        result += '十'
+      } else {
+        result += chineseNums[digit] + unit
+      }
     }
   }
 

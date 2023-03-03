@@ -40,8 +40,17 @@ const items = [
     ),
   },
   {
-    label: '年消费画像',
+    label: '月消费画像',
     key: '5',
+    children: (
+      <>
+        <TableView />
+      </>
+    ),
+  },
+  {
+    label: '年消费画像',
+    key: '6',
     children: (
       <>
         <TableView />
