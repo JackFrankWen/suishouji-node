@@ -15,16 +15,19 @@ const ReviewForm: React.FC = () => {
     <Form
       layout="vertical"
       form={form}
+      initialValues={{
+        type: 'year',
+      }}
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      <Form.Item label="Form Layout" name="layout">
+      <Form.Item label="Form Layout" name="type">
         <Radio.Group>
-          <Radio.Button value="horizontal">年度账单分析</Radio.Button>
-          <Radio.Button value="vertical">月支出分析</Radio.Button>
+          <Radio.Button value="year">年度账单分析</Radio.Button>
+          <Radio.Button value="month">月支出分析</Radio.Button>
         </Radio.Group>
       </Form.Item>
-      <Form.Item label="时间">
+      <Form.Item label="时间" name="date">
         <RangePickerWrap bordered />
       </Form.Item>
       <Form.Item>

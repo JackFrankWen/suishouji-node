@@ -1,4 +1,14 @@
-import { Card, Col, Row, Modal, Space, DatePicker, Statistic } from 'antd'
+import {
+  Card,
+  Col,
+  Row,
+  Modal,
+  Space,
+  DatePicker,
+  Statistic,
+  PageHeader,
+  Avatar,
+} from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 
@@ -6,6 +16,9 @@ import ReactECharts from 'echarts-for-react'
 import './home.less'
 import ReviewForm from './review-form'
 import RangePickerWrap from '@/src/components/RangePickerWrap'
+import Pie from '@/src/components/Pie'
+import Meta from 'antd/lib/card/Meta'
+import MonthReivew from './month-review'
 
 const ChartComponent = (props: { label: string[]; value: string[] }) => {
   const [chartOptions, setChartOptions] = useState({})
@@ -45,55 +58,6 @@ const ChartComponent = (props: { label: string[]; value: string[] }) => {
 
   return <ReactECharts option={chartOptions} />
 }
-const PieComponent = (props: any) => {
-  const [chartOptions, setChartOptions] = useState({})
-  useEffect(() => {
-    setChartOptions({
-      title: {
-        text: 'Referer of a Website',
-        subtext: 'Fake Data',
-        left: 'center',
-      },
-      label: {
-        alignTo: 'edge',
-        formatter: '{name|{b}}\n{time|{c} 小时}',
-        minMargin: 5,
-        edgeDistance: 10,
-        lineHeight: 15,
-        rich: {
-          time: {
-            fontSize: 10,
-            color: '#999',
-          },
-        },
-      },
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        orient: 'vertical',
-        left: 'left',
-      },
-      series: [
-        {
-          name: 'Access From',
-          type: 'pie',
-          radius: '50%',
-          data: props.data,
-          emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowOffsetX: 0,
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
-            },
-          },
-        },
-      ],
-    })
-  }, [])
-
-  return <ReactECharts option={chartOptions} />
-}
 
 const App: React.FC = () => {
   const [monthBar, setMonthbar] = useState<{
@@ -125,84 +89,47 @@ const App: React.FC = () => {
     })
   }, [])
   return (
-    <div className="page-home">
-      <Row gutter={16} className="lvl-1">
-        <Col span={16}>
-          <Card bordered={false}>
-            <ReviewForm />
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card bordered={false}>
-            <Statistic title="上月支出" value={112893} />
-            <Statistic title="上月支出" value={112893} />
-            <Statistic title="上月支出" value={112893} />
-          </Card>
-        </Col>
-      </Row>
-      <Row className="lvl-2">
-        <Col span={24}>
-          <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
-            <ChartComponent {...monthBar} />
-          </Card>
-        </Col>
-      </Row>
-      <Row gutter={16} className="lvl-3">
-        <Col span={12}>
-          <Card title="消费行为" bordered={false} extra={<RangePickerWrap />}>
-            <PieComponent
-              data={[
-                { value: 1048, name: 'Search Engine' },
-                { value: 735, name: 'Direct' },
-                { value: 580, name: 'Email' },
-              ]}
-            />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card
-            title="ABC类消费分析"
-            bordered={false}
-            extra={<a href="#">quni</a>}
+    <div>
+      <div className="page-home-header">
+        <Row gutter={16} className="lvl-1">
+          <PageHeader
+            className="site-page-header"
+            onBack={() => null}
+            title="月分析"
+            subTitle="This is a subtitle"
           >
-            <PieComponent
-              data={[
-                { value: 1048, name: 'A类（必须开支）' },
-                { value: 735, name: 'B类（可有可恶）' },
-                { value: 580, name: 'C类（可以削减）' },
-              ]}
-            />
-          </Card>
-        </Col>
-      </Row>
-      <Row gutter={16} className="lvl-4">
-        <Col span={12}>
-          <Card title="消费目的" bordered={false} extra={<a href="#">quni</a>}>
-            <PieComponent
-              data={[
-                { value: 1048, name: '生存开销' },
-                { value: 735, name: '发展开销' },
-                { value: 580, name: '享受开销' },
-              ]}
-            />
-          </Card>
-        </Col>
-        <Col span={12}>
-          <Card
-            title="ABC类消费分析"
-            bordered={false}
-            extra={<a href="#">quni</a>}
-          >
-            <PieComponent
-              data={[
-                { value: 1048, name: 'A类（必须开支）' },
-                { value: 735, name: 'B类（可有可恶）' },
-                { value: 580, name: 'C类（可以削减）' },
-              ]}
-            />
-          </Card>
-        </Col>
-      </Row>
+            <Row>
+              <Statistic title="Status" value="Pending" />
+              <Statistic
+                title="Price"
+                prefix="$"
+                value={568.08}
+                style={{
+                  margin: '0 32px',
+                }}
+              />
+              <Statistic title="Balance" prefix="$" value={3345.08} />
+            </Row>
+          </PageHeader>
+        </Row>
+      </div>
+      <div className="page-home">
+        <Row className="lvl-1">
+          <Col span={24}>
+            <Card bordered={false} hoverable>
+              <ReviewForm />
+            </Card>
+          </Col>
+        </Row>
+        <Row className="lvl-2">
+          <Col span={24}>
+            <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
+              <ChartComponent {...monthBar} />
+            </Card>
+          </Col>
+        </Row>
+        <MonthReivew />
+      </div>
     </div>
   )
 }

@@ -49,7 +49,6 @@ const Extra = (props: { bordered?: boolean }) => {
       value={date}
       format="YYYY-MM-DD"
       onChange={(dates) => {
-        console.log(dates, 'sss')
         setDate(dates)
       }}
       bordered={bordered}
