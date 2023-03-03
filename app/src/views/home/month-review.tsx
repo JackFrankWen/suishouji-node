@@ -7,12 +7,14 @@ import {
   DatePicker,
   Statistic,
   PageHeader,
+  Radio,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 
 import './home.less'
 import Pie from '@/src/components/Pie'
+import Memerber from '@/src/components/Member'
 function Summarize() {
   const gridStyle: React.CSSProperties = {
     width: '25%',
@@ -43,7 +45,7 @@ function Content() {
   return (
     <Row gutter={16} className="lvl-3">
       <Col span={12}>
-        <Card title="消费行为" bordered={false}>
+        <Card title="消费行为" bordered={false} extra={<Memerber />}>
           <Pie
             data={[
               { value: 1048, name: '餐饮' },
@@ -75,7 +77,7 @@ function ContentSec() {
   return (
     <Row gutter={16} className="lvl-4">
       <Col span={12}>
-        <Card title="消费目的" bordered={false} extra={<a href="#">quni</a>}>
+        <Card title="消费目的" bordered={false} extra={<Memerber />}>
           <Pie
             data={[
               { value: 1048, name: '生存开销' },
@@ -86,11 +88,7 @@ function ContentSec() {
         </Card>
       </Col>
       <Col span={12}>
-        <Card
-          title="成员消费占比"
-          bordered={false}
-          extra={<a href="#">quni</a>}
-        >
+        <Card title="成员消费占比" bordered={false} extra={<Memerber />}>
           <Pie
             data={[
               { value: 1048, name: 'A类（必须开支）' },
