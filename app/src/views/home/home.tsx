@@ -1,10 +1,11 @@
-import { Card, Col, Row, Modal, Space, DatePicker } from 'antd'
+import { Card, Col, Row, Modal, Space, DatePicker, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 
 import ReactECharts from 'echarts-for-react'
 import './home.less'
-const { RangePicker } = DatePicker
+import ReviewForm from './review-form'
+import RangePickerWrap from '@/src/components/RangePickerWrap'
 
 const ChartComponent = (props: { label: string[]; value: string[] }) => {
   const [chartOptions, setChartOptions] = useState({})
@@ -94,63 +95,6 @@ const PieComponent = (props: any) => {
   return <ReactECharts option={chartOptions} />
 }
 
-import './home.less'
-function getFirstDayAndLastDay(month: number, type: 'year' | 'month') {
-  const now = moment() // get the current date/time in Moment.js format
-
-  const lastYear = now.clone().subtract(1, 'year') // go back one year
-  const firstDayOfLastYear = lastYear.clone().startOf('year') // get the first day of the previous year
-  const lastDayOfLastYear = lastYear.clone().endOf('year') // get the last day of the previous year
-
-  const firstDateOfLastMonth = now
-    .clone()
-    .subtract(month, 'months')
-    .startOf('month')
-  const lastDayOfLastMonth = now
-    .clone()
-    .subtract(month, 'months')
-    .endOf('month')
-  if (type === 'month') {
-    return [firstDateOfLastMonth, lastDayOfLastMonth]
-  }
-  return [firstDayOfLastYear, lastDayOfLastYear]
-}
-
-const Extra: React.FC = () => {
-  const now = moment() // get the current date/time in Moment.js format
-
-  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
-  const lastDayOfYear = now.clone().endOf('year') // get
-  const [date, setDate] = useState<any>([firstDayOfYear, lastDayOfYear])
-  const renderExtraFooter = () => {
-    const lastMonth = getFirstDayAndLastDay(1, 'month')
-    const lastTwoMonth = getFirstDayAndLastDay(2, 'month')
-    const lastYear = getFirstDayAndLastDay(1, 'year')
-    const lastTwoyear = getFirstDayAndLastDay(2, 'year')
-    return (
-      <Space>
-        <a onClick={() => setDate(lastMonth)}>上月</a>
-        <a onClick={() => setDate(lastTwoMonth)}>上上月</a>
-        <a onClick={() => setDate(lastYear)}>去年</a>
-        <a onClick={() => setDate(lastTwoyear)}>前年</a>
-      </Space>
-    )
-  }
-  return (
-    <Space size={12}>
-      <RangePicker
-        value={date}
-        format="YYYY-MM-DD"
-        onChange={(dates) => {
-          console.log(dates, 'sss')
-          setDate(dates)
-        }}
-        bordered={false}
-        renderExtraFooter={renderExtraFooter}
-      />
-    </Space>
-  )
-}
 const App: React.FC = () => {
   const [monthBar, setMonthbar] = useState<{
     label: string[]
@@ -183,32 +127,29 @@ const App: React.FC = () => {
   return (
     <div className="page-home">
       <Row gutter={16} className="lvl-1">
-        <Col span={8}>
-          <Card title="上月开支" bordered={false}>
-            1,222 元
+        <Col span={16}>
+          <Card bordered={false}>
+            <ReviewForm />
           </Card>
         </Col>
         <Col span={8}>
-          <Card title="去年平均" bordered={false}>
-            1,222 元
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card title="上月理财收益" bordered={false}>
-            Card content
+          <Card bordered={false}>
+            <Statistic title="上月支出" value={112893} />
+            <Statistic title="上月支出" value={112893} />
+            <Statistic title="上月支出" value={112893} />
           </Card>
         </Col>
       </Row>
       <Row className="lvl-2">
         <Col span={24}>
-          <Card title="每月开支" bordered={false} extra={<Extra />}>
+          <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
             <ChartComponent {...monthBar} />
           </Card>
         </Col>
       </Row>
       <Row gutter={16} className="lvl-3">
         <Col span={12}>
-          <Card title="消费行为" bordered={false} extra={<Extra />}>
+          <Card title="消费行为" bordered={false} extra={<RangePickerWrap />}>
             <PieComponent
               data={[
                 { value: 1048, name: 'Search Engine' },
