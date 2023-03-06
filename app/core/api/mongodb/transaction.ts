@@ -67,7 +67,7 @@ export async function get_category_total_by_date(param: any) {
   if (collection) {
     const res = await collection
       .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end } } },
+        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
           $group: {
             _id: '$category',
@@ -83,8 +83,43 @@ export async function get_category_total_by_date(param: any) {
         },
       ])
       .toArray()
-    console.log(res, '===')
     return res
   }
   return null
+}
+/**
+ * 查询成员汇总
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_member_total_by_date(param: any) {
+  const { start, end } = param
+
+  const collection = getCollection(collectionName)
+  if (collection) {
+    const res = await collection
+      .aggregate([
+        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+        {
+          $group: {
+            _id: {
+              consumer: '$consumer',
+            },
+            total: {
+              $sum: '$amount',
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            name: '$_id.consumer',
+            value: '$total',
+          },
+        },
+      ])
+      .toArray()
+    return res
+  }
+  return []
 }

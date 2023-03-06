@@ -32,42 +32,44 @@ function Summarize() {
 }
 function Content() {
   const [category, setCategory] = useState<any>([])
-  const test = async () => {
+  const [member, setMember] = useState<any>([])
+  const getCategory = async () => {
     try {
       const res = await $api.getCategory()
       console.log(res)
       if (res) {
-        console.log(res)
         setCategory(res)
       }
     } catch (error) {
       console.log(error)
     }
   }
+  const getMemberTotal = async () => {
+    try {
+      const res = await $api.getMemberTotal()
+      console.log(res)
+      if (res) {
+        setMember(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   useEffect(() => {
-    test()
+    getCategory()
+    getMemberTotal()
   }, [])
 
   return (
     <Row gutter={16} className="home-section">
       <Col span={12}>
-        <Card
-          title="消费种类（个人整理）"
-          bordered={false}
-          extra={<Memerber />}
-        >
+        <Card title="支出" bordered={false} extra={<Memerber />}>
           <Pie data={category} />
         </Card>
       </Col>
       <Col span={12}>
-        <Card title="成员消费占比" bordered={false}>
-          <Pie
-            data={[
-              { value: 1048, name: '老公占比中支' },
-              { value: 735, name: 'B类（可有可恶）' },
-              { value: 580, name: 'C类（可以削减）' },
-            ]}
-          />
+        <Card title="成员消费" bordered={false}>
+          <Pie data={member} />
         </Card>
       </Col>
     </Row>

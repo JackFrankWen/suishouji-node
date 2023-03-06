@@ -17,8 +17,7 @@ const Pie = (props: {
         formatter: (val: any) => `${val.value}元`,
       },
       legend: {
-        top: '5%',
-        left: 'center',
+        show: true,
       },
       series: [
         {

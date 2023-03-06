@@ -9,7 +9,7 @@ const husband = 1,
 export const category_type = [
   {
     value: 10000,
-    label: '食品(吃喝)',
+    label: '餐饮',
     children: [
       {
         value: 10001,

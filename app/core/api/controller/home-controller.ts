@@ -1,8 +1,10 @@
 import { getCategoryObj } from '../const/category'
+import { consumer } from '../const/web'
 import { getDb } from '../mongodb/db'
 import {
   get_category_total_by_date,
   get_every_month_amount,
+  get_member_total_by_date,
 } from '../mongodb/transaction'
 const start = new Date('2022-01-01 00:00:00')
 const end = new Date('2022-12-31 23:59:59')
@@ -20,10 +22,21 @@ export async function getCategory() {
       start: new Date('2023-01-01 00:00:00'),
       end: new Date('2023-01-31 00:00:00'),
     })
-    console.log(result, 'result')
     return transferMonthData(result)
   }
 }
+
+export async function getMemberTotal() {
+  const db = getDb()
+  if (db) {
+    const result = await get_member_total_by_date({
+      start: new Date('2023-01-01 00:00:00'),
+      end: new Date('2023-01-31 00:00:00'),
+    })
+    return transferMeberData(result)
+  }
+}
+
 function convertToChineseNum(num: string): string {
   const chineseNums: string[] = [
     '零',
@@ -125,4 +138,15 @@ function transferMonthData(list: any): pp {
     }
   })
   return newList
+}
+type PieData = {
+  name: string
+  value: string
+}
+
+function transferMeberData(list: any): PieData[] {
+  return list.map((val: PieData) => ({
+    name: consumer[val.name],
+    value: val.value.toString(),
+  }))
 }
