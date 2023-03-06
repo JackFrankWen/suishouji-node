@@ -123,3 +123,40 @@ export async function get_member_total_by_date(param: any) {
   }
   return []
 }
+/**
+ * 获取账户金额
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_account_total_by_date(param: any) {
+  const { start, end } = param
+
+  const collection = getCollection(collectionName)
+  if (collection) {
+    const res = await collection
+      .aggregate([
+        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+        {
+          $group: {
+            _id: {
+              name: '$account_type',
+            },
+            total: {
+              $sum: '$amount',
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            name: '$_id.name',
+            value: '$total',
+          },
+        },
+      ])
+      .toArray()
+    return res
+  }
+  return []
+}

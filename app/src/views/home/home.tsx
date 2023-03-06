@@ -10,13 +10,10 @@ import {
   Avatar,
 } from 'antd'
 import React, { useEffect, useState } from 'react'
-import moment from 'moment'
-import ReactECharts from 'echarts-for-react'
 import './home.less'
 import ReviewForm from './review-form'
-import RangePickerWrap from '@/src/components/RangePickerWrap'
-import Pie from '@/src/components/app-echart/Pie'
 import MonthReivew from './month-review'
+import YearReview from './year-review'
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -66,6 +63,7 @@ const App: React.FC = () => {
         </Row>
 
         <MonthReivew />
+        <YearReview />
       </div>
     </div>
   )

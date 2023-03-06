@@ -9,22 +9,40 @@ function Summarize() {
     width: '25%',
     textAlign: 'center',
   }
+  const [staticData, setStaticData] = useState<any>([])
+
+  const getMemberTotal = async () => {
+    try {
+      const res = await $api.getAccountTotal()
+      if (res) {
+        setStaticData(
+          [
+            {
+              name: '总支出',
+              value: res.reduce((a, b) => Number(a) + Number(b.value), 0),
+            },
+          ].concat(res)
+        )
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getMemberTotal()
+  }, [])
+  console.log(staticData, 'staticData')
   return (
     <Row className="home-section">
       <Col span={24}>
         <Card title="汇总">
-          <Card.Grid style={gridStyle}>
-            <Statistic title="总支出" prefix="$" value={112893} />
-          </Card.Grid>
-          <Card.Grid hoverable={false} style={gridStyle}>
-            <Statistic title="饮食消费" value={112893} />
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <Statistic title="娱乐消费" value={112893} />
-          </Card.Grid>
-          <Card.Grid style={gridStyle}>
-            <Statistic title="投资消费" value={112893} />
-          </Card.Grid>
+          {staticData.map((item, key) => {
+            return (
+              <Card.Grid style={gridStyle} key={key}>
+                <Statistic title={item.name} prefix="$" value={item.value} />
+              </Card.Grid>
+            )
+          })}
         </Card>
       </Col>
     </Row>

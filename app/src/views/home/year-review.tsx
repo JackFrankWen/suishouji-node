@@ -27,7 +27,7 @@ function YearReview() {
   }, [])
 
   return (
-    <Row className="lvl-2">
+    <Row className="home-section">
       <Col span={24}>
         <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
           <Bar {...monthBar} />

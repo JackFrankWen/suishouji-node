@@ -1,4 +1,4 @@
-export const accountType = {
+export const account_type = {
   1: '老公钱包',
   2: '老婆钱包',
   3: '爷爷钱包',
