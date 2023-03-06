@@ -1,19 +1,8 @@
-import {
-  Card,
-  Col,
-  Row,
-  Modal,
-  Space,
-  DatePicker,
-  Statistic,
-  PageHeader,
-  Radio,
-} from 'antd'
+import { Card, Col, Row, Modal, Space, DatePicker, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 
-import './home.less'
-import Pie from '@/src/components/Pie'
+import Pie from '@/src/components/app-echart/Pie'
 import Memerber from '@/src/components/Member'
 function Summarize() {
   const gridStyle: React.CSSProperties = {
@@ -21,7 +10,7 @@ function Summarize() {
     textAlign: 'center',
   }
   return (
-    <Row className="lvl-2">
+    <Row className="home-section">
       <Col span={24}>
         <Card title="汇总">
           <Card.Grid style={gridStyle}>
@@ -43,9 +32,13 @@ function Summarize() {
 }
 function Content() {
   return (
-    <Row gutter={16} className="lvl-3">
+    <Row gutter={16} className="home-section">
       <Col span={12}>
-        <Card title="消费行为" bordered={false} extra={<Memerber />}>
+        <Card
+          title="消费种类（个人整理）"
+          bordered={false}
+          extra={<Memerber />}
+        >
           <Pie
             data={[
               { value: 1048, name: '餐饮' },
@@ -56,14 +49,10 @@ function Content() {
         </Card>
       </Col>
       <Col span={12}>
-        <Card
-          title="ABC类消费分析"
-          bordered={false}
-          extra={<a href="#">quni</a>}
-        >
+        <Card title="成员消费占比" bordered={false}>
           <Pie
             data={[
-              { value: 1048, name: 'A类（必须开支）' },
+              { value: 1048, name: '老公占比中支' },
               { value: 735, name: 'B类（可有可恶）' },
               { value: 580, name: 'C类（可以削减）' },
             ]}
@@ -75,7 +64,7 @@ function Content() {
 }
 function ContentSec() {
   return (
-    <Row gutter={16} className="lvl-4">
+    <Row gutter={16} className="home-section">
       <Col span={12}>
         <Card title="消费目的" bordered={false} extra={<Memerber />}>
           <Pie
@@ -88,10 +77,10 @@ function ContentSec() {
         </Card>
       </Col>
       <Col span={12}>
-        <Card title="成员消费占比" bordered={false} extra={<Memerber />}>
+        <Card title="abc消费占比" bordered={false} extra={<Memerber />}>
           <Pie
             data={[
-              { value: 1048, name: 'A类（必须开支）' },
+              { value: 1048, name: 'A类（必须开支' },
               { value: 735, name: 'B类（可有可恶）' },
               { value: 580, name: 'C类（可以削减）' },
             ]}

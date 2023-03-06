@@ -3,8 +3,10 @@ import React, { useEffect, useState } from 'react'
 function Memerber() {
   return (
     <Radio.Group>
-      <Radio.Button value="year">老公</Radio.Button>
-      <Radio.Button value="month">老婆</Radio.Button>
+      <Radio.Button value="1">文</Radio.Button>
+      <Radio.Button value="2">牛</Radio.Button>
+      <Radio.Button value="3">牧牧</Radio.Button>
+      <Radio.Button value="4">家庭</Radio.Button>
     </Radio.Group>
   )
 }
