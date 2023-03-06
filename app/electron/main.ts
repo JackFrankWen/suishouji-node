@@ -21,7 +21,6 @@ app.on('second-instance', () => {
 })
 
 app.on('ready', () => {
-  console.log('start======')
   tray = creatAppTray()
   $tools.createWindow('Home')
 })

@@ -1,47 +1,28 @@
 import { getCollection, getDb } from './db'
 const collectionName = 'transaction'
 
-const start = new Date('2022-01-01 00:00:00')
-const end = new Date('2022-12-31 23:59:59')
+// async function get_catetory_avg_by_date(param: any) {
+//   const { start, end } = param
+//   const collection = getCollection(collectionName)
 
-async function get_category_total_by_date(param: any) {
-  const collection = getCollection(collectionName)
-  if (collection) {
-    const res = await collection
-      .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end } } },
-        {
-          $group: {
-            _id: '$category',
-            total_amount: { $sum: '$amount' },
-          },
-        },
-        {
-          $project: {
-            _id: 0,
-            category: '$_id',
-            amount: '$total_amount',
-          },
-        },
-      ])
-      .toArray()
-    return res
-  }
-  return null
-}
+//   if (!collection) return []
+//   const res = await collection
+//     .aggregate([
+//       { $match: { trans_time: { $gte: start, $lte: end } } },
+//       { $group: { _id: '$category', total_amount: { $sum: '$amount' } } },
+//       { $project: { _id: 0, category: '$_id', amount: '$total_amount' } },
+//     ])
+//     .toArray()
+//   return res
+// }
 
-async function get_catetory_avg_by_date(collection: any) {
-  const res = await collection
-    .aggregate([
-      { $match: { trans_time: { $gte: start, $lte: end } } },
-      { $group: { _id: '$category', total_amount: { $sum: '$amount' } } },
-      { $project: { _id: 0, category: '$_id', amount: '$total_amount' } },
-    ])
-    .toArray()
-  return res
-}
-
-export async function get_every_month_amount(param: any) {
+/**
+ * 查询每个月总支出
+ * @param {any} param:{start:any;end:any}
+ * @returns {any}
+ */
+export async function get_every_month_amount(param: { start: any; end: any }) {
+  const { start, end } = param
   const collection = getCollection(collectionName)
   if (collection) {
     const res = await collection
@@ -72,4 +53,38 @@ export async function get_every_month_amount(param: any) {
     return res
   }
   return []
+}
+
+/**
+ * 查询各类支出汇总
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_category_total_by_date(param: any) {
+  const { start, end } = param
+
+  const collection = getCollection(collectionName)
+  if (collection) {
+    const res = await collection
+      .aggregate([
+        { $match: { trans_time: { $gte: start, $lte: end } } },
+        {
+          $group: {
+            _id: '$category',
+            total_amount: { $sum: '$amount' },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            category: '$_id',
+            total: '$total_amount',
+          },
+        },
+      ])
+      .toArray()
+    console.log(res, '===')
+    return res
+  }
+  return null
 }

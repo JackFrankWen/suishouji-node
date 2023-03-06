@@ -391,3 +391,14 @@ export const category_type = [
     ],
   },
 ]
+
+export const getCategoryObj = () => {
+  const obj = {}
+  category_type.forEach((item) => {
+    obj[item.value] = item.label
+    item.children.forEach((item) => {
+      obj[item.value] = item.label
+    })
+  })
+  return obj
+}

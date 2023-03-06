@@ -31,6 +31,23 @@ function Summarize() {
   )
 }
 function Content() {
+  const [category, setCategory] = useState<any>([])
+  const test = async () => {
+    try {
+      const res = await $api.getCategory()
+      console.log(res)
+      if (res) {
+        console.log(res)
+        setCategory(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    test()
+  }, [])
+
   return (
     <Row gutter={16} className="home-section">
       <Col span={12}>
@@ -39,13 +56,7 @@ function Content() {
           bordered={false}
           extra={<Memerber />}
         >
-          <Pie
-            data={[
-              { value: 1048, name: '餐饮' },
-              { value: 735, name: '交通' },
-              { value: 580, name: '住房' },
-            ]}
-          />
+          <Pie data={category} />
         </Card>
       </Col>
       <Col span={12}>

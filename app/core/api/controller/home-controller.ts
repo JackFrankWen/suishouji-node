@@ -1,18 +1,27 @@
+import { getCategoryObj } from '../const/category'
 import { getDb } from '../mongodb/db'
-import { get_every_month_amount } from '../mongodb/transaction'
-
+import {
+  get_category_total_by_date,
+  get_every_month_amount,
+} from '../mongodb/transaction'
+const start = new Date('2022-01-01 00:00:00')
+const end = new Date('2022-12-31 23:59:59')
 export async function getView() {
   const db = getDb()
   if (db) {
-    const result = await get_every_month_amount({})
+    const result = await get_every_month_amount({ start, end })
     return getBarData(result)
   }
 }
 export async function getCategory() {
   const db = getDb()
   if (db) {
-    const result = await get_every_month_amount({})
-    return getBarData(result)
+    const result = await get_category_total_by_date({
+      start: new Date('2023-01-01 00:00:00'),
+      end: new Date('2023-01-31 00:00:00'),
+    })
+    console.log(result, 'result')
+    return transferMonthData(result)
   }
 }
 function convertToChineseNum(num: string): string {
@@ -61,4 +70,59 @@ function getBarData(list: any) {
     label,
     value,
   }
+}
+type pp = {
+  value: string
+  id: string
+  name: string
+  // child: {
+  //   id: string
+  //   value: string
+  //   name: string
+  // }[]
+}[]
+function transferMonthData(list: any): pp {
+  let newList: pp = []
+  const category_obj = getCategoryObj()
+  list.forEach((element: { total: string; category: string }) => {
+    const arr = element.category ? JSON.parse(element.category) : []
+    const [parent_id, child_id] = arr
+
+    const check = newList.find((val) => val.id === parent_id)
+    if (check) {
+      newList = newList.map((obj) => {
+        if (obj.id === parent_id) {
+          return {
+            ...obj,
+            value: (
+              Number(obj.value) + Number(element.total.toString())
+            ).toString(),
+            // @ts-ignore: Unreachable code error
+
+            // child: obj.child.push({
+            //   value: element.total.toString(),
+            //   id: child_id,
+            //   name: category_obj[child_id],
+            // }),
+          }
+        }
+        return obj
+      })
+    } else {
+      // create
+      newList.push({
+        value: element.total.toString(),
+        id: parent_id,
+        name: category_obj[parent_id],
+        // child: [
+        //   {
+        //     value: element.total.toString(),
+        //     id: parent_id,
+        //     name: category_obj[child_id],
+        //   },
+        // ],
+      })
+    }
+  })
+  return newList
 }
