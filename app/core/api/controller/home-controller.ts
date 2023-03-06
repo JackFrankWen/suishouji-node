@@ -8,6 +8,13 @@ export async function getView() {
     return getBarData(result)
   }
 }
+export async function getCategory() {
+  const db = getDb()
+  if (db) {
+    const result = await get_every_month_amount({})
+    return getBarData(result)
+  }
+}
 function convertToChineseNum(num: string): string {
   const chineseNums: string[] = [
     '零',

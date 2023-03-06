@@ -8,7 +8,9 @@ const ReviewForm: React.FC = () => {
   const onFormLayoutChange = (val: any) => {
     console.log(val)
   }
-
+  const onFinish = (val: any) => {
+    console.log(val)
+  }
   return (
     <Form
       layout="vertical"
@@ -16,6 +18,7 @@ const ReviewForm: React.FC = () => {
       initialValues={{
         type: 'year',
       }}
+      onFinish={onFinish}
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
@@ -29,7 +32,9 @@ const ReviewForm: React.FC = () => {
         <RangePickerWrap bordered />
       </Form.Item>
       <Form.Item>
-        <Button type="primary">复盘</Button>
+        <Button type="primary" htmlType="submit">
+          复盘
+        </Button>
       </Form.Item>
     </Form>
   )
