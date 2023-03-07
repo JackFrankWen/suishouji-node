@@ -1,6 +1,7 @@
 import { Tabs } from 'antd'
 import React from 'react'
 import TableView from '../accounting/accounting'
+import DailyReport from './daily'
 import './report.less'
 const items = [
   {
@@ -8,7 +9,7 @@ const items = [
     key: '1',
     children: (
       <>
-        <TableView />
+        <DailyReport />
       </>
     ),
   },

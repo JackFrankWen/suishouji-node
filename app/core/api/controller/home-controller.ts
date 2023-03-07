@@ -23,7 +23,7 @@ export async function getCategory() {
       start: new Date('2023-01-01 00:00:00'),
       end: new Date('2023-01-31 00:00:00'),
     })
-    return transferMonthData(result)
+    return transferCategory(result)
   }
 }
 
@@ -95,18 +95,18 @@ function getBarData(list: any) {
     value,
   }
 }
-type pp = {
+type CategoryReturnType = {
   value: string
   id: string
   name: string
-  // child: {
-  //   id: string
-  //   value: string
-  //   name: string
-  // }[]
+  child: {
+    id: string
+    value: string
+    name: string
+  }[]
 }[]
-function transferMonthData(list: any): pp {
-  let newList: pp = []
+function transferCategory(list: any): CategoryReturnType {
+  let newList: CategoryReturnType = []
   const category_obj = getCategoryObj()
   list.forEach((element: { total: string; category: string }) => {
     const arr = element.category ? JSON.parse(element.category) : []
@@ -121,13 +121,12 @@ function transferMonthData(list: any): pp {
             value: (
               Number(obj.value) + Number(element.total.toString())
             ).toString(),
-            // @ts-ignore: Unreachable code error
 
-            // child: obj.child.push({
-            //   value: element.total.toString(),
-            //   id: child_id,
-            //   name: category_obj[child_id],
-            // }),
+            child: [...obj.child].concat({
+              value: element.total.toString(),
+              id: child_id,
+              name: category_obj[child_id],
+            }),
           }
         }
         return obj
@@ -138,13 +137,13 @@ function transferMonthData(list: any): pp {
         value: element.total.toString(),
         id: parent_id,
         name: category_obj[parent_id],
-        // child: [
-        //   {
-        //     value: element.total.toString(),
-        //     id: parent_id,
-        //     name: category_obj[child_id],
-        //   },
-        // ],
+        child: [
+          {
+            value: element.total.toString(),
+            id: parent_id,
+            name: category_obj[child_id],
+          },
+        ],
       })
     }
   })

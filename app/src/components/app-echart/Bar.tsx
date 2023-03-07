@@ -6,7 +6,10 @@ const Bar = (props: { label: string[]; value: string[] }) => {
   const { label, value } = props
   useEffect(() => {
     setChartOptions({
-      title: {},
+      title: {
+        text: 'Rainfall vs Evaporation',
+        subtext: 'Fake Data',
+      },
       xAxis: {
         data: label,
       },
