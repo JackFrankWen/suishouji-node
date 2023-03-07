@@ -2,6 +2,7 @@ import { getCategoryObj } from '../const/category'
 import { account_type, consumer } from '../const/web'
 import { getDb } from '../mongodb/db'
 import {
+  get_account_total_by_date,
   get_category_total_by_date,
   get_every_month_amount,
   get_member_total_by_date,
@@ -39,7 +40,7 @@ export async function getMemberTotal() {
 export async function getAccountTotal() {
   const db = getDb()
   if (db) {
-    const result = await get_member_total_by_date({
+    const result = await get_account_total_by_date({
       start: new Date('2023-01-01 00:00:00'),
       end: new Date('2023-01-31 00:00:00'),
     })
@@ -161,8 +162,16 @@ function transferMeberData(list: any): PieData[] {
   }))
 }
 function transferAccountrData(list: any): PieData[] {
-  return list.map((val: PieData) => ({
+  const newList = list.map((val: PieData) => ({
     name: account_type[val.name],
     value: val.value.toString(),
   }))
+  newList.unshift({
+    name: '总支出',
+    value: newList.reduce(
+      (pre: number, cur: PieData) => Number(pre) + Number(cur.value),
+      0
+    ),
+  })
+  return newList
 }

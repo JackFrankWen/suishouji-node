@@ -15,14 +15,7 @@ function Summarize() {
     try {
       const res = await $api.getAccountTotal()
       if (res) {
-        setStaticData(
-          [
-            {
-              name: '总支出',
-              value: res.reduce((a, b) => Number(a) + Number(b.value), 0),
-            },
-          ].concat(res)
-        )
+        setStaticData(res)
       }
     } catch (error) {
       console.log(error)
@@ -36,7 +29,7 @@ function Summarize() {
     <Row className="home-section">
       <Col span={24}>
         <Card title="汇总">
-          {staticData.map((item, key) => {
+          {staticData.map((item: any, key: any) => {
             return (
               <Card.Grid style={gridStyle} key={key}>
                 <Statistic title={item.name} prefix="$" value={item.value} />
