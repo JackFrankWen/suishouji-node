@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import moment from 'moment'
 
 import Pie from '@/src/components/app-echart/Pie'
-import Memerber from '@/src/components/Member'
+import Memerber from '@/src/components/form/Member'
+import CategoryTable from '@/src/components/CategoryTable'
 function Summarize() {
   const gridStyle: React.CSSProperties = {
     width: '25%',
@@ -47,7 +48,6 @@ function Content() {
   const getCategory = async () => {
     try {
       const res = await $api.getCategory()
-      console.log(res)
       if (res) {
         setCategory(res)
       }
@@ -72,18 +72,23 @@ function Content() {
   }, [])
 
   return (
-    <Row gutter={16} className="home-section">
-      <Col span={12}>
-        <Card title="支出" bordered={false} extra={<Memerber />}>
-          <Pie data={category} />
-        </Card>
-      </Col>
-      <Col span={12}>
-        <Card title="成员消费" bordered={false}>
-          <Pie data={member} />
-        </Card>
-      </Col>
-    </Row>
+    <>
+      <Row gutter={16} className="home-section">
+        <Col span={24}>
+          <CategoryTable data={category} />
+        </Col>
+        <Col span={12}>
+          <Card title="支出" bordered={false} extra={<Memerber />}>
+            <Pie data={category} />
+          </Card>
+        </Col>
+        <Col span={12}>
+          <Card title="成员消费" bordered={false}>
+            <Pie data={member} />
+          </Card>
+        </Col>
+      </Row>
+    </>
   )
 }
 function ContentSec() {
@@ -114,7 +119,7 @@ function ContentSec() {
     </Row>
   )
 }
-
+function TableView() {}
 function MonthReivew() {
   return (
     <>

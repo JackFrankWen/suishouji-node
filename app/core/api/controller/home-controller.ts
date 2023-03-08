@@ -118,6 +118,7 @@ function transferCategory(list: any): CategoryReturnType {
         if (obj.id === parent_id) {
           return {
             ...obj,
+            id: parent_id,
             value: (
               Number(obj.value) + Number(element.total.toString())
             ).toString(),

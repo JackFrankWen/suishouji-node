@@ -1,7 +1,7 @@
 import { Card, Col, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
 import ReactECharts from 'echarts-for-react'
-import RangePickerWrap from '@/src/components/RangePickerWrap'
+import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import Pie from '@/src/components/app-echart/Pie'
 import Bar from '@/src/components/app-echart/Bar'
 //home-section

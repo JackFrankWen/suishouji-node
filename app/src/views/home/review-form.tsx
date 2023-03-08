@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Radio } from 'antd'
-import RangePickerWrap from '@/src/components/RangePickerWrap'
+import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 
 const ReviewForm: React.FC = () => {
   const [form] = Form.useForm()
