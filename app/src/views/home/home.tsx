@@ -11,11 +11,12 @@ import {
 } from 'antd'
 import React, { useEffect, useState } from 'react'
 import './home.less'
-import ReviewForm from './review-form'
+import useReviewForm from './review-form'
 import MonthReivew from './month-review'
 import YearReview from './year-review'
 
 const App: React.FC = () => {
+  const [formValue, Form] = useReviewForm()
   useEffect(() => {
     Modal.success({
       title: '使用手册',
@@ -57,13 +58,12 @@ const App: React.FC = () => {
         <Row className="home-section">
           <Col span={24}>
             <Card bordered={false} hoverable>
-              <ReviewForm />
+              {Form}
             </Card>
           </Col>
         </Row>
-
-        <MonthReivew />
-        <YearReview />
+        {formValue.type === 'month' && <MonthReivew formValue={formValue} />}
+        {formValue.type === 'year' && <YearReview formValue={formValue} />}
       </div>
     </div>
   )

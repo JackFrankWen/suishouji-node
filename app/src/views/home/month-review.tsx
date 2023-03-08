@@ -77,6 +77,8 @@ function Content() {
         <Col span={24}>
           <CategoryTable data={category} />
         </Col>
+      </Row>
+      <Row gutter={16} className="home-section">
         <Col span={12}>
           <Card title="支出" bordered={false} extra={<Memerber />}>
             <Pie data={category} />
@@ -120,7 +122,7 @@ function ContentSec() {
   )
 }
 function TableView() {}
-function MonthReivew() {
+function MonthReivew(props: { formValue: any }) {
   return (
     <>
       <Summarize />

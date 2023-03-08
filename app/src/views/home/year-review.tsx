@@ -4,8 +4,9 @@ import ReactECharts from 'echarts-for-react'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import Pie from '@/src/components/app-echart/Pie'
 import Bar from '@/src/components/app-echart/Bar'
+import CategoryTable from '@/src/components/CategoryTable'
 //home-section
-function YearReview() {
+function YearReview(props: { formValue: any }) {
   const [monthBar, setMonthbar] = useState<{
     label: string[]
     value: string[]
@@ -27,11 +28,38 @@ function YearReview() {
   }, [])
 
   return (
-    <Row className="home-section">
+    <>
+      <Row className="home-section" gutter={16}>
+        <Col span={24}>
+          <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
+            <Bar {...monthBar} />
+          </Card>
+        </Col>
+      </Row>
+      <TableSection />
+    </>
+  )
+}
+
+function TableSection() {
+  const [category, setCategory] = useState<any>([])
+  const getCategory = async () => {
+    try {
+      const res = await $api.getCategory()
+      if (res) {
+        setCategory(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getCategory()
+  }, [])
+  return (
+    <Row gutter={16} className="home-section">
       <Col span={24}>
-        <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
-          <Bar {...monthBar} />
-        </Card>
+        <CategoryTable data={category} />
       </Col>
     </Row>
   )

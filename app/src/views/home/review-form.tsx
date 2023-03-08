@@ -2,22 +2,22 @@ import React, { useState } from 'react'
 import { Button, Form, Input, Radio } from 'antd'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 
-const ReviewForm: React.FC = () => {
+const useReviewForm = () => {
   const [form] = Form.useForm()
+  const initialValues = { type: 'year' }
+  const [formData, setFormData] = useState(initialValues)
 
   const onFormLayoutChange = (val: any) => {
     console.log(val)
   }
   const onFinish = (val: any) => {
-    console.log(val)
+    setFormData(val)
   }
-  return (
+  const cpt = (
     <Form
       layout="vertical"
       form={form}
-      initialValues={{
-        type: 'year',
-      }}
+      initialValues={initialValues}
       onFinish={onFinish}
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
@@ -38,5 +38,6 @@ const ReviewForm: React.FC = () => {
       </Form.Item>
     </Form>
   )
+  return [formData, cpt]
 }
-export default ReviewForm
+export default useReviewForm

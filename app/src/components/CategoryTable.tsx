@@ -57,6 +57,7 @@ const CategoryTable = (props: { data: DataType[] }) => (
       expandedRowRender: expandedRowRender,
     }}
     dataSource={props.data}
+    pagination={false}
   />
 )
 export default CategoryTable

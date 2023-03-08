@@ -81,6 +81,11 @@ export async function get_category_total_by_date(param: any) {
             total: '$total_amount',
           },
         },
+        {
+          $sort: {
+            total: 1,
+          },
+        },
       ])
       .toArray()
     return res
@@ -152,6 +157,11 @@ export async function get_account_total_by_date(param: any) {
             _id: 0,
             name: '$_id.name',
             value: '$total',
+          },
+        },
+        {
+          $sort: {
+            value: 1,
           },
         },
       ])
