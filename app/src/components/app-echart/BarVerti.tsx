@@ -27,17 +27,16 @@ const BarVertial = (props: { label?: string[]; value?: string[] }) => {
       },
       yAxis: {
         type: 'category',
-        data: ['Brazil', 'Indonesia', 'USA', 'India', 'China', 'World'],
+        data: label,
       },
       series: [
         {
-          name: '2011',
           type: 'bar',
-          data: [18203, 23489, 29034, 104970, 131744, 630230],
+          data: value,
         },
       ],
     })
-  }, [])
+  }, [label, value])
 
   return <ReactECharts option={chartOptions} />
 }

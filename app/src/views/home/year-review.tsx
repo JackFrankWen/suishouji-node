@@ -1,6 +1,5 @@
 import { Card, Col, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
-import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import Bar from '@/src/components/app-echart/Bar'
 import CategoryTable from '@/src/components/CategoryTable'
 import BarVertial from '@/src/components/app-echart/BarVerti'
@@ -9,11 +8,32 @@ import ReviewCost from './review-cost'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
+  const { formValue } = props
+  const [monthBar, setMonthbar] = useState<{
+    label: string[]
+    value: string[]
+  }>({ label: [], value: [] })
+
+  const getMonthBar = async (data: any) => {
+    try {
+      const res = await $api.getCategoryAvg(data)
+      console.log(res)
+      if (res) {
+        setMonthbar(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getMonthBar(getDateTostring(props.formValue))
+  }, [formValue])
+  console.log(monthBar, 'monthBar')
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
         <Card title="每月平均" bordered={false}>
-          <BarVertial />
+          <BarVertial {...monthBar} />
         </Card>
       </Col>
     </Row>

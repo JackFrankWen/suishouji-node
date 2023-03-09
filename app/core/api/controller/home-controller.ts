@@ -1,3 +1,5 @@
+import { roundToTwoDecimalPlaces } from '@/src/components/utils'
+import moment from 'moment'
 import { getCategoryObj } from '../const/category'
 import { account_type, consumer } from '../const/web'
 import { getDb } from '../mongodb/db'
@@ -47,7 +49,9 @@ export async function getCategoryAvg(params: { start: string; end: string }) {
       start: new Date(start),
       end: new Date(end),
     })
-    return transferCategory(result)
+    const data = transferCategory(result)
+    const div = getMonthDiff(start, end)
+    return getBarData2(sortByValue(divideValues(data, div)))
   }
 }
 
@@ -75,6 +79,24 @@ export async function getAccountTotal(params: { start: string; end: string }) {
   }
 }
 
+function getMonthDiff(date1: string, date2: string) {
+  const moment1 = moment(date1)
+  const moment2 = moment(date2)
+
+  return moment2.diff(moment1, 'months')
+}
+function divideValues(arr: CategoryReturnType, divisor: number) {
+  return arr.map((obj) => {
+    return {
+      ...obj,
+      value: roundToTwoDecimalPlaces(Number(obj.value) / divisor),
+      child: obj.child.map((childObj) => ({
+        ...childObj,
+        value: roundToTwoDecimalPlaces(Number(childObj.value) / divisor),
+      })),
+    }
+  })
+}
 function convertToChineseNum(num: string): string {
   const chineseNums: string[] = [
     '零',
@@ -116,6 +138,18 @@ function getBarData(list: any) {
   list.forEach((element: any) => {
     label.push(`${convertToChineseNum(element.month.toString())}月`)
     value.push(element.total.toString())
+  })
+  return {
+    label,
+    value,
+  }
+}
+function getBarData2(list: any) {
+  const label: string[] = []
+  const value: string[] = []
+  list.forEach((element: any) => {
+    label.push(`${element.name}`)
+    value.push(element.value)
   })
   return {
     label,
