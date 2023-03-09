@@ -1,4 +1,3 @@
-import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import { getCategoryObj } from '../const/category'
 import { account_type, consumer } from '../const/web'
 import { getDb } from '../mongodb/db'
@@ -181,6 +180,7 @@ function transferCategory(list: any): CategoryReturnType {
 function sortByValue(arr: CategoryReturnType) {
   return arr.sort((a, b) => Number(b.value) - Number(a.value))
 }
+
 type PieData = {
   name: string
   value: string

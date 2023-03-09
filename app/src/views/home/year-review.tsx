@@ -5,6 +5,7 @@ import Bar from '@/src/components/app-echart/Bar'
 import CategoryTable from '@/src/components/CategoryTable'
 import BarVertial from '@/src/components/app-echart/BarVerti'
 import { getDateTostring } from '@/src/components/utils'
+import ReviewCost from './review-cost'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
@@ -77,6 +78,7 @@ function YearReview(props: { formValue: any }) {
       </Row>
       <TableSection formValue={props.formValue} />
       <AvgBarSection formValue={props.formValue} />
+      <ReviewCost formValue={props.formValue} />
     </>
   )
 }
