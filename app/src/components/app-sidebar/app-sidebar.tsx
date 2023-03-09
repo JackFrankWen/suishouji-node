@@ -36,7 +36,9 @@ export class AppSidebar extends React.Component<unknown, State> {
           <img width="40" src={$tools.APP_ICON} />
         </div>
 
-        <div className="flex column side-menu">{AppSideMenus.map(this.renderMenuItem)}</div>
+        <div className="flex column side-menu">
+          {AppSideMenus.map(this.renderMenuItem)}
+        </div>
       </div>
     )
   }
@@ -46,9 +48,16 @@ export class AppSidebar extends React.Component<unknown, State> {
     const isActive = activeMenuKey === key
 
     return (
-      <Tooltip key={key} overlayClassName="side-menu-item-tooltip" placement="right" title={title}>
+      <Tooltip
+        key={key}
+        overlayClassName="side-menu-item-tooltip"
+        placement="right"
+        title={title}
+      >
         <a
-          className={`side-menu-item fs-24 ri-${icon}-${isActive ? 'fill' : 'line'}`}
+          className={`side-menu-item fs-24 ri-${icon}-${
+            isActive ? 'fill' : 'line'
+          }`}
           style={{ color: isActive ? '#fff' : '' }}
           href={href}
         ></a>

@@ -44,7 +44,10 @@ export class LogReader {
   }
 
   /** 打开并监听日志文件 */
-  watchingLogFile(file: LogFile, listener: (detail: LogDetailLine[]) => void): void {
+  watchingLogFile(
+    file: LogFile,
+    listener: (detail: LogDetailLine[]) => void
+  ): void {
     listener(this.getLogDetail(file))
 
     if (this.watcher) {
