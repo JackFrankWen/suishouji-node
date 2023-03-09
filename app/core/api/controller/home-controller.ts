@@ -1,3 +1,4 @@
+import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import { getCategoryObj } from '../const/category'
 import { account_type, consumer } from '../const/web'
 import { getDb } from '../mongodb/db'
@@ -35,7 +36,7 @@ export async function getCategory(params: { start: string; end: string }) {
       start: new Date(start),
       end: new Date(end),
     })
-    return transferCategory(result)
+    return sortByValue(transferCategory(result))
   }
 }
 export async function getCategoryAvg(params: { start: string; end: string }) {
@@ -176,6 +177,9 @@ function transferCategory(list: any): CategoryReturnType {
     }
   })
   return newList
+}
+function sortByValue(arr: CategoryReturnType) {
+  return arr.sort((a, b) => Number(b.value) - Number(a.value))
 }
 type PieData = {
   name: string

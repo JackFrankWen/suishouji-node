@@ -1,14 +1,4 @@
-import {
-  Card,
-  Col,
-  Row,
-  Modal,
-  Space,
-  DatePicker,
-  Statistic,
-  PageHeader,
-  Avatar,
-} from 'antd'
+import { Card, Col, Row, Modal, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
 import './home.less'
 import useReviewForm from './review-form'

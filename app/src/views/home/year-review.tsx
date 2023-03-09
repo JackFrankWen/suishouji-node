@@ -52,7 +52,6 @@ function YearReview(props: { formValue: any }) {
   }>({ label: [], value: [] })
 
   const getMonthBar = async (data: any) => {
-    console.log(data, '444')
     try {
       const res = await $api.getEveryMonthAmount(data)
       console.log(res)
