@@ -28,12 +28,9 @@ const Extra = (props: {
   onChange?: (a: any) => void
   value?: any
 }) => {
-  const { bordered = false, onChange } = props
-  const now = moment() // get the current date/time in Moment.js format
+  const { bordered = false, onChange, value } = props
 
-  // const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
-  // const lastDayOfYear = now.clone().endOf('year') // get
-  const [date, setDate] = useState<any>()
+  const [date, setDate] = useState<any>(value)
   const setClickDate = (val: any) => {
     setDate(val)
     if (onChange) onChange(val)

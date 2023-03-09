@@ -1,20 +1,22 @@
-import { Card, Col, Row, Modal, Space, DatePicker, Statistic } from 'antd'
+import { Card, Col, Row, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
-import moment from 'moment'
 
 import Pie from '@/src/components/app-echart/Pie'
 import Memerber from '@/src/components/form/Member'
 import CategoryTable from '@/src/components/CategoryTable'
-function Summarize() {
+import { getDateTostring } from '@/src/components/utils'
+
+function Summarize(props: { formValue: any }) {
+  const { formValue } = props
   const gridStyle: React.CSSProperties = {
     width: '25%',
     textAlign: 'center',
   }
   const [staticData, setStaticData] = useState<any>([])
 
-  const getMemberTotal = async () => {
+  const getMemberTotal = async (date: any) => {
     try {
-      const res = await $api.getAccountTotal()
+      const res = await $api.getAccountTotal(date)
       if (res) {
         setStaticData(res)
       }
@@ -23,8 +25,8 @@ function Summarize() {
     }
   }
   useEffect(() => {
-    getMemberTotal()
-  }, [])
+    getMemberTotal(getDateTostring(formValue))
+  }, [formValue])
   console.log(staticData, 'staticData')
   return (
     <Row className="home-section">
@@ -42,12 +44,12 @@ function Summarize() {
     </Row>
   )
 }
-function Content() {
+function Content(props: { formValue: any }) {
   const [category, setCategory] = useState<any>([])
   const [member, setMember] = useState<any>([])
-  const getCategory = async () => {
+  const getCategory = async (data: any) => {
     try {
-      const res = await $api.getCategory()
+      const res = await $api.getCategory(data)
       if (res) {
         setCategory(res)
       }
@@ -55,9 +57,9 @@ function Content() {
       console.log(error)
     }
   }
-  const getMemberTotal = async () => {
+  const getMemberTotal = async (data: any) => {
     try {
-      const res = await $api.getMemberTotal()
+      const res = await $api.getMemberTotal(data)
       console.log(res)
       if (res) {
         setMember(res)
@@ -67,8 +69,9 @@ function Content() {
     }
   }
   useEffect(() => {
-    getCategory()
-    getMemberTotal()
+    const data = getDateTostring(props.formValue)
+    getCategory(data)
+    getMemberTotal(data)
   }, [])
 
   return (
@@ -93,7 +96,7 @@ function Content() {
     </>
   )
 }
-function ContentSec() {
+function ContentSec(props: { formValue: any }) {
   return (
     <Row gutter={16} className="home-section">
       <Col span={12}>
@@ -121,13 +124,12 @@ function ContentSec() {
     </Row>
   )
 }
-function TableView() {}
 function MonthReivew(props: { formValue: any }) {
   return (
     <>
-      <Summarize />
-      <Content />
-      <ContentSec />
+      <Summarize formValue={props.formValue} />
+      <Content formValue={props.formValue} />
+      <ContentSec formValue={props.formValue} />
     </>
   )
 }

@@ -156,19 +156,19 @@ const App: React.FC = () => {
     label: string[]
     value: string[]
   }>({ label: [], value: [] })
-  const test = async () => {
-    try {
-      const res = await $api.getView()
-      console.log(res)
-      if (res) {
-        setMonthbar(res)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const test = async () => {
+  //   try {
+  //     const res = await $api.getEveryMonthAmount()
+  //     console.log(res)
+  //     if (res) {
+  //       setMonthbar(res)
+  //     }
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   useEffect(() => {
-    test()
+    // test()
     Modal.success({
       title: '使用手册',
       content: (

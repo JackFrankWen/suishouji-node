@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Radio } from 'antd'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
+import moment from 'moment'
 
 const useReviewForm = () => {
   const [form] = Form.useForm()
-  const initialValues = { type: 'year' }
+  const now = moment('2022-01-02') // get the current date/time in Moment.js format
+
+  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
+  const lastDayOfYear = now.clone().endOf('year') // get
+  const initialValues = { type: 'year', date: [firstDayOfYear, lastDayOfYear] }
   const [formData, setFormData] = useState(initialValues)
 
   const onFormLayoutChange = (val: any) => {

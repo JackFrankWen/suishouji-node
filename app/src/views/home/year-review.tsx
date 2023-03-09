@@ -1,51 +1,30 @@
 import { Card, Col, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
-import ReactECharts from 'echarts-for-react'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
-import Pie from '@/src/components/app-echart/Pie'
 import Bar from '@/src/components/app-echart/Bar'
 import CategoryTable from '@/src/components/CategoryTable'
+import BarVertial from '@/src/components/app-echart/BarVerti'
+import { getDateTostring } from '@/src/components/utils'
 //home-section
-function YearReview(props: { formValue: any }) {
-  const [monthBar, setMonthbar] = useState<{
-    label: string[]
-    value: string[]
-  }>({ label: [], value: [] })
 
-  const test = async () => {
-    try {
-      const res = await $api.getView()
-      console.log(res)
-      if (res) {
-        setMonthbar(res)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    test()
-  }, [])
-
+function AvgBarSection(props: { formValue: any }) {
   return (
-    <>
-      <Row className="home-section" gutter={16}>
-        <Col span={24}>
-          <Card title="每月开支" bordered={false} extra={<RangePickerWrap />}>
-            <Bar {...monthBar} />
-          </Card>
-        </Col>
-      </Row>
-      <TableSection />
-    </>
+    <Row gutter={16} className="home-section">
+      <Col span={24}>
+        <Card title="每月平均" bordered={false}>
+          <BarVertial />
+        </Card>
+      </Col>
+    </Row>
   )
 }
+function TableSection(props: { formValue: any }) {
+  const { formValue } = props
 
-function TableSection() {
   const [category, setCategory] = useState<any>([])
   const getCategory = async () => {
     try {
-      const res = await $api.getCategory()
+      const res = await $api.getCategory(getDateTostring(props.formValue))
       if (res) {
         setCategory(res)
       }
@@ -55,13 +34,51 @@ function TableSection() {
   }
   useEffect(() => {
     getCategory()
-  }, [])
+  }, [formValue])
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
         <CategoryTable data={category} />
       </Col>
     </Row>
+  )
+}
+
+function YearReview(props: { formValue: any }) {
+  const { formValue } = props
+  const [monthBar, setMonthbar] = useState<{
+    label: string[]
+    value: string[]
+  }>({ label: [], value: [] })
+
+  const getMonthBar = async (data: any) => {
+    console.log(data, '444')
+    try {
+      const res = await $api.getEveryMonthAmount(data)
+      console.log(res)
+      if (res) {
+        setMonthbar(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getMonthBar(getDateTostring(props.formValue))
+  }, [formValue])
+
+  return (
+    <>
+      <Row className="home-section" gutter={16}>
+        <Col span={24}>
+          <Card title="每月开支" bordered={false}>
+            <Bar {...monthBar} />
+          </Card>
+        </Col>
+      </Row>
+      <TableSection formValue={props.formValue} />
+      <AvgBarSection formValue={props.formValue} />
+    </>
   )
 }
 export default YearReview

@@ -7,42 +7,69 @@ import {
   get_every_month_amount,
   get_member_total_by_date,
 } from '../mongodb/transaction'
-const start = new Date('2022-01-01 00:00:00')
-const end = new Date('2022-12-31 23:59:59')
-export async function getView() {
+export async function getEveryMonthAmount(params: {
+  start: string
+  end: string
+}) {
+  const { start, end } = params
+
   const db = getDb()
+  console.log('params', {
+    start: new Date(start),
+    end: new Date(end),
+  })
   if (db) {
-    const result = await get_every_month_amount({ start, end })
+    const result = await get_every_month_amount({
+      start: new Date(start),
+      end: new Date(end),
+    })
     return getBarData(result)
   }
 }
-export async function getCategory() {
+export async function getCategory(params: { start: string; end: string }) {
+  const { start, end } = params
+
   const db = getDb()
   if (db) {
     const result = await get_category_total_by_date({
-      start: new Date('2023-01-01 00:00:00'),
-      end: new Date('2023-01-31 00:00:00'),
+      start: new Date(start),
+      end: new Date(end),
+    })
+    return transferCategory(result)
+  }
+}
+export async function getCategoryAvg(params: { start: string; end: string }) {
+  const { start, end } = params
+
+  const db = getDb()
+  if (db) {
+    const result = await get_category_total_by_date({
+      start: new Date(start),
+      end: new Date(end),
     })
     return transferCategory(result)
   }
 }
 
-export async function getMemberTotal() {
+export async function getMemberTotal(params: { start: string; end: string }) {
+  const { start, end } = params
   const db = getDb()
   if (db) {
     const result = await get_member_total_by_date({
-      start: new Date('2023-01-01 00:00:00'),
-      end: new Date('2023-01-31 00:00:00'),
+      start: new Date(start),
+      end: new Date(end),
     })
     return transferMeberData(result)
   }
 }
-export async function getAccountTotal() {
+export async function getAccountTotal(params: { start: string; end: string }) {
+  const { start, end } = params
+
   const db = getDb()
   if (db) {
     const result = await get_account_total_by_date({
-      start: new Date('2023-01-01 00:00:00'),
-      end: new Date('2023-01-31 00:00:00'),
+      start: new Date(start),
+      end: new Date(end),
     })
     return transferAccountrData(result)
   }
