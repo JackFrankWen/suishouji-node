@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 
 import ReactECharts from 'echarts-for-react'
-const BarVertial = (props: { label?: string[]; value?: string[] }) => {
+const BarVertial = (props: {
+  label?: string[]
+  value?: string[]
+  title: string
+}) => {
   const [chartOptions, setChartOptions] = useState({})
-  const { label, value } = props
+  const { label, value, title } = props
   useEffect(() => {
     setChartOptions({
       title: {
-        text: 'World Population',
+        text: title,
       },
       tooltip: {
         trigger: 'axis',

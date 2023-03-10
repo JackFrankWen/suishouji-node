@@ -5,6 +5,9 @@ import CategoryTable from '@/src/components/CategoryTable'
 import BarVertial from '@/src/components/app-echart/BarVerti'
 import { getDateTostring } from '@/src/components/utils'
 import ReviewCost from './review-cost'
+import ReviewPerson from './review-person'
+import Summarize from './review-sum'
+import TableSection from './review-table'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
@@ -17,7 +20,6 @@ function AvgBarSection(props: { formValue: any }) {
   const getMonthBar = async (data: any) => {
     try {
       const res = await $api.getCategoryAvg(data)
-      console.log(res)
       if (res) {
         setMonthbar(res)
       }
@@ -32,39 +34,38 @@ function AvgBarSection(props: { formValue: any }) {
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
-        <Card title="每月平均" bordered={false}>
-          <BarVertial {...monthBar} />
+        <Card title="每月平均开支" bordered={false}>
+          <BarVertial {...monthBar} title="每月平均消费" />
         </Card>
       </Col>
     </Row>
   )
 }
-function TableSection(props: { formValue: any }) {
-  const { formValue } = props
+// function TableSection(props: { formValue: any }) {
+//   const { formValue } = props
 
-  const [category, setCategory] = useState<any>([])
-  const getCategory = async () => {
-    try {
-      const res = await $api.getCategory(getDateTostring(props.formValue))
-      if (res) {
-        setCategory(res)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getCategory()
-  }, [formValue])
-  return (
-    <Row gutter={16} className="home-section">
-      <Col span={24}>
-        <CategoryTable data={category} />
-      </Col>
-    </Row>
-  )
-}
-
+//   const [category, setCategory] = useState<any>([])
+//   const getCategory = async (data) => {
+//     try {
+//       const res = await $api.getCategory(getDateTostring(data))
+//       if (res) {
+//         setCategory(res)
+//       }
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   }
+//   useEffect(() => {
+//     getCategory(formValue)
+//   }, [formValue])
+//   return (
+//     <Row gutter={16} className="home-section">
+//       <Col span={24}>
+//         <CategoryTable data={category} />
+//       </Col>
+//     </Row>
+//   )
+// }
 function YearReview(props: { formValue: any }) {
   const { formValue } = props
   const [monthBar, setMonthbar] = useState<{
@@ -89,6 +90,8 @@ function YearReview(props: { formValue: any }) {
 
   return (
     <>
+      <Summarize formValue={props.formValue} />
+
       <Row className="home-section" gutter={16}>
         <Col span={24}>
           <Card title="每月开支" bordered={false}>
@@ -98,8 +101,10 @@ function YearReview(props: { formValue: any }) {
       </Row>
       <TableSection formValue={props.formValue} />
       <AvgBarSection formValue={props.formValue} />
+      <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />
     </>
   )
 }
+
 export default YearReview

@@ -166,6 +166,7 @@ type CategoryReturnType = {
     name: string
   }[]
 }[]
+
 function transferCategory(list: any): CategoryReturnType {
   let newList: CategoryReturnType = []
   const category_obj = getCategoryObj()
@@ -180,9 +181,9 @@ function transferCategory(list: any): CategoryReturnType {
           return {
             ...obj,
             id: parent_id,
-            value: (
+            value: roundToTwoDecimalPlaces(
               Number(obj.value) + Number(element.total.toString())
-            ).toString(),
+            ),
 
             child: [...obj.child].concat({
               value: element.total.toString(),
@@ -234,7 +235,8 @@ function transferAccountrData(list: any): PieData[] {
   newList.unshift({
     name: '总支出',
     value: newList.reduce(
-      (pre: number, cur: PieData) => Number(pre) + Number(cur.value),
+      (pre: number, cur: PieData) =>
+        roundToTwoDecimalPlaces(Number(pre) + Number(cur.value)),
       0
     ),
   })
