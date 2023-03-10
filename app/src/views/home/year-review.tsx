@@ -28,7 +28,7 @@ function AvgBarSection(props: { formValue: any }) {
     }
   }
   useEffect(() => {
-    getMonthBar(getDateTostring(props.formValue))
+    getMonthBar(getDateTostring(formValue))
   }, [formValue])
   console.log(monthBar, 'monthBar')
   return (
