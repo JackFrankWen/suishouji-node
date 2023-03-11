@@ -1,4 +1,4 @@
-import { getCollection, getDb } from './db'
+import { getCollection } from './db'
 const collectionName = 'transaction'
 
 // async function get_catetory_avg_by_date(param: any) {
@@ -26,6 +26,8 @@ export async function get_every_month_amount(param: { start: any; end: any }) {
   const collection = getCollection(collectionName)
   if (collection) {
     const res = await collection
+      // @ts-ignore
+
       .aggregate([
         { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
@@ -66,6 +68,7 @@ export async function get_category_total_by_date(param: any) {
   const collection = getCollection(collectionName)
   if (collection) {
     const res = await collection
+      // @ts-ignore
       .aggregate([
         { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
@@ -103,6 +106,8 @@ export async function get_member_total_by_date(param: any) {
   const collection = getCollection(collectionName)
   if (collection) {
     const res = await collection
+      // @ts-ignore
+
       .aggregate([
         { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
@@ -140,6 +145,8 @@ export async function get_account_total_by_date(param: any) {
   const collection = getCollection(collectionName)
   if (collection) {
     const res = await collection
+      // @ts-ignore
+
       .aggregate([
         { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
@@ -162,6 +169,64 @@ export async function get_account_total_by_date(param: any) {
         {
           $sort: {
             value: 1,
+          },
+        },
+      ])
+      .toArray()
+    return res
+  }
+  return []
+}
+
+/**
+ * 获取日期内每日金额
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_daily_amount_by_date(param: any) {
+  const { start, end } = param
+
+  const collection = getCollection(collectionName)
+  if (collection) {
+    const res = await collection
+      // @ts-ignore
+
+      .aggregate([
+        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+        {
+          $addFields: {
+            date: {
+              $dateToString: {
+                format: '%Y-%m-%d',
+                date: '$trans_time',
+              },
+            },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              date: '$date',
+            },
+            amount: {
+              $sum: '$amount',
+            },
+            child: {
+              $push: '$$ROOT',
+            },
+          },
+        },
+        {
+          $project: {
+            child: 1,
+            amount: 1,
+            date: '$_id.date',
+          },
+        },
+        {
+          $sort: {
+            date: 1,
           },
         },
       ])
