@@ -10,7 +10,11 @@ export interface AppIconConfig {
   icon?: string
 }
 
-export function creatAppTray({ menus = trayMenus, title = APP_NAME, icon }: AppIconConfig = {}): Tray {
+export function creatAppTray({
+  menus = trayMenus,
+  title = APP_NAME,
+  icon,
+}: AppIconConfig = {}): Tray {
   const iconPath =
     icon ??
     (process.platform === 'darwin'

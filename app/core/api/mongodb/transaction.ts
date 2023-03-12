@@ -23,11 +23,10 @@ const collectionName = 'transaction'
  */
 export async function get_every_month_amount(param: { start: any; end: any }) {
   const { start, end } = param
-  const collection = getCollection(collectionName)
+  const collection = getCollection()
   if (collection) {
     const res = await collection
       // @ts-ignore
-
       .aggregate([
         { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
         {
@@ -51,7 +50,7 @@ export async function get_every_month_amount(param: { start: any; end: any }) {
         },
         { $sort: { month: 1 } },
       ])
-      .toArray()
+
     return res
   }
   return []
@@ -65,32 +64,29 @@ export async function get_every_month_amount(param: { start: any; end: any }) {
 export async function get_category_total_by_date(param: any) {
   const { start, end } = param
 
-  const collection = getCollection(collectionName)
+  const collection = getCollection()
   if (collection) {
-    const res = await collection
-      // @ts-ignore
-      .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
-        {
-          $group: {
-            _id: '$category',
-            total_amount: { $sum: '$amount' },
-          },
+    const res = await collection.aggregate([
+      { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+      {
+        $group: {
+          _id: '$category',
+          total_amount: { $sum: '$amount' },
         },
-        {
-          $project: {
-            _id: 0,
-            category: '$_id',
-            total: '$total_amount',
-          },
+      },
+      {
+        $project: {
+          _id: 0,
+          category: '$_id',
+          total: '$total_amount',
         },
-        {
-          $sort: {
-            total: 1,
-          },
+      },
+      {
+        $sort: {
+          total: 1,
         },
-      ])
-      .toArray()
+      },
+    ])
     return res
   }
   return null
@@ -103,32 +99,28 @@ export async function get_category_total_by_date(param: any) {
 export async function get_member_total_by_date(param: any) {
   const { start, end } = param
 
-  const collection = getCollection(collectionName)
+  const collection = getCollection()
   if (collection) {
-    const res = await collection
-      // @ts-ignore
-
-      .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
-        {
-          $group: {
-            _id: {
-              consumer: '$consumer',
-            },
-            total: {
-              $sum: '$amount',
-            },
+    const res = await collection.aggregate([
+      { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+      {
+        $group: {
+          _id: {
+            consumer: '$consumer',
+          },
+          total: {
+            $sum: '$amount',
           },
         },
-        {
-          $project: {
-            _id: 0,
-            name: '$_id.consumer',
-            value: '$total',
-          },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id.consumer',
+          value: '$total',
         },
-      ])
-      .toArray()
+      },
+    ])
     return res
   }
   return []
@@ -142,37 +134,33 @@ export async function get_member_total_by_date(param: any) {
 export async function get_account_total_by_date(param: any) {
   const { start, end } = param
 
-  const collection = getCollection(collectionName)
+  const collection = getCollection()
   if (collection) {
-    const res = await collection
-      // @ts-ignore
-
-      .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
-        {
-          $group: {
-            _id: {
-              name: '$account_type',
-            },
-            total: {
-              $sum: '$amount',
-            },
+    const res = await collection.aggregate([
+      { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+      {
+        $group: {
+          _id: {
+            name: '$account_type',
+          },
+          total: {
+            $sum: '$amount',
           },
         },
-        {
-          $project: {
-            _id: 0,
-            name: '$_id.name',
-            value: '$total',
-          },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id.name',
+          value: '$total',
         },
-        {
-          $sort: {
-            value: 1,
-          },
+      },
+      {
+        $sort: {
+          value: 1,
         },
-      ])
-      .toArray()
+      },
+    ])
     return res
   }
   return []
@@ -187,50 +175,46 @@ export async function get_account_total_by_date(param: any) {
 export async function get_daily_amount_by_date(param: any) {
   const { start, end } = param
 
-  const collection = getCollection(collectionName)
+  const collection = getCollection()
   if (collection) {
-    const res = await collection
-      // @ts-ignore
-
-      .aggregate([
-        { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
-        {
-          $addFields: {
-            date: {
-              $dateToString: {
-                format: '%Y-%m-%d',
-                date: '$trans_time',
-              },
+    const res = await collection.aggregate([
+      { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+      {
+        $addFields: {
+          date: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$trans_time',
             },
           },
         },
-        {
-          $group: {
-            _id: {
-              date: '$date',
-            },
-            amount: {
-              $sum: '$amount',
-            },
-            child: {
-              $push: '$$ROOT',
-            },
+      },
+      {
+        $group: {
+          _id: {
+            date: '$date',
+          },
+          amount: {
+            $sum: '$amount',
+          },
+          child: {
+            $push: '$$ROOT',
           },
         },
-        {
-          $project: {
-            child: 1,
-            amount: 1,
-            date: '$_id.date',
-          },
+      },
+      {
+        $project: {
+          child: 1,
+          amount: 1,
+          date: '$_id.date',
         },
-        {
-          $sort: {
-            date: 1,
-          },
+      },
+      {
+        $sort: {
+          date: 1,
         },
-      ])
-      .toArray()
+      },
+    ])
     return res
   }
   return []

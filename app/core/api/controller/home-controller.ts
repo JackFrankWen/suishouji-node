@@ -2,7 +2,6 @@ import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import moment from 'moment'
 import { getCategoryObj } from '../const/category'
 import { account_type, consumer } from '../const/web'
-import { getDb } from '../mongodb/db'
 import {
   get_account_total_by_date,
   get_category_total_by_date,
@@ -15,68 +14,54 @@ export async function getEveryMonthAmount(params: {
 }) {
   const { start, end } = params
 
-  const db = getDb()
   console.log('params', {
     start: new Date(start),
     end: new Date(end),
   })
-  if (db) {
-    const result = await get_every_month_amount({
-      start: new Date(start),
-      end: new Date(end),
-    })
-    return getBarData(result)
-  }
+  const result = await get_every_month_amount({
+    start: new Date(start),
+    end: new Date(end),
+  })
+  console.log(result, 'ssss')
+  return getBarData(result)
 }
 export async function getCategory(params: { start: string; end: string }) {
   const { start, end } = params
 
-  const db = getDb()
-  if (db) {
-    const result = await get_category_total_by_date({
-      start: new Date(start),
-      end: new Date(end),
-    })
-    return sortByValue(transferCategory(result))
-  }
+  const result = await get_category_total_by_date({
+    start: new Date(start),
+    end: new Date(end),
+  })
+  return sortByValue(transferCategory(result))
 }
 export async function getCategoryAvg(params: { start: string; end: string }) {
   const { start, end } = params
 
-  const db = getDb()
-  if (db) {
-    const result = await get_category_total_by_date({
-      start: new Date(start),
-      end: new Date(end),
-    })
-    const data = transferCategory(result)
-    const div = getMonthDiff(start, end)
-    return getBarData2(sortByValue(divideValues(data, div)))
-  }
+  const result = await get_category_total_by_date({
+    start: new Date(start),
+    end: new Date(end),
+  })
+  const data = transferCategory(result)
+  const div = getMonthDiff(start, end)
+  return getBarData2(sortByValue(divideValues(data, div)))
 }
 
 export async function getMemberTotal(params: { start: string; end: string }) {
   const { start, end } = params
-  const db = getDb()
-  if (db) {
-    const result = await get_member_total_by_date({
-      start: new Date(start),
-      end: new Date(end),
-    })
-    return transferMeberData(result)
-  }
+  const result = await get_member_total_by_date({
+    start: new Date(start),
+    end: new Date(end),
+  })
+  return transferMeberData(result)
 }
 export async function getAccountTotal(params: { start: string; end: string }) {
   const { start, end } = params
 
-  const db = getDb()
-  if (db) {
-    const result = await get_account_total_by_date({
-      start: new Date(start),
-      end: new Date(end),
-    })
-    return transferAccountrData(result)
-  }
+  const result = await get_account_total_by_date({
+    start: new Date(start),
+    end: new Date(end),
+  })
+  return transferAccountrData(result)
 }
 
 function getMonthDiff(date1: string, date2: string) {
