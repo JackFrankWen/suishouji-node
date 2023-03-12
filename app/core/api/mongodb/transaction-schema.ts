@@ -15,16 +15,19 @@ interface I_Transaction {
   tag: string
 }
 
-export const transactionSchema = new Schema<I_Transaction>({
-  amount: Types.Decimal128,
-  category: String,
-  description: String,
-  account_type: String,
-  payment_type: String,
-  consumer: String,
-  flow_type: String,
-  trans_time: Date,
-  creation_time: { type: Date, default: Date.now },
-  modification_time: { type: Date, default: Date.now },
-  tag: String,
-})
+export const transactionSchema = new Schema<I_Transaction>(
+  {
+    amount: Types.Decimal128,
+    category: String,
+    description: String,
+    account_type: String,
+    payment_type: String,
+    consumer: String,
+    flow_type: String,
+    trans_time: Date,
+    creation_time: { type: Date, default: Date.now },
+    modification_time: { type: Date, default: Date.now },
+    tag: String,
+  },
+  { collection: 'transaction' }
+)
