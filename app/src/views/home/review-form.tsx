@@ -5,7 +5,7 @@ import moment from 'moment'
 
 const useReviewForm = () => {
   const [form] = Form.useForm()
-  const now = moment('2022-01-02') // get the current date/time in Moment.js format
+  const now = moment() // get the current date/time in Moment.js format
 
   const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
   const lastDayOfYear = now.clone().endOf('year') // get

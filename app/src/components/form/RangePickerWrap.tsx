@@ -23,12 +23,13 @@ function getFirstDayAndLastDay(month: number, type: 'year' | 'month') {
   }
   return [firstDayOfLastYear, lastDayOfLastYear]
 }
-const Extra = (props: {
+const RangePickerWrap = (props: {
+  placeholder?: string
   bordered?: boolean
   onChange?: (a: any) => void
   value?: any
 }) => {
-  const { bordered = false, onChange, value } = props
+  const { bordered = false, onChange, value, placeholder } = props
 
   const [date, setDate] = useState<any>(value)
   const setClickDate = (val: any) => {
@@ -61,4 +62,4 @@ const Extra = (props: {
   )
 }
 
-export default Extra
+export default RangePickerWrap

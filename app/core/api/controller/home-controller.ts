@@ -14,15 +14,10 @@ export async function getEveryMonthAmount(params: {
 }) {
   const { start, end } = params
 
-  console.log('params', {
-    start: new Date(start),
-    end: new Date(end),
-  })
   const result = await get_every_month_amount({
     start: new Date(start),
     end: new Date(end),
   })
-  console.log(result, 'ssss')
   return getBarData(result)
 }
 export async function getCategory(params: { start: string; end: string }) {

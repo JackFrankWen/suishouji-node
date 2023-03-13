@@ -3,7 +3,7 @@ export const account_type = {
   2: '老婆钱包',
   3: '爷爷钱包',
 }
-export const paymentType = {
+export const payment_type = {
   1: '支付宝',
   2: '微信',
   3: '银行卡',
@@ -36,4 +36,13 @@ export const transform = (obj: any) => {
     label: obj[key],
     value: Number(key),
   }))
+}
+
+export const cpt_const = {
+  account_type: transform(account_type),
+  cost_type: transform(cost_type),
+  abc_type: transform(abc_type),
+  tag: transform(tag),
+  consumer: transform(consumer),
+  payment_type: transform(payment_type),
 }
