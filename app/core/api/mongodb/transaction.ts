@@ -179,6 +179,7 @@ export async function get_daily_amount_by_date(param: any) {
   if (collection) {
     const res = await collection.aggregate([
       { $match: { trans_time: { $gte: start, $lte: end }, flow_type: '1' } },
+
       {
         $addFields: {
           date: {
@@ -187,25 +188,28 @@ export async function get_daily_amount_by_date(param: any) {
               date: '$trans_time',
             },
           },
-          trans_time: {
+          trans_time_formate: {
             $dateToString: {
               format: '%Y-%m-%d %H:%M:%S',
               date: '$trans_time',
             },
           },
-          creation_time: {
+          creation_time_formate: {
             $dateToString: {
               format: '%Y-%m-%d %H:%M:%S',
-              date: '$trans_time',
+              date: '$creation_time',
             },
           },
-          modification_time: {
+          modification_time_formate: {
             $dateToString: {
               format: '%Y-%m-%d %H:%M:%S',
-              date: '$trans_time',
+              date: '$modification_time',
             },
           },
         },
+      },
+      {
+        $sort: { trans_time: -1 },
       },
       {
         $group: {

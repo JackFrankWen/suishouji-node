@@ -21,7 +21,7 @@ interface ExpandedDataType {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: '日期',
+    title: '交易日期',
     dataIndex: 'date',
     key: 'date',
   },
@@ -53,13 +53,13 @@ const expandedRowRender = (record: DataType) => {
   const columns: TableColumnsType<ExpandedDataType> = [
     {
       title: '交易日期',
-      width: 120,
-      dataIndex: 'trans_time',
-      key: 'trans_time',
+      width: 200,
+      dataIndex: 'trans_time_formate',
+      key: 'trans_time_formate',
     },
     {
       title: '描述',
-      width: 120,
+      width: 200,
       dataIndex: 'description',
       key: 'description',
       ellipsis: true,
@@ -80,13 +80,12 @@ const expandedRowRender = (record: DataType) => {
     { title: 'ABC分类', dataIndex: 'tag', key: 'tag', ellipsis: true },
     {
       title: '创建日期',
-      dataIndex: 'creation_time',
+      dataIndex: 'creation_time_formate',
       key: 'creation_time',
-      ellipsis: true,
     },
     {
       title: '最后修改',
-      dataIndex: 'modification_time',
+      dataIndex: 'modification_time_formate',
       key: 'modification_time',
       ellipsis: true,
     },
@@ -94,12 +93,12 @@ const expandedRowRender = (record: DataType) => {
   console.log(record.child, '====record')
   return (
     <Table
-      id="m_id"
+      rowKey="m_id"
       columns={columns}
       rowSelection={{ ...rowSelection }}
       dataSource={record.child}
       pagination={false}
-      scroll={{ y: 300 }}
+      scroll={{ x: 1500, y: 300 }}
     />
   )
 }
@@ -125,10 +124,11 @@ const TableView = (props: { formValue: any }) => {
   return (
     <div className="edit-area">
       <Table
-        id="date"
+        rowKey="date"
         columns={columns}
         expandable={{
           indentSize: 0,
+          defaultExpandAllRows: true,
           expandedRowRender: expandedRowRender,
         }}
         dataSource={tableData}
