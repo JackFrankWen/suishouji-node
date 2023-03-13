@@ -1,4 +1,4 @@
-import { Schema, model, connect, Types } from 'mongoose'
+import { Schema, Types } from 'mongoose'
 
 // 1. Create an interface representing a document in MongoDB.
 interface I_Transaction {

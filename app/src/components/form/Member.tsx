@@ -1,6 +1,7 @@
 import { Radio } from 'antd'
 import React, { useEffect, useState } from 'react'
-function Memerber() {
+function Memerber(props: { placeholder?: string }) {
+  const { placeholder } = props || {}
   return (
     <Radio.Group>
       <Radio.Button value="1">文</Radio.Button>

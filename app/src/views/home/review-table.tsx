@@ -7,9 +7,8 @@ export default function TableSection(props: { formValue: any }) {
   const { formValue } = props
 
   const [category, setCategory] = useState<any>([])
-  // @ts-ignore
 
-  const getCategory = async (data) => {
+  const getCategory = async (data: any) => {
     try {
       const res = await $api.getCategory(getDateTostring(data))
       if (res) {

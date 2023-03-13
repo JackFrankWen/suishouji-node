@@ -187,6 +187,24 @@ export async function get_daily_amount_by_date(param: any) {
               date: '$trans_time',
             },
           },
+          trans_time: {
+            $dateToString: {
+              format: '%Y-%m-%d %H:%M:%S',
+              date: '$trans_time',
+            },
+          },
+          creation_time: {
+            $dateToString: {
+              format: '%Y-%m-%d %H:%M:%S',
+              date: '$trans_time',
+            },
+          },
+          modification_time: {
+            $dateToString: {
+              format: '%Y-%m-%d %H:%M:%S',
+              date: '$trans_time',
+            },
+          },
         },
       },
       {
