@@ -9,13 +9,13 @@ export const payment_type = {
   3: '银行卡',
   4: '现金',
 }
-export const consumer = {
+export const consumer_type = {
   1: '老公',
   2: '老婆',
   3: '家庭',
   4: '牧牧',
 }
-export const tag = {
+export const tag_type = {
   1: '日常支出',
   2: '变动支出',
   3: '固定支出',
@@ -42,7 +42,7 @@ export const cpt_const = {
   account_type: transform(account_type),
   cost_type: transform(cost_type),
   abc_type: transform(abc_type),
-  tag: transform(tag),
-  consumer: transform(consumer),
+  tag_type: transform(tag_type),
+  consumer_type: transform(consumer_type),
   payment_type: transform(payment_type),
 }

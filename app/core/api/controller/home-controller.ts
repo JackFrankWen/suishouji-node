@@ -1,10 +1,11 @@
 import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import moment from 'moment'
 import { getCategoryObj } from '../const/category'
-import { account_type, consumer } from '../const/web'
+import { account_type, consumer_type } from '../const/web'
 import {
   get_account_total_by_date,
   get_category_total_by_date,
+  get_cost_record,
   get_every_month_amount,
   get_member_total_by_date,
 } from '../mongodb/transaction'
@@ -38,7 +39,21 @@ export async function getAccountTotal(params: { start: string; end: string }) {
   const result = await get_account_total_by_date(params)
   return transferAccountrData(result)
 }
+export async function getCost(params: {
+  start: string
+  end: string
+  category: string
+}) {
+  const result = await get_cost_record(params)
+  return mapData(result)
+}
 
+function mapData(arr: any) {
+  return arr.map((obj: any) => ({
+    ...obj,
+    amount: obj.amount.toString(),
+  }))
+}
 function getMonthDiff(date1: string, date2: string) {
   const moment1 = moment(date1)
   const moment2 = moment(date2)
@@ -121,6 +136,7 @@ type CategoryReturnType = {
   id: string
   name: string
   child: {
+    category: string
     id: string
     value: string
     name: string
@@ -140,13 +156,13 @@ function transferCategory(list: any): CategoryReturnType {
         if (obj.id === parent_id) {
           return {
             ...obj,
-            id: parent_id,
             value: roundToTwoDecimalPlaces(
               Number(obj.value) + Number(element.total.toString())
             ),
 
             child: [...obj.child].concat({
               value: element.total.toString(),
+              category: element.category,
               id: child_id,
               name: category_obj[child_id],
             }),
@@ -164,6 +180,7 @@ function transferCategory(list: any): CategoryReturnType {
           {
             value: element.total.toString(),
             id: parent_id,
+            category: element.category,
             name: category_obj[child_id],
           },
         ],
@@ -183,7 +200,7 @@ type PieData = {
 
 function transferMeberData(list: any): PieData[] {
   return list.map((val: PieData) => ({
-    name: consumer[val.name],
+    name: consumer_type[val.name],
     value: val.value.toString(),
   }))
 }

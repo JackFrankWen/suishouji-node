@@ -2,9 +2,10 @@ import { cpt_const } from '@/core/api/const/web'
 import { Radio, Select } from 'antd'
 import React, { useEffect, useState } from 'react'
 import SelectWrap from './SelectWrap'
+
 function Memerber(props: { placeholder?: string }) {
   const { placeholder } = props || {}
-  return <SelectWrap placeholder="成员" options={cpt_const.consumer} />
+  return <SelectWrap placeholder="成员" options={cpt_const.consumer_type} />
   return (
     <Radio.Group>
       <Radio.Button value="1">文</Radio.Button>
@@ -22,7 +23,7 @@ export function useConsumer() {
       value={value}
       onChange={(val) => setValue(val)}
       placeholder="成员"
-      options={cpt_const.consumer}
+      options={cpt_const.consumer_type}
     />
   )
   return [value, cpt]

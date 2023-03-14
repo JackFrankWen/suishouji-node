@@ -24,7 +24,7 @@ export default function TableSection(props: { formValue: any }) {
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
-        <CategoryTable data={category} />
+        <CategoryTable data={category} formValue={formValue} />
       </Col>
     </Row>
   )

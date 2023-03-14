@@ -13,13 +13,42 @@ function removeUndefinedProps(obj: MyObject): MyObject {
   return newObj
 }
 function getComonMatch(param: any) {
-  const { start, end, consumer } = param
+  const { start, end, consumer, category } = param
   const match = removeUndefinedProps({
     trans_time: { $gte: new Date(start), $lte: new Date(end) },
     flow_type: '1',
     consumer,
+    category,
   })
   return match
+}
+function addCommonFeilds() {
+  return {
+    date: {
+      $dateToString: {
+        format: '%Y-%m-%d',
+        date: '$trans_time',
+      },
+    },
+    trans_time_formate: {
+      $dateToString: {
+        format: '%Y-%m-%d %H:%M:%S',
+        date: '$trans_time',
+      },
+    },
+    creation_time_formate: {
+      $dateToString: {
+        format: '%Y-%m-%d %H:%M:%S',
+        date: '$creation_time',
+      },
+    },
+    modification_time_formate: {
+      $dateToString: {
+        format: '%Y-%m-%d %H:%M:%S',
+        date: '$modification_time',
+      },
+    },
+  }
 }
 /**
  * 查询每个月总支出
@@ -178,32 +207,7 @@ export async function get_daily_amount_by_date(param: any) {
       { $match: getComonMatch(param) },
 
       {
-        $addFields: {
-          date: {
-            $dateToString: {
-              format: '%Y-%m-%d',
-              date: '$trans_time',
-            },
-          },
-          trans_time_formate: {
-            $dateToString: {
-              format: '%Y-%m-%d %H:%M:%S',
-              date: '$trans_time',
-            },
-          },
-          creation_time_formate: {
-            $dateToString: {
-              format: '%Y-%m-%d %H:%M:%S',
-              date: '$creation_time',
-            },
-          },
-          modification_time_formate: {
-            $dateToString: {
-              format: '%Y-%m-%d %H:%M:%S',
-              date: '$modification_time',
-            },
-          },
-        },
+        $addFields: addCommonFeilds(),
       },
       {
         $sort: { trans_time: -1 },
@@ -232,6 +236,31 @@ export async function get_daily_amount_by_date(param: any) {
         $sort: {
           date: 1,
         },
+      },
+    ])
+    return res
+  }
+  return []
+}
+
+/**
+ * 获取明细
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_cost_record(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    console.log(getComonMatch(param), 'parmaa')
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $addFields: addCommonFeilds(),
+      },
+
+      {
+        $sort: { trans_time: -1 },
       },
     ])
     return res

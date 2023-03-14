@@ -5,7 +5,7 @@ import Pie from '@/src/components/app-echart/Pie'
 import Memerber, { useConsumer } from '@/src/components/form/Member'
 import CategoryTable from '@/src/components/CategoryTable'
 import { getDateTostring } from '@/src/components/utils'
-import { consumer } from '@/core/api/const/web'
+import { consumer_type } from '@/core/api/const/web'
 
 export default function ReviewPerson(props: { formValue: any }) {
   const { formValue } = props

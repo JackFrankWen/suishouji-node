@@ -94,13 +94,13 @@ function YearReview(props: { formValue: any }) {
 
       <Row className="home-section" gutter={16}>
         <Col span={24}>
-          <Card title="每月开支" bordered={false}>
+          <Card bordered={false}>
             <Bar {...monthBar} />
           </Card>
         </Col>
       </Row>
-      <TableSection formValue={props.formValue} />
       <AvgBarSection formValue={props.formValue} />
+      <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />
     </>

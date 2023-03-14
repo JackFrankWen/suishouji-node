@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
 import ReactECharts from 'echarts-for-react'
+import { roundToTwoDecimalPlaces } from '../utils'
 const Bar = (props: { label: string[]; value: string[] }) => {
   const [chartOptions, setChartOptions] = useState({})
   const { label, value } = props
   useEffect(() => {
+    let avg
+    if (value.length > 0) {
+      avg = value.reduce((a, b) => Number(a) + Number(b), 0) / value.length
+    }
+    console.log(value, 'ss')
     setChartOptions({
       title: {
-        text: 'Rainfall vs Evaporation',
-        subtext: 'Fake Data',
+        text: '月平均消费',
+        subtext: `每月${roundToTwoDecimalPlaces(avg)}元`,
       },
       xAxis: {
         data: label,
