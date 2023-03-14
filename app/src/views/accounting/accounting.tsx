@@ -41,7 +41,7 @@ const useAdvancedSearchForm = () => {
             <SelectWrap placeholder="账户" options={cpt_const.account_type} />
           </Form.Item>
           <Form.Item name="tag">
-            <SelectWrap placeholder="标签" options={cpt_const.tag} />
+            <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
           </Form.Item>
           <Form.Item name="date" label="交易">
             <RangePickerWrap bordered placeholder="placeholder" />
