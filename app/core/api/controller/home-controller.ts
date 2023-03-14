@@ -14,48 +14,28 @@ export async function getEveryMonthAmount(params: {
 }) {
   const { start, end } = params
 
-  const result = await get_every_month_amount({
-    start: new Date(start),
-    end: new Date(end),
-  })
+  const result = await get_every_month_amount(params)
   return getBarData(result)
 }
 export async function getCategory(params: { start: string; end: string }) {
-  const { start, end } = params
-
-  const result = await get_category_total_by_date({
-    start: new Date(start),
-    end: new Date(end),
-  })
+  const result = await get_category_total_by_date(params)
   return sortByValue(transferCategory(result))
 }
 export async function getCategoryAvg(params: { start: string; end: string }) {
   const { start, end } = params
 
-  const result = await get_category_total_by_date({
-    start: new Date(start),
-    end: new Date(end),
-  })
+  const result = await get_category_total_by_date(params)
   const data = transferCategory(result)
   const div = getMonthDiff(start, end)
   return getBarData2(sortByValue(divideValues(data, div)))
 }
 
 export async function getMemberTotal(params: { start: string; end: string }) {
-  const { start, end } = params
-  const result = await get_member_total_by_date({
-    start: new Date(start),
-    end: new Date(end),
-  })
+  const result = await get_member_total_by_date(params)
   return transferMeberData(result)
 }
 export async function getAccountTotal(params: { start: string; end: string }) {
-  const { start, end } = params
-
-  const result = await get_account_total_by_date({
-    start: new Date(start),
-    end: new Date(end),
-  })
+  const result = await get_account_total_by_date(params)
   return transferAccountrData(result)
 }
 
