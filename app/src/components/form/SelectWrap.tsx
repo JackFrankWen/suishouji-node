@@ -3,7 +3,7 @@ import { Select } from 'antd'
 import type { SelectProps } from 'antd'
 
 function SelectWrap(props: SelectProps) {
-  return <Select {...props} />
+  return <Select {...props} allowClear />
 }
 
 export default SelectWrap

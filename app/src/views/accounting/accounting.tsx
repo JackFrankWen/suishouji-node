@@ -1,12 +1,26 @@
+import { category_type } from '@/core/api/const/category'
 import { cpt_const } from '@/core/api/const/web'
 import Memerber from '@/src/components/form/Member'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import SelectWrap from '@/src/components/form/SelectWrap'
+import { getDateTostring } from '@/src/components/utils'
 import { DownOutlined, UpOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, Row, Select, Space, Table } from 'antd'
+import {
+  Button,
+  Cascader,
+  Col,
+  Form,
+  Input,
+  message,
+  Radio,
+  Row,
+  Select,
+  Space,
+  Table,
+} from 'antd'
 import moment from 'moment'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TableView from './daily-table'
 import './log-viewer.less'
 const { Option } = Select
@@ -35,79 +49,87 @@ const useAdvancedSearchForm = () => {
       <Row gutter={24}>
         <Space>
           <Form.Item name="member">
-            <Memerber placeholder="placeholder" />
+            <Radio.Group>
+              <Radio.Button value="1">正常</Radio.Button>
+              <Radio.Button value="2">分类无</Radio.Button>
+              <Radio.Button value="3">ABC无</Radio.Button>
+              <Radio.Button value="4">可削减</Radio.Button>
+            </Radio.Group>
           </Form.Item>
           <Form.Item name="account_type">
-            <SelectWrap placeholder="账户" options={cpt_const.account_type} />
+            <SelectWrap
+              style={{ width: '100px' }}
+              placeholder="账户"
+              options={cpt_const.account_type}
+            />
           </Form.Item>
           <Form.Item name="tag">
             <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
           </Form.Item>
-          <Form.Item name="date" label="交易">
-            <RangePickerWrap bordered placeholder="placeholder" />
+          <Form.Item name="payment_type">
+            <SelectWrap
+              placeholder="付款方式"
+              options={cpt_const.payment_type}
+            />
           </Form.Item>
         </Space>
       </Row>
       <Row>
-        <Col span={24} style={{ textAlign: 'right' }}>
-          <Button type="primary" htmlType="submit">
-            Search
-          </Button>
-          <Button
-            style={{ margin: '0 8px' }}
-            onClick={() => {
-              form.resetFields()
-            }}
-          >
-            Clear
-          </Button>
-        </Col>
+        <Space>
+          <Form.Item name="date" label="交易">
+            <RangePickerWrap bordered placeholder="placeholder" />
+          </Form.Item>
+          <Form.Item name="create_date" label="创建时间">
+            <RangePickerWrap bordered placeholder="placeholder" />
+          </Form.Item>
+          <Form.Item name="description">
+            <Input placeholder="输入描述" />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Search
+            </Button>
+          </Form.Item>
+        </Space>
       </Row>
     </Form>
   )
   return [formData, cpt]
 }
 
-const BatchUpdateArea: React.FC = () => {
+const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
   const [form] = Form.useForm()
-
+  const { onBatchUpdate } = props
   const onFinish = (values: any) => {
+    onBatchUpdate(values)
     console.log('Finish:', values)
   }
-
+  const onValuesChange = (data: any) => {
+    console.log(data, 'data')
+  }
   return (
     <Form
       form={form}
       className="batch-update-area"
       layout="inline"
       onFinish={onFinish}
+      onValuesChange={onValuesChange}
     >
-      <Form.Item
-        name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
-      >
-        <Input placeholder="Username" />
+      <Form.Item name="categroy">
+        <Cascader options={category_type} placeholder="请选择分类" />
       </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input type="password" placeholder="Password" />
+      <Form.Item name="account_type">
+        <SelectWrap
+          style={{ width: '100px' }}
+          placeholder="账户"
+          options={cpt_const.account_type}
+        />
       </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Input type="password" placeholder="Password" />
+      <Form.Item name="tag">
+        <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
       </Form.Item>
-      <Form.Item
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-      >
-        <Select>
-          <Option value="1">1</Option>
-          <Option value="2">sss</Option>
-        </Select>
+      <Form.Item name="payment_type">
+        <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
       <Form.Item shouldUpdate>
         {() => (
@@ -121,11 +143,50 @@ const BatchUpdateArea: React.FC = () => {
 }
 const App: React.FC = () => {
   const [formValue, From] = useAdvancedSearchForm()
+  const [selectedRows, setSelectedRows] = useState()
+  const [tableData, setTableData] = useState<any>([])
+
+  useEffect(() => {
+    getDailyAmountTotal(formValue)
+  }, [formValue])
+
+  const getDailyAmountTotal = async (data: any) => {
+    try {
+      const res = await $api.getDailyAmountTotal(getDateTostring(data))
+      if (res) {
+        setTableData(res)
+        console.log(res, 'res')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const onBatchUpdate = async (val: any) => {
+    console.log({ filter: { selectedRows }, data: { ...val } }, 'updata')
+    try {
+      const res = await $api.updateMany({
+        filter: { category: selectedRows },
+        data: { ...val },
+      })
+      if (res.modifiedCount) {
+        getDailyAmountTotal(formValue)
+        message.success(`成功${res.modifiedCount}记录`)
+      }
+      console.log(res, 'update sucess')
+    } catch (error) {}
+  }
+
   return (
     <div className="record-page">
       {From}
-      <BatchUpdateArea />
-      <TableView formValue={formValue} />
+      <BatchUpdateArea onBatchUpdate={onBatchUpdate} />
+      <TableView
+        formValue={formValue}
+        tableData={tableData}
+        setSelectedRows={(a) => {
+          setSelectedRows(a)
+        }}
+      />
     </div>
   )
 }

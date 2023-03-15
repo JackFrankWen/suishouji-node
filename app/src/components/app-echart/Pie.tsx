@@ -17,7 +17,10 @@ const Pie = (props: {
         formatter: (val: any) => `${val.value}元`,
       },
       legend: {
-        show: true,
+        // Try 'horizontal'
+        orient: 'vertical',
+        right: 10,
+        top: 'center',
       },
       series: [
         {
