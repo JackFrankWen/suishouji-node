@@ -58,10 +58,14 @@ function addCommonFeilds() {
 export async function get_every_month_amount(param: { start: any; end: any }) {
   const collection = getCollection()
   if (collection) {
+    const match = getComonMatch(param)
+    console.log(param, 'param')
+    console.log(match, 'qqq')
+
     const res = await collection
       // @ts-ignore
       .aggregate([
-        { $match: getComonMatch(param) },
+        { $match: match },
         {
           $group: {
             _id: {
@@ -252,7 +256,6 @@ export async function get_daily_amount_by_date(param: any) {
 export async function get_cost_record(param: any) {
   const collection = getCollection()
   if (collection) {
-    console.log(getComonMatch(param), 'parmaa')
     const res = await collection.aggregate([
       { $match: getComonMatch(param) },
       {
@@ -263,6 +266,27 @@ export async function get_cost_record(param: any) {
         $sort: { trans_time: -1 },
       },
     ])
+    return res
+  }
+  return []
+}
+
+/**
+ * 批量更新
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function update_many(param: { filter: any; data: any }) {
+  const { data, filter } = param
+  const collection = getCollection()
+  if (collection) {
+    const res = await collection.updateMany(
+      {
+        _id: { $in: filter.category },
+      },
+      removeUndefinedProps(data)
+    )
     return res
   }
   return []
