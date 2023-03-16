@@ -77,13 +77,13 @@ const WechatUpload = () => {
       {uploadVisable && (
         <div className="upload-wrap">
           <Dragger {...props}>
-            <p style={{ margin: 0 }} className="ant-upload-drag-icon">
+            <div className="upload-cus-container">
               <a
-                style={{ color: '#17c317', fontSize: '48px', opacity: '0.4' }}
+                style={{ color: '#17c317', fontSize: '128px', opacity: '0.4' }}
                 className="ri-wechat-fill"
               ></a>
-            </p>
-            <p className="ant-upload-text">点击或拖拽上传csv文件</p>
+              <p>点击或拖拽上传csv文件</p>
+            </div>
           </Dragger>
         </div>
       )}
