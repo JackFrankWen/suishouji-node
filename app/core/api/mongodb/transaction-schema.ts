@@ -2,7 +2,7 @@ import { Schema, Types } from 'mongoose'
 
 // 1. Create an interface representing a document in MongoDB.
 interface I_Transaction {
-  amount: Types.Decimal128
+  amount: Schema.Types.Decimal128
   category: string
   description: string
   account_type: string
