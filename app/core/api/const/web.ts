@@ -16,9 +16,9 @@ export const consumer_type = {
   4: '牧牧',
 }
 export const tag_type = {
-  1: '日常支出',
-  2: '变动支出',
-  3: '固定支出',
+  1: '必要支出',
+  2: '可有可无',
+  3: '过度消费',
 }
 export const abc_type = {
   1: 'A类（必要）',

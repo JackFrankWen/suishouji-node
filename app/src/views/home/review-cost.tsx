@@ -24,7 +24,7 @@ export default function ReviewCost(props: { formValue: any }) {
             data={[
               { value: 1048, name: 'A类（必须开支' },
               { value: 735, name: 'B类（可有可无）' },
-              { value: 580, name: 'C类（可以削减）' },
+              { value: 580, name: 'C类（过度不必要消费）' },
             ]}
           />
         </Card>

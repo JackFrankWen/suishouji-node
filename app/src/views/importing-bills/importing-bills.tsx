@@ -1,54 +1,98 @@
-import React, { useEffect } from 'react'
-import { InboxOutlined } from '@ant-design/icons'
+import React, { useEffect, useState } from 'react'
 import type { UploadProps } from 'antd'
-import { message, Upload, Tabs } from 'antd'
+import { Upload, Tabs } from 'antd'
+import moment from 'moment'
 import Papa from 'papaparse'
+import './importing-bills.less'
+import BasicTable from './importing-table'
 
 const { Dragger } = Upload
 
-const props: UploadProps = {
-  name: 'file',
-  multiple: true,
-  beforeUpload: (file) => {
-    Papa.parse(file, {
-      header: false,
-      encoding: 'gb18030',
-      skipEmptyLines: true,
-      complete: function (results: any) {
-        console.log(results)
-      },
-    })
-
-    // Prevent upload
-    return false
-  },
-  onChange(info) {
-    const { status } = info.file
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList)
+function formateToTableData(
+  arr: string[][],
+  account_type: number,
+  payment_type: number
+) {
+  return arr.map((subArr) => {
+    // 0: "交易时间"
+    // 1: "交易类型"
+    // 2: "交易对方"
+    // 3: "商品"
+    // 4: "收/支"
+    // 5: "金额(元)"
+    // 6: "支付方式"
+    // 7: "当前状态"
+    // 8: "交易单号"
+    // 9: "商户单号"
+    // 10: "备注"
+    return {
+      id: subArr[8],
+      amount: subArr[5],
+      category: null,
+      description: `${subArr[3]}（${subArr[2]}）${subArr[10]}`,
+      account_type: account_type,
+      payment_type: payment_type,
+      consumer: null,
+      flow_type: null,
+      creation_time: moment().format('YYYY-MM-DD HH:MM:SS'),
+      trans_time: subArr[0],
+      modification_time: moment().format('YYYY-MM-DD HH:MM:SS'),
+      tag: null,
     }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`)
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`)
-    }
-  },
-  onDrop(e) {
-    console.log('Dropped files', e.dataTransfer.files)
-  },
+  })
 }
+const WechatUpload = () => {
+  const [tableData, setTableData] = useState([])
+  const [uploadVisable, setUploadVisiable] = useState(true)
+  const [tableVisable, setTableVisable] = useState(false)
 
-const WechatUpload: React.FC = () => {
+  const props: UploadProps = {
+    name: 'file',
+    beforeUpload: (file) => {
+      Papa.parse(file, {
+        header: false,
+        encoding: 'gb18030',
+        skipEmptyLines: true,
+        complete: function (results: any) {
+          console.log(results)
+          const csvData = results.data || []
+          const csvHeader = csvData.slice(0, 17)
+          const csvContent = csvData.slice(17)
+          const pp = formateToTableData(csvContent, 1, 2)
+          // setTableData()
+          console.log(csvHeader, 'ppp')
+          setTableData(pp)
+          setTableVisable(true)
+          setUploadVisiable(false)
+        },
+      })
+
+      // Prevent upload
+      return false
+    },
+  }
+
   return (
-    <Dragger {...props}>
-      <p className="ant-upload-drag-icon">
-        <InboxOutlined />
-      </p>
-      <p className="ant-upload-text">Click or drag file to this area to upload</p>
-      <p className="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files
-      </p>
-    </Dragger>
+    <>
+      {uploadVisable && (
+        <div className="upload-wrap">
+          <Dragger {...props}>
+            <p style={{ margin: 0 }} className="ant-upload-drag-icon">
+              <a
+                style={{ color: '#17c317', fontSize: '48px', opacity: '0.4' }}
+                className="ri-wechat-fill"
+              ></a>
+            </p>
+            <p className="ant-upload-text">点击或拖拽上传csv文件</p>
+          </Dragger>
+        </div>
+      )}
+      {tableVisable && (
+        <div className="container">
+          <BasicTable tableData={tableData} />
+        </div>
+      )}
+    </>
   )
 }
 
@@ -61,11 +105,7 @@ const items = [
       </span>
     ),
     key: '1',
-    children: (
-      <>
-        <WechatUpload />
-      </>
-    ),
+    children: <WechatUpload />,
   },
   {
     label: (
@@ -75,13 +115,11 @@ const items = [
       </span>
     ),
     key: '2',
-    children: (
-      <>
-        <WechatUpload />
-      </>
-    ),
+    children: <WechatUpload />,
   },
 ]
-const Home: React.FC = () => <Tabs defaultActiveKey="1" centered items={items} />
+const Home: React.FC = () => (
+  <Tabs defaultActiveKey="1" centered items={items} />
+)
 
 export default Home
