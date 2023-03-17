@@ -2,19 +2,19 @@ import { Form, Input, InputNumber, Popconfirm, Table, Typography } from 'antd'
 import React, { useState } from 'react'
 import type { ColumnsType } from 'antd/es/table'
 
-interface DataType {
+export interface DataType {
   id: string
   amount: string
-  category: string
-  description: string
-  account_type: string
-  payment_type: string
+  category: string | null
+  description: string | null
+  account_type: number
+  payment_type: number
   consumer: string
   flow_type: string
   creation_time: Date
   trans_time: Date
   modification_time: Date
-  tag: string
+  tag: string | null
 }
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {

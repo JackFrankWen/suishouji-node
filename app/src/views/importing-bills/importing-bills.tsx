@@ -5,7 +5,6 @@ import moment from 'moment'
 import Papa from 'papaparse'
 import './importing-bills.less'
 import BasicTable from './importing-table'
-
 const { Dragger } = Upload
 
 function formateToTableData(
@@ -41,12 +40,29 @@ function formateToTableData(
     }
   })
 }
-const WechatUpload = () => {
+function setCategory(arr: any, rules: any) {
+  return arr.map((val: any) => {
+    for (const element of rules) {
+      const reg = new RegExp(element.rule)
+      const pp = reg.test(val.description)
+      if (pp) {
+        return {
+          ...val,
+          ...element,
+        }
+      }
+    }
+    return {
+      ...val,
+    }
+  })
+}
+const WechatUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
   const [uploadVisable, setUploadVisiable] = useState(true)
   const [tableVisable, setTableVisable] = useState(false)
 
-  const props: UploadProps = {
+  const uploadProps: UploadProps = {
     name: 'file',
     beforeUpload: (file) => {
       Papa.parse(file, {
@@ -58,7 +74,8 @@ const WechatUpload = () => {
           const csvData = results.data || []
           const csvHeader = csvData.slice(0, 17)
           const csvContent = csvData.slice(17)
-          const pp = formateToTableData(csvContent, 1, 2)
+          let pp: any = formateToTableData(csvContent, 1, 2)
+          pp = setCategory(pp, props.ruleData)
           // setTableData()
           console.log(csvHeader, 'ppp')
           setTableData(pp)
@@ -76,7 +93,7 @@ const WechatUpload = () => {
     <>
       {uploadVisable && (
         <div className="upload-wrap">
-          <Dragger {...props}>
+          <Dragger {...uploadProps}>
             <div className="upload-cus-container">
               <a
                 style={{ color: '#17c317', fontSize: '128px', opacity: '0.4' }}
@@ -96,30 +113,45 @@ const WechatUpload = () => {
   )
 }
 
-const items = [
-  {
-    label: (
-      <span>
-        <a style={{ color: '#17c317' }} className="ri-wechat-fill"></a>
-        微信导入
-      </span>
-    ),
-    key: '1',
-    children: <WechatUpload />,
-  },
-  {
-    label: (
-      <span>
-        <a style={{ width: '32px' }} className="ri-alipay-fill"></a>
-        支付宝导入
-      </span>
-    ),
-    key: '2',
-    children: <WechatUpload />,
-  },
-]
-const Home: React.FC = () => (
-  <Tabs defaultActiveKey="1" centered items={items} />
-)
+const Home: React.FC = () => {
+  const [ruleData, setRuleData] = useState<any>()
+  const getRuleData = async () => {
+    try {
+      const res = await $api.getALlMatchRule()
+      console.log(res, 'rule')
+      if (res) {
+        setRuleData(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getRuleData()
+  }, [])
+  const items = [
+    {
+      label: (
+        <span>
+          <a style={{ color: '#17c317' }} className="ri-wechat-fill"></a>
+          微信导入
+        </span>
+      ),
+      key: '1',
+      children: <WechatUpload ruleData={ruleData} />,
+    },
+    {
+      label: (
+        <span>
+          <a style={{ width: '32px' }} className="ri-alipay-fill"></a>
+          支付宝导入
+        </span>
+      ),
+      key: '2',
+      children: <WechatUpload ruleData={ruleData} />,
+    },
+  ]
+  return <Tabs defaultActiveKey="1" centered items={items} />
+}
 
 export default Home
