@@ -44,8 +44,8 @@ function setCategory(arr: any, rules: any) {
   return arr.map((val: any) => {
     for (const element of rules) {
       const reg = new RegExp(element.rule)
-      const pp = reg.test(val.description)
-      if (pp) {
+      const hasRule = reg.test(val.description)
+      if (hasRule) {
         return {
           ...val,
           ...element,
@@ -60,7 +60,7 @@ function setCategory(arr: any, rules: any) {
 const WechatUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
   const [uploadVisable, setUploadVisiable] = useState(true)
-  const [tableVisable, setTableVisable] = useState(false)
+  const [tableVisable, setTableVisable] = useState(true)
 
   const uploadProps: UploadProps = {
     name: 'file',
@@ -91,19 +91,19 @@ const WechatUpload = (props: { ruleData: any }) => {
 
   return (
     <>
-      {uploadVisable && (
+      {/* {uploadVisable && (
         <div className="upload-wrap">
           <Dragger {...uploadProps}>
             <div className="upload-cus-container">
-              <a
+              <i
                 style={{ color: '#17c317', fontSize: '128px', opacity: '0.4' }}
                 className="ri-wechat-fill"
-              ></a>
+              ></i>
               <p>点击或拖拽上传csv文件</p>
             </div>
           </Dragger>
         </div>
-      )}
+      )} */}
       {tableVisable && (
         <div className="container">
           <BasicTable tableData={tableData} />
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
     {
       label: (
         <span>
-          <a style={{ color: '#17c317' }} className="ri-wechat-fill"></a>
+          <i style={{ color: '#17c317' }} className="ri-wechat-fill"></i>
           微信导入
         </span>
       ),
@@ -143,7 +143,7 @@ const Home: React.FC = () => {
     {
       label: (
         <span>
-          <a style={{ width: '32px' }} className="ri-alipay-fill"></a>
+          <a className="ri-alipay-fill"></a>
           支付宝导入
         </span>
       ),
