@@ -1,21 +1,19 @@
 import {
   Button,
   Card,
-  Checkbox,
-  Col,
   Form,
   Input,
   InputNumber,
   Popconfirm,
-  Popover,
   Row,
   Space,
   Table,
+  Tag,
   Typography,
 } from 'antd'
-import React, { useState } from 'react'
-import type { ColumnsType } from 'antd/es/table'
-import type { CheckboxValueType } from 'antd/es/checkbox/Group'
+import React, { useEffect, useState } from 'react'
+import TableSettingTool from '@/src/components/TableSettingTool'
+import { getCategoryString } from '@/core/api/const/category'
 
 export interface DataType {
   id: string
@@ -79,6 +77,11 @@ const BasicTable = (props: { tableData: any }) => {
     form.setFieldsValue({ name: '', age: '', address: '', ...record })
     setEditingKey(record.id)
   }
+  const onDelete = (record: DataType) => {
+    setEditingKey(record.id)
+    const newData = data.filter((obj: DataType) => obj.id !== record.id)
+    setData(newData)
+  }
 
   const cancel = () => {
     setEditingKey('')
@@ -118,13 +121,20 @@ const BasicTable = (props: { tableData: any }) => {
     {
       title: '分类',
       dataIndex: 'category',
-      editable: true,
       width: 120,
       defaultCheck: true,
+      render: (val: string) => {
+        const list = val ? JSON.parse(val) : []
+        console.log(list, 'list')
+        return list.length > 0 ? getCategoryString(list) : ''
+      },
     },
     {
       title: '金额',
       dataIndex: 'amount',
+      render: (val: string) => {
+        return val ? `¥${val}` : ''
+      },
       editable: true,
       width: 100,
       defaultCheck: true,
@@ -137,6 +147,31 @@ const BasicTable = (props: { tableData: any }) => {
       defaultCheck: true,
     },
     {
+      title: '消费对象',
+      width: 80,
+      dataIndex: 'consumer',
+      defaultCheck: false,
+
+      key: 'consumer',
+      render: (val: number) => {
+        const consumer_type = {
+          1: '老公',
+          2: '老婆',
+          3: '家庭',
+          4: '牧牧',
+        }
+        if (val === 1) {
+          return <Tag color="cyan">{consumer_type[val]}</Tag>
+        } else if (val === 2) {
+          return <Tag color="magenta">{consumer_type[val]}</Tag>
+        } else if (val === 3) {
+          return <Tag color="geekblue">{consumer_type[val]}</Tag>
+        } else if (val === 4) {
+          return <Tag color="orange">{consumer_type[val]}</Tag>
+        }
+      },
+    },
+    {
       title: '类型',
       dataIndex: 'flow_type',
       width: 80,
@@ -146,7 +181,6 @@ const BasicTable = (props: { tableData: any }) => {
       title: '操作',
       dataIndex: 'operation',
       width: 120,
-
       render: (_: any, record: DataType) => {
         const editable = isEditing(record)
         return editable ? (
@@ -162,12 +196,13 @@ const BasicTable = (props: { tableData: any }) => {
             </Popconfirm>
           </span>
         ) : (
-          <Typography.Link
-            disabled={editingKey !== ''}
-            onClick={() => edit(record)}
-          >
-            Edit
-          </Typography.Link>
+          <Space>
+            <i
+              className="ri-delete-bin-line"
+              onClick={() => onDelete(record)}
+              style={{ color: 'red' }}
+            ></i>
+          </Space>
         )
       },
     },
@@ -189,7 +224,24 @@ const BasicTable = (props: { tableData: any }) => {
     }
   })
   const [tableCol, setTablCol] = useState(mergedColumns)
-
+  useEffect(() => {
+    const mergedColumns = columns.map((col) => {
+      if (!col.editable) {
+        return col
+      }
+      return {
+        ...col,
+        onCell: (record: DataType) => ({
+          record,
+          inputType: col.dataIndex === 'age' ? 'number' : 'text',
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: isEditing(record),
+        }),
+      }
+    })
+    setTablCol(mergedColumns)
+  }, [editingKey])
   return (
     <div>
       <Card bordered={false}>
@@ -211,81 +263,22 @@ const BasicTable = (props: { tableData: any }) => {
                 cell: EditableCell,
               },
             }}
+            onRow={(record) => {
+              return {
+                onDoubleClick: () => edit(record),
+              }
+            }}
             dataSource={data}
             columns={tableCol}
             rowClassName="editable-row"
             pagination={{
+              showSizeChanger: true,
               onChange: cancel,
             }}
           />
         </Form>
       </Card>
     </div>
-  )
-}
-function useContent<T>() {
-  const content = (props: { defaultColumns: any; handleChange: any }) => {
-    const { defaultColumns, handleChange } = props
-    const defaultValue = defaultColumns.map((val: any) => val.dataIndex)
-    return (
-      <Checkbox.Group
-        defaultValue={defaultValue}
-        style={{ width: '100%' }}
-        onChange={(val) => {
-          const data = defaultColumns.filter((data: any) =>
-            val.includes(data.dataIndex)
-          )
-          handleChange(data)
-        }}
-      >
-        <Row style={{ width: '100px' }}>
-          {defaultColumns.map((val: any, index: number) => {
-            return (
-              <Col span={24} key={index}>
-                <Checkbox value={val.dataIndex}>{val.title}</Checkbox>
-              </Col>
-            )
-          })}
-        </Row>
-      </Checkbox.Group>
-    )
-  }
-  const title = () => {
-    return (
-      <Row>
-        <Col span={12}>
-          <Checkbox>全选</Checkbox>
-        </Col>
-      </Row>
-    )
-  }
-  return [content, title]
-}
-
-function TableSettingTool<T>(props: {
-  defaultColumns: any
-  onChange: (data: any) => void
-}) {
-  const { defaultColumns, onChange } = props
-  const [open, setOpen] = useState(false)
-  const handleOpenChange = (newOpen: boolean) => {
-    setOpen(newOpen)
-  }
-  const [Content, Title] = useContent()
-  console.log()
-  return (
-    <Popover
-      title={<Title defaultColumns={defaultColumns} handleChange={onChange} />}
-      content={
-        <Content defaultColumns={defaultColumns} handleChange={onChange} />
-      }
-      trigger="click"
-      open={open}
-      placement="bottom"
-      onOpenChange={handleOpenChange}
-    >
-      <i className="ri-tools-line" style={{ fontSize: '24px' }}></i>
-    </Popover>
   )
 }
 

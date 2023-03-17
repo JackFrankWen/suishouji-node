@@ -31,6 +31,10 @@ export const cost_type = {
   2: '发展开销',
   3: '享受开销',
 }
+export const flow_type = {
+  1: '支出',
+  2: '收入',
+}
 
 export const transform = (obj: any) => {
   return Object.keys(obj).map((key) => ({

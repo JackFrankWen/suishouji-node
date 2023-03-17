@@ -402,3 +402,9 @@ export const getCategoryObj = () => {
   })
   return obj
 }
+
+export const getCategoryString = (arr: string[]): string => {
+  const obj = getCategoryObj()
+
+  return `${obj[arr[0]]}\\${obj[arr[1]]}`
+}
