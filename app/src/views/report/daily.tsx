@@ -1,4 +1,3 @@
-import { DownOutlined, UpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Table } from 'antd'
 import type { TableColumnsType } from 'antd'
 
@@ -72,9 +71,7 @@ const AdvancedSearchForm = () => {
             onClick={() => {
               setExpand(!expand)
             }}
-          >
-            {expand ? <UpOutlined /> : <DownOutlined />} Collapse
-          </a>
+          ></a>
         </Col>
       </Row>
     </Form>

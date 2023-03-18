@@ -17,7 +17,7 @@ function getComonMatch(param: any) {
   const { start, end, consumer, category } = param
   const match = removeUndefinedProps({
     trans_time: { $gte: new Date(start), $lte: new Date(end) },
-    flow_type: '1',
+    flow_type: 1,
     consumer,
     category,
   })
