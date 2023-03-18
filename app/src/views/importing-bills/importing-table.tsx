@@ -242,12 +242,24 @@ const BasicTable = (props: { tableData: any }) => {
     })
     setTablCol(mergedColumns)
   }, [editingKey])
+
+  const submit = async () => {
+    try {
+      //
+      const res = await $api.insert_many(data)
+      console.log(res, 'res')
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div>
       <Card bordered={false}>
         <Row justify="end" align="middle">
           <Space>
-            <Button type="primary">上传</Button>
+            <Button type="primary" onClick={submit}>
+              上传
+            </Button>
             <TableSettingTool
               defaultColumns={mergedColumns}
               onChange={(tata) => setTablCol(tata)}

@@ -1,4 +1,5 @@
 import { getCollection } from './db'
+import { I_Transaction } from './transaction-schema'
 
 interface MyObject {
   [key: string]: any
@@ -290,4 +291,24 @@ export async function update_many(param: { filter: any; data: any }) {
     return res
   }
   return []
+}
+/**
+ * 批量插入
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function insert_many(param: I_Transaction[]) {
+  const collection = getCollection()
+  return new Promise((resovle, reject) => {
+    collection
+      .insertMany(param)
+      .then((res: any) => {
+        resovle(res)
+      })
+      .catch((error: any) => {
+        console.log(error)
+        reject(error)
+      })
+  })
 }

@@ -31,12 +31,12 @@ export const category_type = [
       },
       {
         value: 10004,
-        label: '零食（宵夜）',
+        label: '零食',
         tag: variable_cost,
       },
       {
         value: 10005,
-        label: '工作餐（早午晚）',
+        label: '工作餐',
         tag: general_cost,
       },
       {

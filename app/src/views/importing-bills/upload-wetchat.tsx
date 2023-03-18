@@ -39,9 +39,9 @@ function formateToTableDataWechat(
       tag: undefined,
       cost_type: undefined,
       abc_type: undefined,
-      creation_time: moment().format('YYYY-MM-DD HH:MM:SS'),
+      creation_time: undefined,
       trans_time: subArr[0],
-      modification_time: moment().format('YYYY-MM-DD HH:MM:SS'),
+      modification_time: undefined,
     }
   })
 }
