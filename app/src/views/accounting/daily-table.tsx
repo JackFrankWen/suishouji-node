@@ -114,6 +114,7 @@ const TableView = (props: {
     <div className="edit-area">
       <Table
         rowKey="date"
+        size="small"
         columns={columns}
         expandable={{
           defaultExpandAllRows: true,
