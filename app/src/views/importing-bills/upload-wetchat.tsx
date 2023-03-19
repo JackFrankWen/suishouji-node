@@ -109,7 +109,16 @@ const WechatUpload = (props: { ruleData: any }) => {
                 style={{ color: '#17c317', fontSize: '128px', opacity: '0.4' }}
                 className="ri-wechat-fill"
               ></i>
-              <p>点击或拖拽上传csv文件</p>
+              <p
+                className="ant-upload-text"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  marginTop: '60px',
+                }}
+              >
+                点击或拖拽上传微信csv文件
+              </p>
             </div>
           </Dragger>
         </div>
