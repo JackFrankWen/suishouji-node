@@ -13,7 +13,8 @@ function formateToTableDataWechat(
   account_type: number,
   payment_type: number
 ) {
-  return arr.map((subArr) => {
+  let costArr = arr.filter((subArr: string[]) => !/零钱通/.test(subArr[11]))
+  return costArr.map((subArr) => {
     // 0: "交易时间"
     // 1: "交易类型"
     // 2: "交易对方"
@@ -30,7 +31,7 @@ function formateToTableDataWechat(
     return {
       id: subArr[8],
       amount: amount.replace('¥', ''),
-      description: description.replace('\\', ''),
+      description: description.replace('[^\u0000-\uFFFF]', ''),
       account_type: account_type,
       payment_type: payment_type,
       flow_type: subArr[4] === '支出' ? 1 : 2,

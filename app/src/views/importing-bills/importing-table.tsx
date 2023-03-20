@@ -14,6 +14,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import TableSettingTool from '@/src/components/TableSettingTool'
 import { getCategoryString } from '@/core/api/const/category'
+import { abc_type, cost_type, cpt_const, tag_type } from '@/core/api/const/web'
 
 export interface DataType {
   id: string
@@ -115,19 +116,9 @@ const BasicTable = (props: { tableData: any }) => {
     {
       title: '交易时间',
       dataIndex: 'trans_time',
-      width: 200,
+      width: 180,
       defaultCheck: true,
-    },
-    {
-      title: '分类',
-      dataIndex: 'category',
-      width: 120,
-      defaultCheck: true,
-      render: (val: string) => {
-        const list = val ? JSON.parse(val) : []
-        console.log(list, 'list')
-        return list.length > 0 ? getCategoryString(list) : ''
-      },
+      fixed: 'left',
     },
     {
       title: '金额',
@@ -140,6 +131,17 @@ const BasicTable = (props: { tableData: any }) => {
       defaultCheck: true,
     },
     {
+      title: '分类',
+      dataIndex: 'category',
+      width: 120,
+      defaultCheck: false,
+      render: (val: string) => {
+        const list = val ? JSON.parse(val) : []
+        console.log(list, 'list')
+        return list.length > 0 ? getCategoryString(list) : ''
+      },
+    },
+    {
       title: '描述',
       dataIndex: 'description',
       editable: true,
@@ -147,11 +149,10 @@ const BasicTable = (props: { tableData: any }) => {
       defaultCheck: true,
     },
     {
-      title: '消费对象',
+      title: '对象',
       width: 80,
       dataIndex: 'consumer',
       defaultCheck: false,
-
       key: 'consumer',
       render: (val: number) => {
         const consumer_type = {
@@ -176,6 +177,28 @@ const BasicTable = (props: { tableData: any }) => {
       dataIndex: 'flow_type',
       width: 80,
       defaultCheck: false,
+      render: (val: number) => (val === 1 ? '支出' : '收入'),
+    },
+    {
+      title: '标签',
+      dataIndex: 'tag',
+      width: 80,
+      defaultCheck: false,
+      render: (val: number) => (val ? tag_type[val] : ''),
+    },
+    {
+      title: 'ABC类',
+      dataIndex: 'abc_type',
+      width: 80,
+      defaultCheck: false,
+      render: (val: number) => (val ? abc_type[val] : ''),
+    },
+    {
+      title: '消费方式',
+      dataIndex: 'cost_type',
+      width: 120,
+      defaultCheck: false,
+      render: (val: number) => (val ? cost_type[val] : ''),
     },
     {
       title: '操作',
@@ -223,7 +246,8 @@ const BasicTable = (props: { tableData: any }) => {
       }),
     }
   })
-  const [tableCol, setTablCol] = useState(mergedColumns)
+  const [tableCol, setTablCol] = useState<any>()
+  const [checkedCol, setCheckedCol] = useState<any>()
   useEffect(() => {
     const mergedColumns = columns.map((col) => {
       if (!col.editable) {
@@ -241,6 +265,7 @@ const BasicTable = (props: { tableData: any }) => {
       }
     })
     setTablCol(mergedColumns)
+    console.log(editingKey, 'editingKey')
   }, [editingKey])
 
   const submit = async () => {
@@ -252,6 +277,34 @@ const BasicTable = (props: { tableData: any }) => {
       console.log(error)
     }
   }
+
+  const tableSummary = (pageData: any) => {
+    let totalCost = 0
+    let totalIncome = 0
+    pageData.forEach((obj: any) => {
+      if (obj.flow_type === 1) {
+        totalCost += Number(obj.amount)
+      } else {
+        totalIncome += Number(obj.amount)
+      }
+    })
+    return (
+      <>
+        <Table.Summary.Row>
+          <Table.Summary.Cell index={0}>支出</Table.Summary.Cell>
+          <Table.Summary.Cell index={1}>
+            <a>{totalCost}</a>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+        <Table.Summary.Row>
+          <Table.Summary.Cell index={0}>收入</Table.Summary.Cell>
+          <Table.Summary.Cell index={1}>
+            <a>{totalIncome}</a>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+      </>
+    )
+  }
   return (
     <div>
       <Card bordered={false}>
@@ -262,7 +315,13 @@ const BasicTable = (props: { tableData: any }) => {
             </Button>
             <TableSettingTool
               defaultColumns={mergedColumns}
-              onChange={(tata) => setTablCol(tata)}
+              onChange={(checkedGroup: string[]) => {
+                setCheckedCol(checkedGroup)
+                const data = mergedColumns.filter((data: any) =>
+                  checkedGroup.includes(data.dataIndex)
+                )
+                setTablCol(data)
+              }}
             />
           </Space>
         </Row>
@@ -281,8 +340,11 @@ const BasicTable = (props: { tableData: any }) => {
               }
             }}
             dataSource={data}
+            size="small"
             columns={tableCol}
             rowClassName="editable-row"
+            summary={tableSummary}
+            scroll={{ x: 1500 }}
             pagination={{
               showSizeChanger: true,
               onChange: cancel,
