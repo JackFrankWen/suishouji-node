@@ -26,7 +26,7 @@ const Home: React.FC = () => {
       label: (
         <span>
           <a className="ri-alipay-fill"></a>
-          支付宝导入
+          支付宝
         </span>
       ),
       key: '1',
@@ -36,7 +36,7 @@ const Home: React.FC = () => {
       label: (
         <span>
           <i style={{ color: '#17c317' }} className="ri-wechat-fill"></i>
-          微信导入
+          微信
         </span>
       ),
       key: '2',

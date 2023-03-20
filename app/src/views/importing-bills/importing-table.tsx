@@ -1,12 +1,14 @@
 import {
   Button,
   Card,
+  Col,
   Form,
   Input,
   InputNumber,
   Popconfirm,
   Row,
   Space,
+  Statistic,
   Table,
   Tag,
   Typography,
@@ -66,8 +68,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
   )
 }
 
-const BasicTable = (props: { tableData: any }) => {
-  const { tableData } = props
+const BasicTable = (props: { tableData: any; tableHeader: any }) => {
+  const { tableData, tableHeader } = props
   const [form] = Form.useForm()
   const [data, setData] = useState(tableData)
   const [editingKey, setEditingKey] = useState('')
@@ -308,7 +310,20 @@ const BasicTable = (props: { tableData: any }) => {
   return (
     <div>
       <Card bordered={false}>
-        <Row justify="end" align="middle">
+        <Row align="middle" justify="center">
+          <Col span={24} style={{ textAlign: 'center' }}>
+            <span style={{ fontSize: '24px' }}>收入 50600.00元</span>
+            <span style={{ fontSize: '24px', marginLeft: '12px' }}>
+              支出 14297.50元
+            </span>
+          </Col>
+        </Row>
+
+        <Row justify="space-between" align="middle">
+          <Space>
+            <span style={{ fontSize: '12px' }}>账号:{tableHeader?.name}</span>
+            <span style={{ fontSize: '12px' }}>{tableHeader?.date}</span>
+          </Space>
           <Space>
             <Button type="primary" onClick={submit}>
               上传

@@ -67,8 +67,33 @@ function setCategory(arr: any, rules: any) {
     }
   })
 }
+function formateToTableWechatHeader(arr: any) {
+  // 0: (9) ['微信支付账单明细', '', '', '', '', '', '', '', '']
+  // 1: (9) ['微信昵称：[Jack Frank]', '', '', '', '', '', '', '', '']
+  // 2: (9) ['起始时间：[2023-02-16 00:00:00] 终止时间：[2023-03-16 10:51:23]', '', '', '', '', '', '', '', '']
+  // 3: (9) ['导出类型：[全部]', '', '', '', '', '', '', '', '']
+  // 4: (9) ['导出时间：[2023-03-16 10:51:39]', '', '', '', '', '', '', '', '']
+  // 5: (9) ['', '', '', '', '', '', '', '', '']
+  // 6: (9) ['共91笔记录', '', '', '', '', '', '', '', '']
+  // 7: (9) ['收入：1笔 1666.00元', '', '', '', '', '', '', '', '']
+  // 8: (9) ['支出：90笔 1221.01元', '', '', '', '', '', '', '', '']
+  // 9: (9) ['中性交易：0笔 0.00元', '', '', '', '', '', '', '', '']
+  // 10: (9) ['注：', '', '', '', '', '', '', '', '']
+  // 11: (9) ['1. 充值/提现/理财通购买/零钱通存取/信用卡还款等交易，将计入中性交易', '', '', '', '', '', '', '', '']
+  // 12: (9) ['2. 本明细仅展示当前账单中的交易，不包括已删除的记录', '', '', '', '', '', '', '', '']
+  // 13: (9) ['3. 本明细仅供个人对账使用', '', '', '', '', '', '', '', '']
+  // 14: (9) ['', '', '', '', '', '', '', '', '']
+  // 15: (9) ['----------------------微信支付账单明细列表--------------------', '', '', '', '', '', '', '', '']
+  // 16: (11) ['交易时间', '交易类
+  const regex = /\[(.*?)\]/ // a regular expression to match the text inside square brackets
+  return {
+    name: arr[1][0].match(regex)[1],
+    date: arr[2],
+  }
+}
 const WechatUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
+  const [tableHeader, setTableHeader] = useState({})
   const [uploadVisable, setUploadVisiable] = useState(true)
   const [tableVisable, setTableVisable] = useState(false)
 
@@ -85,11 +110,12 @@ const WechatUpload = (props: { ruleData: any }) => {
           const csvHeader = csvData.slice(0, 17)
           const csvContent = csvData.slice(17)
           let tableData: any = formateToTableDataWechat(csvContent, 1, 2)
+          let tableProps: any = formateToTableWechatHeader(csvHeader)
           tableData = setCategory(tableData, props.ruleData)
           // setTableData()
-          console.log(csvHeader, 'ppp')
-          console.log(tableData, '222')
+          console.log(tableProps, 'tableProps')
           setTableData(tableData)
+          setTableHeader(tableProps)
           setTableVisable(true)
           setUploadVisiable(false)
         },
@@ -99,7 +125,7 @@ const WechatUpload = (props: { ruleData: any }) => {
       return false
     },
   }
-
+  console.log(tableHeader, 'tableHeader')
   return (
     <>
       {uploadVisable && (
@@ -126,7 +152,7 @@ const WechatUpload = (props: { ruleData: any }) => {
       )}
       {tableVisable && (
         <div className="container">
-          <BasicTable tableData={tableData} />
+          <BasicTable tableData={tableData} tableHeader={tableHeader} />
         </div>
       )}
     </>
