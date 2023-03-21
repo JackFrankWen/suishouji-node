@@ -16,7 +16,13 @@ import {
 import React, { useEffect, useState } from 'react'
 import TableSettingTool from '@/src/components/TableSettingTool'
 import { getCategoryString } from '@/core/api/const/category'
-import { abc_type, cost_type, cpt_const, tag_type } from '@/core/api/const/web'
+import {
+  abc_type,
+  account_type,
+  cost_type,
+  cpt_const,
+  tag_type,
+} from '@/core/api/const/web'
 
 export interface DataType {
   id: string
@@ -68,7 +74,15 @@ const EditableCell: React.FC<EditableCellProps> = ({
   )
 }
 
-const BasicTable = (props: { tableData: any; tableHeader: any }) => {
+export interface tableHeader {
+  name: string
+  date: string
+  titleCostLabel: string
+  titleCost: string
+  titleIncome: string
+  titleIncomeLabel: string
+}
+const BasicTable = (props: { tableData: any; tableHeader: tableHeader }) => {
   const { tableData, tableHeader } = props
   const [form] = Form.useForm()
   const [data, setData] = useState(tableData)
@@ -187,6 +201,13 @@ const BasicTable = (props: { tableData: any; tableHeader: any }) => {
       width: 80,
       defaultCheck: false,
       render: (val: number) => (val ? tag_type[val] : ''),
+    },
+    {
+      title: '账户',
+      dataIndex: 'account_type',
+      width: 80,
+      defaultCheck: false,
+      render: (val: number) => (val ? account_type[val] : ''),
     },
     {
       title: 'ABC类',
@@ -312,14 +333,37 @@ const BasicTable = (props: { tableData: any; tableHeader: any }) => {
       <Card bordered={false}>
         <Row align="middle" justify="center">
           <Col span={24} style={{ textAlign: 'center' }}>
-            <span style={{ fontSize: '24px' }}>收入 50600.00元</span>
+            <span style={{ fontSize: '24px' }}>
+              收入：
+              <Typography.Text type="success">
+                {tableHeader?.titleIncome}
+              </Typography.Text>
+            </span>
             <span style={{ fontSize: '24px', marginLeft: '12px' }}>
-              支出 14297.50元
+              支出：
+              <Typography.Text type="danger">
+                {tableHeader.titleCost}
+              </Typography.Text>
+            </span>
+          </Col>
+          <Col span={24} style={{ textAlign: 'center' }}>
+            <span>
+              <Typography.Text type="secondary">
+                {tableHeader.titleCostLabel}
+              </Typography.Text>
+            </span>
+            <span style={{ marginLeft: '12px' }}>
+              <Typography.Text type="secondary">
+                {tableHeader.titleIncomeLabel}
+              </Typography.Text>
             </span>
           </Col>
         </Row>
-
-        <Row justify="space-between" align="middle">
+        <Row
+          justify="space-between"
+          align="middle"
+          style={{ marginBottom: '10px' }}
+        >
           <Space>
             <span style={{ fontSize: '12px' }}>账号:{tableHeader?.name}</span>
             <span style={{ fontSize: '12px' }}>{tableHeader?.date}</span>
@@ -340,7 +384,6 @@ const BasicTable = (props: { tableData: any; tableHeader: any }) => {
             />
           </Space>
         </Row>
-
         <Form form={form} component={false}>
           <Table
             rowKey="id"

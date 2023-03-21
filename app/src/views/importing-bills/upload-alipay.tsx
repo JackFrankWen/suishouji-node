@@ -83,11 +83,40 @@ function setCategory(arr: any, rules: any) {
     }
   })
 }
+
+function formateToTableWechatHeader(arr: any) {
+  // 0: ['支付宝交易记录明细查询']
+  // 1: ['账号:[79071077@qq.com]']
+  // 2: ['起始日期:[2023-01-01 00:00:00]    终止日期:[2023-03-19 21:14:30]']
+  // 3: ['---------------------------------交易记录明细列表------------------------------------']
+  // 4: (17) ['交易号                  ', '商家订单号               ', '交易创建时间              ', '付款时间                ', '最近修改时间              ', '交易来源地     ', '类型              ', '交易对方            ', '商品名称                ', '金额（元）   ', '收/支     ', '交易状态    ', '服务费（元）   ', '成功退款（元）  ', '备注                  ', '资金状态     ', '']
+  // 5: ['------------------------------------------------------------------------------------']
+  // 6: ['共201笔记录']
+  // 7: (2) ['已收入:2笔', '13.67元']
+  // 8: (2) ['待收入:0笔', '0.00元']
+  // 9: (2) ['已支出:55笔', '1999.92元']
+  // 10: (2) ['待支出:0笔', '0.00元']
+  // 11: ['导出时间:[2023-03-19 21:14:30]    用户:文素能'
+  const regex = /用户:(.*)/
+  // a regular expression to match the text inside square brackets
+  console.log(arr[11], 'arr[11s')
+  return {
+    name: arr?.[11]?.[0].match(regex)[1],
+    date: arr?.[2],
+    titleCostLabel: arr[9][0],
+    titleCost: arr[9][1],
+    titleIncome: arr[7][1],
+    titleIncomeLabel: arr[7][0],
+  }
+}
+
 const AlipayUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
+  const [tableHeader, setTableHeader] = useState({})
+
   const [uploadVisable, setUploadVisiable] = useState(true)
   const [tableVisable, setTableVisable] = useState(false)
-
+  const ALIPAY = 1
   const uploadProps: UploadProps = {
     name: 'file',
     beforeUpload: (file) => {
@@ -100,7 +129,9 @@ const AlipayUpload = (props: { ruleData: any }) => {
           const csvData = results.data || []
           const csvHeader = [...csvData.slice(0, 5), ...csvData.slice(-7)]
           const csvContent = csvData.slice(5, csvData.length - 7)
-          let tableData: any = formateToTableAlipay(csvContent, 1, 2)
+          let tableProps: any = formateToTableWechatHeader(csvHeader)
+          let tableData: any = formateToTableAlipay(csvContent, ALIPAY, 2)
+
           console.log(tableData, 'csvContent')
           // console.log(csvContent, 'csvHeader')
           tableData = setCategory(tableData, props.ruleData)
@@ -108,6 +139,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
           console.log(csvHeader, 'ppp')
           //   console.log(tableData, '222')
           setTableData(tableData)
+          setTableHeader(tableProps)
           setTableVisable(true)
           setUploadVisiable(false)
         },
@@ -144,7 +176,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
       )}
       {tableVisable && (
         <div className="container">
-          <BasicTable tableData={tableData} />
+          <BasicTable tableData={tableData} tableHeader={tableHeader} />
         </div>
       )}
     </>
