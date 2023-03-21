@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import type { UploadProps } from 'antd'
 import { Upload, Tabs } from 'antd'
-import moment from 'moment'
 import Papa from 'papaparse'
 import './importing-bills.less'
 import BasicTable from './importing-table'
@@ -67,6 +66,7 @@ function setCategory(arr: any, rules: any) {
     }
   })
 }
+
 function formateToTableWechatHeader(arr: any) {
   // 0: (9) ['微信支付账单明细', '', '', '', '', '', '', '', '']
   // 1: (9) ['微信昵称：[Jack Frank]', '', '', '', '', '', '', '', '']
@@ -86,11 +86,18 @@ function formateToTableWechatHeader(arr: any) {
   // 15: (9) ['----------------------微信支付账单明细列表--------------------', '', '', '', '', '', '', '', '']
   // 16: (11) ['交易时间', '交易类
   const regex = /\[(.*?)\]/ // a regular expression to match the text inside square brackets
+  const cost = arr[8][0].split(' ', 2)
+  const income = arr[7][0].split(' ', 2)
   return {
     name: arr[1][0].match(regex)[1],
     date: arr[2],
+    titleCostLabel: cost[0],
+    titleCost: cost[1],
+    titleIncomeLabel: income[0],
+    titleIncome: income[1],
   }
 }
+
 const WechatUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
   const [tableHeader, setTableHeader] = useState({})
