@@ -82,8 +82,12 @@ export interface tableHeader {
   titleIncome: string
   titleIncomeLabel: string
 }
-const BasicTable = (props: { tableData: any; tableHeader: tableHeader }) => {
-  const { tableData, tableHeader } = props
+const BasicTable = (props: {
+  tableData: any
+  tableHeader: tableHeader
+  onCancel: () => void
+}) => {
+  const { tableData, tableHeader, onCancel } = props
   const [form] = Form.useForm()
   const [data, setData] = useState(tableData)
   const [editingKey, setEditingKey] = useState('')
@@ -369,6 +373,7 @@ const BasicTable = (props: { tableData: any; tableHeader: tableHeader }) => {
             <span style={{ fontSize: '12px' }}>{tableHeader?.date}</span>
           </Space>
           <Space>
+            <Button onClick={onCancel}>取消</Button>
             <Button type="primary" onClick={submit}>
               上传
             </Button>

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import type { UploadProps } from 'antd'
 import { Upload, Tabs } from 'antd'
 import './importing-bills.less'
-import WechatUpload from './upload-wetchat'
-import AlipayUpload from './upload-alipay'
+import WechatUpload from './record'
+import AlipayUpload from './upload'
+import Record from './record'
 
 const Home: React.FC = () => {
   const [ruleData, setRuleData] = useState<any>()
@@ -23,24 +24,14 @@ const Home: React.FC = () => {
   }, [])
   const items = [
     {
-      label: (
-        <span>
-          <a className="ri-alipay-fill"></a>
-          支付宝
-        </span>
-      ),
+      label: '导入文件',
       key: '1',
       children: <AlipayUpload ruleData={ruleData} />,
     },
     {
-      label: (
-        <span>
-          <i style={{ color: '#17c317' }} className="ri-wechat-fill"></i>
-          微信
-        </span>
-      ),
+      label: '手动输入',
       key: '2',
-      children: <WechatUpload ruleData={ruleData} />,
+      children: <Record />,
     },
   ]
   return <Tabs defaultActiveKey="1" centered items={items} />
