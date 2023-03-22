@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import type { UploadProps } from 'antd'
+import { Button, Result, UploadProps } from 'antd'
 import { Upload, Tabs } from 'antd'
 import Papa from 'papaparse'
 import './importing-bills.less'
@@ -13,40 +13,43 @@ import {
 } from './upload-utils'
 const { Dragger } = Upload
 
+function setCategory(arr: any, rules: any) {
+  return arr.map((val: any) => {
+    for (const element of rules) {
+      const reg = new RegExp(element.rule)
+      const hasRule = reg.test(val.description)
+      if (hasRule) {
+        return {
+          ...val,
+          category: element.category,
+          consumer: toNumberOrUndefiend(element.consumer),
+          tag: toNumberOrUndefiend(element.tag),
+          cost_type: toNumberOrUndefiend(element.cost_type),
+          abc_type: toNumberOrUndefiend(element.abc_type),
+        }
+      }
+    }
+    return {
+      ...val,
+    }
+  })
+}
+
 const AlipayUpload = (props: { ruleData: any }) => {
   const [tableData, setTableData] = useState([])
   const [tableHeader, setTableHeader] = useState({
     name: '',
     date: '',
     titleCostLabel: '',
+    fileName: '',
     titleCost: '',
     titleIncomeLabel: '',
     titleIncome: '',
   })
-  function setCategory(arr: any, rules: any) {
-    return arr.map((val: any) => {
-      for (const element of rules) {
-        const reg = new RegExp(element.rule)
-        const hasRule = reg.test(val.description)
-        if (hasRule) {
-          return {
-            ...val,
-            category: element.category,
-            consumer: toNumberOrUndefiend(element.consumer),
-            tag: toNumberOrUndefiend(element.tag),
-            cost_type: toNumberOrUndefiend(element.cost_type),
-            abc_type: toNumberOrUndefiend(element.abc_type),
-          }
-        }
-      }
-      return {
-        ...val,
-      }
-    })
-  }
 
   const [uploadVisable, setUploadVisiable] = useState(true)
   const [tableVisable, setTableVisable] = useState(false)
+  const [showResult, setShowResult] = useState(false)
   const ALIPAY = 1
   const uploadProps: UploadProps = {
     name: 'file',
@@ -139,6 +142,11 @@ const AlipayUpload = (props: { ruleData: any }) => {
       {tableVisable && (
         <div className="container">
           <BasicTable
+            onSubmitSuccess={() => {
+              setTableVisable(false)
+              setUploadVisiable(false)
+              setShowResult(true)
+            }}
             tableData={tableData}
             tableHeader={tableHeader}
             onCancel={() => {
@@ -147,6 +155,25 @@ const AlipayUpload = (props: { ruleData: any }) => {
             }}
           />
         </div>
+      )}
+      {showResult && (
+        <Result
+          status="success"
+          title="上传成功"
+          // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
+          extra={[
+            <Button
+              type="primary"
+              onClick={() => {
+                setTableVisable(false)
+                setUploadVisiable(true)
+                setShowResult(false)
+              }}
+            >
+              再次导入
+            </Button>,
+          ]}
+        />
       )}
     </>
   )

@@ -36,7 +36,7 @@ const App: React.FC = () => {
   )
 }
 
-const Record: React.FC<PageProps> = () => {
+const Record = () => {
   return (
     <div className="about flex column center" style={{ height: '100%' }}>
       <Card title="去分析" hoverable>

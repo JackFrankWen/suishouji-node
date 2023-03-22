@@ -59,6 +59,7 @@ export function formateToTableWechatHeader(arr: any) {
   const cost = arr[8][0].split(' ', 2)
   const income = arr[7][0].split(' ', 2)
   return {
+    fileName: arr[0][0],
     name: arr[1][0].match(regex)[1],
     date: arr[2],
     titleCostLabel: cost[0],
@@ -140,6 +141,7 @@ export function formateToTableAlipayHeader(arr: any) {
   // a regular expression to match the text inside square brackets
   console.log(arr[11], 'arr[11s')
   return {
+    fileName: arr[0][0],
     name: arr?.[11]?.[0].match(regex)[1],
     date: arr?.[2],
     titleCostLabel: arr[9][0],

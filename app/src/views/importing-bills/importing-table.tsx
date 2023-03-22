@@ -77,6 +77,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export interface tableHeader {
   name: string
   date: string
+  fileName: string
   titleCostLabel: string
   titleCost: string
   titleIncome: string
@@ -86,8 +87,9 @@ const BasicTable = (props: {
   tableData: any
   tableHeader: tableHeader
   onCancel: () => void
+  onSubmitSuccess: () => void
 }) => {
-  const { tableData, tableHeader, onCancel } = props
+  const { tableData, tableHeader, onCancel, onSubmitSuccess } = props
   const [form] = Form.useForm()
   const [data, setData] = useState(tableData)
   const [editingKey, setEditingKey] = useState('')
@@ -300,6 +302,7 @@ const BasicTable = (props: {
       //
       const res = await $api.insert_many(data)
       console.log(res, 'res')
+      onSubmitSuccess()
     } catch (error) {
       console.log(error)
     }
@@ -369,6 +372,7 @@ const BasicTable = (props: {
           style={{ marginBottom: '10px' }}
         >
           <Space>
+            <span style={{ fontSize: '12px' }}>{tableHeader?.fileName}</span>
             <span style={{ fontSize: '12px' }}>账号:{tableHeader?.name}</span>
             <span style={{ fontSize: '12px' }}>{tableHeader?.date}</span>
           </Space>
