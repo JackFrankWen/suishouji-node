@@ -39,8 +39,6 @@ export function UpdateOne(param: I_MatchRuls & { m_id: string }) {
   delete update._id
   delete update.creation_time
   delete update.modification_time
-  console.log(filter, 'filter')
-  console.log(update, 'update')
   return new Promise((resolve, reject) => {
     MatchRule.findOneAndUpdate(filter, update)
       .then(() => {

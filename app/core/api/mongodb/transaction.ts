@@ -222,7 +222,6 @@ export async function get_account_total_by_date(param: any) {
 export async function get_daily_amount_by_date(param: any) {
   const collection = getCollection()
   if (collection) {
-    console.log(getComonMatch(param), ' getComonMatch(param)')
     const res = await collection.aggregate([
       { $match: getComonMatch(param) },
 
@@ -240,21 +239,22 @@ export async function get_daily_amount_by_date(param: any) {
           amount: {
             $sum: '$amount',
           },
-          child: {
+          children: {
             $push: '$$ROOT',
           },
         },
       },
       {
         $project: {
-          child: 1,
+          children: 1,
           amount: 1,
-          date: '$_id.date',
+          trans_time_formate: '$_id.date',
+          m_id: '$_id.date',
         },
       },
       {
         $sort: {
-          date: 1,
+          trans_time_formate: 1,
         },
       },
     ])

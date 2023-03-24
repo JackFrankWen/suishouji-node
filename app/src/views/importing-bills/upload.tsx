@@ -46,6 +46,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
     titleCost: '',
     titleIncomeLabel: '',
     titleIncome: '',
+    account_type: 0,
   })
 
   const [uploadVisable, setUploadVisiable] = useState(true)
@@ -64,13 +65,11 @@ const AlipayUpload = (props: { ruleData: any }) => {
         complete: function (results: any) {
           console.log(results)
           const csvData = results.data || []
-          const regex = /微信/
           console.log(csvData, 'csvfirs')
           if (/微信/.test(csvData[0][0] || '')) {
             const csvHeader = csvData.slice(0, 17)
             const csvContent = csvData.slice(17)
-            const tableProps: tableHeaderI =
-              formateToTableWechatHeader(csvHeader)
+            const tableProps = formateToTableWechatHeader(csvHeader)
             let tableData: any = formateToTableDataWechat(
               csvContent,
               tableProps.account_type,
@@ -174,6 +173,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
           // subTitle="Order number: 2017182818828182881 Cloud server configuration takes 1-5 minutes, please wait."
           extra={[
             <Button
+              key={1}
               type="primary"
               onClick={() => {
                 setTableVisable(false)

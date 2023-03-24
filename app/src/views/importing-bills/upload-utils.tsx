@@ -5,7 +5,7 @@ export function formateToTableDataWechat(
   account_type: number,
   payment_type: number
 ) {
-  let costArr = arr.filter((subArr: string[]) => !/零钱通/.test(subArr[11]))
+  const costArr = arr.filter((subArr: string[]) => !/零钱通/.test(subArr[11]))
   return costArr.map((subArr) => {
     // 0: "交易时间"
     // 1: "交易类型"

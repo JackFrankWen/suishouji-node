@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Button } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-export default () => {
+export default (props: {
+  formValue: any
+  tableData: any
+  setSelectedRows: (a: any) => void
+}) => {
+  const { formValue, tableData, setSelectedRows } = props
   const [parentSelectedRowKeys, setParentSelectedRowKeys] = useState<any>([])
   const [childSelectedRowKeys, setChildSelectedRowKeys] = useState<any>([])
   console.log(parentSelectedRowKeys, 'parentSelectedRowKeys')
@@ -241,11 +246,17 @@ export default () => {
   }
 
   return (
-    <div>
+    <div className="edit-area">
       <Table
+        rowKey="date"
+        size="small"
         columns={parentColumns}
-        dataSource={dataSource}
-        expandable={{ expandedRowRender }}
+        dataSource={tableData}
+        expandable={{
+          expandedRowKeys: tableData.map((val: any) => val.date),
+          expandIcon: () => <></>,
+          expandedRowRender,
+        }}
         rowSelection={parentRowSelection}
       />
     </div>

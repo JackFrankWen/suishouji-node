@@ -142,18 +142,19 @@ const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
         <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
       </Form.Item>
       <Form.Item shouldUpdate>
-        {() => (
+        <Space>
           <Button type="primary" htmlType="submit">
             批量修改
           </Button>
-        )}
+          <Button htmlType="submit">批量删除</Button>
+        </Space>
       </Form.Item>
     </Form>
   )
 }
 const App: React.FC = () => {
   const [formValue, From] = useAdvancedSearchForm()
-  const [selectedRows, setSelectedRows] = useState()
+  const [selectedRows, setSelectedRows] = useState<string[]>([])
   const [tableData, setTableData] = useState<any>([])
 
   useEffect(() => {
@@ -178,7 +179,9 @@ const App: React.FC = () => {
     console.log({ filter: { selectedRows }, data: { ...val } }, 'updata')
     try {
       const res = await $api.updateMany({
-        filter: { category: selectedRows },
+        filter: {
+          category: selectedRows.filter((val: string) => val.length !== 10),
+        },
         data: { ...val },
       })
       if (res.modifiedCount) {
