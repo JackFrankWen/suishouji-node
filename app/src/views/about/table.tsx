@@ -94,10 +94,10 @@ export default () => {
     selected: any,
     selectedRows: any
   ) => {
-    let patentArr: any = [...parentSelectedRowKeys]
+    const patentArr: any = [...parentSelectedRowKeys]
     let childArr: any = [...childSelectedRowKeys]
     //setChildArr：选择父Table下的所有子选项
-    let setChildArr = dataSource
+    const setChildArr = dataSource
       .find((d: any) => d.key === record.key)
       .childData.map((item: any) => item.key)
     //第一步  判断selected   true：选中，false，取消选中
@@ -157,7 +157,7 @@ export default () => {
     //record:当前操作行
     //selected选中状态
     //selectedRows:选择的数组
-    let childArr: any = [...childSelectedRowKeys]
+    const childArr: any = [...childSelectedRowKeys]
     //第一步  判断selected   true：选中，false：取消选中
     if (selected) {
       childArr.push(record.key)
@@ -167,12 +167,12 @@ export default () => {
         1
       )
     }
-    selectedRows = selectedRows.filter((a: any) => a !== undefined)
+    const neWselectedRows = selectedRows.filter((a: any) => a !== undefined)
     //第二步，判断selectedRows的长度是否为data中child的长度，相等，就将父table选中，不等就不选中
     for (let item of dataSource) {
       if (item.childData.find((d: any) => d.key === record.key)) {
         let parentArr: any = [...parentSelectedRowKeys]
-        if (item.childData.length === selectedRows.length) {
+        if (item.childData.length === neWselectedRows.length) {
           parentArr.push(item.key)
         } else {
           if (parentArr.length && parentArr.find((d: any) => d === item.key)) {

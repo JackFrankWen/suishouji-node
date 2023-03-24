@@ -20,7 +20,7 @@ import moment from 'moment'
 
 import React, { useEffect, useState } from 'react'
 import TableView from './daily-table'
-import './log-viewer.less'
+import './accounting.less'
 const { Option } = Select
 
 const useAdvancedSearchForm = () => {
@@ -33,7 +33,7 @@ const useAdvancedSearchForm = () => {
   const [formData, setFormData] = useState(initialValues)
 
   const onFinish = (values: any) => {
-    console.log('Received values of form: ', values)
+    console.log('搜索', values)
     setFormData(values)
   }
 
@@ -63,6 +63,12 @@ const useAdvancedSearchForm = () => {
           </Form.Item>
           <Form.Item name="tag">
             <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
+          </Form.Item>
+          <Form.Item name="abc_type">
+            <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
+          </Form.Item>
+          <Form.Item name="cost_type">
+            <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
           </Form.Item>
           <Form.Item name="payment_type">
             <SelectWrap
@@ -129,6 +135,12 @@ const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
       <Form.Item name="payment_type">
         <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
+      <Form.Item name="abc_type">
+        <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
+      </Form.Item>
+      <Form.Item name="cost_type">
+        <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
+      </Form.Item>
       <Form.Item shouldUpdate>
         {() => (
           <Button type="primary" htmlType="submit">
@@ -150,7 +162,10 @@ const App: React.FC = () => {
 
   const getDailyAmountTotal = async (data: any) => {
     try {
-      const res = await $api.getDailyAmountTotal(getDateTostring(data))
+      const res = await $api.getDailyAmountTotal({
+        ...data,
+        ...getDateTostring(data),
+      })
       if (res) {
         setTableData(res)
         console.log(res, 'res')

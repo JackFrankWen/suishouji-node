@@ -74,9 +74,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
   )
 }
 
-export interface tableHeader {
+export interface tableHeaderI {
   name: string
   date: string
+  account_type: number
   fileName: string
   titleCostLabel: string
   titleCost: string
@@ -85,7 +86,7 @@ export interface tableHeader {
 }
 const BasicTable = (props: {
   tableData: any
-  tableHeader: tableHeader
+  tableHeader: tableHeaderI
   onCancel: () => void
   onSubmitSuccess: () => void
 }) => {

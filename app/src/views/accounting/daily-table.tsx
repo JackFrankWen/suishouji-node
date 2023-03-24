@@ -1,4 +1,4 @@
-import { Table } from 'antd'
+import { Table, Tag } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
 import type { TableColumnsType } from 'antd'
@@ -6,6 +6,13 @@ import type { TableColumnsType } from 'antd'
 import React, { useEffect, useState } from 'react'
 import './log-viewer.less'
 import { getDateTostring } from '@/src/components/utils'
+import {
+  abc_type,
+  account_type,
+  cost_type,
+  payment_type,
+  tag_type,
+} from '@/core/api/const/web'
 
 interface DataType {
   name: string
@@ -15,8 +22,20 @@ interface DataType {
 }
 
 interface ExpandedDataType {
-  name: string
-  age: string
+  trans_time_formate: string
+  amount: string
+  category: string
+  description: string
+  account_type: number
+  payment_type: number
+  consumer: number
+  flow_type: number
+  tag: number
+  abc_type: number
+  cost_type: number
+  creation_time: Date
+  trans_time: Date
+  modification_time: Date
 }
 
 const columns: ColumnsType<DataType> = [
@@ -55,24 +74,72 @@ const expandedRowRender = (setSelectedRows: any) => (record: DataType) => {
       width: 120,
     },
 
-    { title: '成员', dataIndex: 'consumer', key: 'consumer' },
-    { title: '账户', dataIndex: 'account_type', key: 'account_type' },
-    // { title: '付款方式', dataIndex: 'payment_type', key: 'payment_type' },
-    // { title: '标签', dataIndex: 'tag', key: 'tag' },
-    // { title: '消费目的', dataIndex: 'tag', key: 'tag' },
-    // { title: 'ABC分类', dataIndex: 'tag', key: 'tag', ellipsis: true },
-    // {
-    //   title: '创建日期',
-    //   dataIndex: 'creation_time_formate',
-    //   key: 'creation_time',
-    //   ellipsis: true,
-    // },
-    // {
-    //   title: '最后修改',
-    //   dataIndex: 'modification_time_formate',
-    //   key: 'modification_time',
-    //   ellipsis: true,
-    // },
+    {
+      title: '消费者',
+      width: 80,
+      dataIndex: 'consumer',
+      key: 'consumer',
+      render: (val: number) => {
+        const consumer_type = {
+          1: '老公',
+          2: '老婆',
+          3: '家庭',
+          4: '牧牧',
+        }
+        if (val === 1) {
+          return <Tag color="cyan">{consumer_type[val]}</Tag>
+        } else if (val === 2) {
+          return <Tag color="magenta">{consumer_type[val]}</Tag>
+        } else if (val === 3) {
+          return <Tag color="geekblue">{consumer_type[val]}</Tag>
+        } else if (val === 4) {
+          return <Tag color="orange">{consumer_type[val]}</Tag>
+        }
+      },
+    },
+
+    {
+      title: '付款方式',
+      dataIndex: 'payment_type',
+      width: 90,
+      render: (val: number) => (val ? payment_type[val] : ''),
+    },
+    {
+      title: '账户',
+      dataIndex: 'account_type',
+      width: 90,
+      render: (val: number) => (val ? account_type[val] : ''),
+    },
+    {
+      title: '标签',
+      dataIndex: 'tag',
+      width: 90,
+      render: (val: number) => (val ? tag_type[val] : ''),
+    },
+    {
+      title: 'ABC类',
+      dataIndex: 'abc_type',
+      width: 80,
+      render: (val: number) => (val ? abc_type[val] : ''),
+    },
+    {
+      title: '消费方式',
+      dataIndex: 'cost_type',
+      width: 100,
+      render: (val: number) => (val ? cost_type[val] : ''),
+    },
+    {
+      title: '创建日期',
+      dataIndex: 'creation_time_formate',
+      key: 'creation_time',
+      ellipsis: true,
+    },
+    {
+      title: '最后修改',
+      dataIndex: 'modification_time_formate',
+      key: 'modification_time',
+      ellipsis: true,
+    },
   ]
   // rowSelection objects indicates the need for row selection
   const rowSelection: TableRowSelection<ExpandedDataType> = {
@@ -99,6 +166,7 @@ const expandedRowRender = (setSelectedRows: any) => (record: DataType) => {
       rowSelection={{ ...rowSelection }}
       dataSource={record.child}
       pagination={false}
+      scroll={{ x: 1200 }}
     />
   )
 }

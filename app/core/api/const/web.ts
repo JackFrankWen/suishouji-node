@@ -22,9 +22,9 @@ export const tag_type = {
   4: '牛单独',
 }
 export const abc_type = {
-  1: 'A类（必要）',
-  2: 'B类（可有可无）',
-  3: 'C类（可削减）',
+  1: '必要开支',
+  2: '可有可无',
+  3: '过度开支',
 }
 export const cost_type = {
   1: '生存开销',

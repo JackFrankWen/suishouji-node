@@ -7,6 +7,7 @@ export async function getDailyAmountTotal(params: {
   start: string
   end: string
 }) {
+  console.log(params, 'getDailyAmountTotal')
   const result = await get_daily_amount_by_date(params)
   return tranferDailyAmountTotal(result)
 }

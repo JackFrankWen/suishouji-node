@@ -11,6 +11,7 @@ import {
   formateToTableDataWechat,
   formateToTableWechatHeader,
 } from './upload-utils'
+import { tableHeaderI } from './importing-table'
 const { Dragger } = Upload
 
 function setCategory(arr: any, rules: any) {
@@ -51,6 +52,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
   const [tableVisable, setTableVisable] = useState(false)
   const [showResult, setShowResult] = useState(false)
   const ALIPAY = 1
+  const WECHAT = 2
   const uploadProps: UploadProps = {
     name: 'file',
     fileList: [],
@@ -63,12 +65,17 @@ const AlipayUpload = (props: { ruleData: any }) => {
           console.log(results)
           const csvData = results.data || []
           const regex = /微信/
-          console.log(csvData[0][0], 'csvfirs')
+          console.log(csvData, 'csvfirs')
           if (/微信/.test(csvData[0][0] || '')) {
             const csvHeader = csvData.slice(0, 17)
             const csvContent = csvData.slice(17)
-            let tableData: any = formateToTableDataWechat(csvContent, 2, 2)
-            let tableProps: any = formateToTableWechatHeader(csvHeader)
+            const tableProps: tableHeaderI =
+              formateToTableWechatHeader(csvHeader)
+            let tableData: any = formateToTableDataWechat(
+              csvContent,
+              tableProps.account_type,
+              WECHAT
+            )
             tableData = setCategory(tableData, props.ruleData)
             // setTableData()
             console.log(tableProps, 'tableProps')
@@ -79,8 +86,12 @@ const AlipayUpload = (props: { ruleData: any }) => {
           } else if (/支付宝/.test(csvData[0][0] || '')) {
             const csvHeader = [...csvData.slice(0, 5), ...csvData.slice(-7)]
             const csvContent = csvData.slice(5, csvData.length - 7)
-            let tableProps: any = formateToTableAlipayHeader(csvHeader)
-            let tableData: any = formateToTableAlipay(csvContent, ALIPAY, 2)
+            const tableProps = formateToTableAlipayHeader(csvHeader)
+            let tableData: any = formateToTableAlipay(
+              csvContent,
+              tableProps.account_type,
+              ALIPAY
+            )
 
             // console.log(csvContent, 'csvHeader')
             tableData = setCategory(tableData, props.ruleData)

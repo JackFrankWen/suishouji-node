@@ -1,8 +1,11 @@
 export function getDateTostring(obj: any): { start: string; end: string } {
-  return {
+  const returnV = {
+    ...obj,
     start: obj.date[0].format('YYYY-MM-DD HH:mm:ss'),
     end: obj.date[1].format('YYYY-MM-DD HH:mm:ss'),
   }
+  delete returnV.date
+  return returnV
 }
 
 export function roundToTwoDecimalPlaces(number: any): string {

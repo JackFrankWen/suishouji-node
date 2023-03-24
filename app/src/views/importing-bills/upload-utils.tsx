@@ -1,3 +1,5 @@
+import { tableHeaderI } from './importing-table'
+
 export function formateToTableDataWechat(
   arr: string[][],
   account_type: number,
@@ -37,7 +39,7 @@ export function formateToTableDataWechat(
   })
 }
 
-export function formateToTableWechatHeader(arr: any) {
+export function formateToTableWechatHeader(arr: any): tableHeaderI {
   // 0: (9) ['微信支付账单明细', '', '', '', '', '', '', '', '']
   // 1: (9) ['微信昵称：[Jack Frank]', '', '', '', '', '', '', '', '']
   // 2: (9) ['起始时间：[2023-02-16 00:00:00] 终止时间：[2023-03-16 10:51:23]', '', '', '', '', '', '', '', '']
@@ -58,9 +60,11 @@ export function formateToTableWechatHeader(arr: any) {
   const regex = /\[(.*?)\]/ // a regular expression to match the text inside square brackets
   const cost = arr[8][0].split(' ', 2)
   const income = arr[7][0].split(' ', 2)
+  const matchName = arr[1][0].match(regex)[1]
   return {
     fileName: arr[0][0],
-    name: arr[1][0].match(regex)[1],
+    name: matchName,
+    account_type: /Jack/.test(matchName) ? 1 : 2,
     date: arr[2],
     titleCostLabel: cost[0],
     titleCost: cost[1],
@@ -124,7 +128,7 @@ export function formateToTableAlipay(
   })
 }
 
-export function formateToTableAlipayHeader(arr: any) {
+export function formateToTableAlipayHeader(arr: any): tableHeaderI {
   // 0: ['支付宝交易记录明细查询']
   // 1: ['账号:[79071077@qq.com]']
   // 2: ['起始日期:[2023-01-01 00:00:00]    终止日期:[2023-03-19 21:14:30]']
@@ -140,9 +144,12 @@ export function formateToTableAlipayHeader(arr: any) {
   const regex = /用户:(.*)/
   // a regular expression to match the text inside square brackets
   console.log(arr[11], 'arr[11s')
+  const matchName = arr?.[11]?.[0].match(regex)[1]
   return {
     fileName: arr[0][0],
-    name: arr?.[11]?.[0].match(regex)[1],
+    name: matchName,
+    account_type: /文素能/.test(matchName) ? 1 : 2,
+
     date: arr?.[2],
     titleCostLabel: arr[9][0],
     titleCost: arr[9][1],

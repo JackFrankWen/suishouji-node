@@ -14,12 +14,28 @@ function removeUndefinedProps(obj: MyObject): MyObject {
   return newObj
 }
 function getComonMatch(param: any) {
-  const { start, end, consumer, category } = param
+  const {
+    start,
+    end,
+    consumer,
+    category,
+    abc_type,
+    tag,
+    account_type,
+    payment_type,
+    cost_type,
+  } = param
+
   const match = removeUndefinedProps({
     trans_time: { $gte: new Date(start), $lte: new Date(end) },
     flow_type: 1,
     consumer,
+    tag,
     category,
+    abc_type,
+    payment_type,
+    account_type,
+    cost_type,
   })
   return match
 }
@@ -60,8 +76,6 @@ export async function get_every_month_amount(param: { start: any; end: any }) {
   const collection = getCollection()
   if (collection) {
     const match = getComonMatch(param)
-    console.log(param, 'param')
-    console.log(match, 'qqq')
 
     const res = await collection
       // @ts-ignore
@@ -208,6 +222,7 @@ export async function get_account_total_by_date(param: any) {
 export async function get_daily_amount_by_date(param: any) {
   const collection = getCollection()
   if (collection) {
+    console.log(getComonMatch(param), ' getComonMatch(param)')
     const res = await collection.aggregate([
       { $match: getComonMatch(param) },
 
