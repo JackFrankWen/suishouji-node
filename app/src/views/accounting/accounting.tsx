@@ -10,6 +10,7 @@ import {
   Form,
   Input,
   message,
+  Popconfirm,
   Radio,
   Row,
   Select,
@@ -101,9 +102,12 @@ const useAdvancedSearchForm = () => {
   return [formData, cpt]
 }
 
-const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
+const BatchUpdateArea = (props: {
+  onBatchUpdate: (val: any) => void
+  onBatchDelete: () => void
+}) => {
   const [form] = Form.useForm()
-  const { onBatchUpdate } = props
+  const { onBatchUpdate, onBatchDelete } = props
   const onFinish = (values: any) => {
     onBatchUpdate(values)
     console.log('Finish:', values)
@@ -119,8 +123,8 @@ const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
       onFinish={onFinish}
       onValuesChange={onValuesChange}
     >
-      <Form.Item name="categroy">
-        <Cascader options={category_type} placeholder="请选择分类" />
+      <Form.Item name="category">
+        <Cascader options={category_type} allowClear placeholder="请选择分类" />
       </Form.Item>
       <Form.Item name="account_type">
         <SelectWrap
@@ -146,7 +150,17 @@ const BatchUpdateArea = (props: { onBatchUpdate: (val: any) => void }) => {
           <Button type="primary" htmlType="submit">
             批量修改
           </Button>
-          <Button htmlType="submit">批量删除</Button>
+          <Popconfirm
+            title="是否批量删除"
+            onConfirm={() => {
+              onBatchDelete()
+            }}
+            onCancel={() => {}}
+            okText="确定"
+            cancelText="取消"
+          >
+            <Button>批量删除</Button>
+          </Popconfirm>
         </Space>
       </Form.Item>
     </Form>
@@ -176,13 +190,26 @@ const App: React.FC = () => {
     }
   }
   const onBatchUpdate = async (val: any) => {
-    console.log({ filter: { selectedRows }, data: { ...val } }, 'updata')
+    console.log(
+      {
+        filter: { selectedRows },
+        data: {
+          ...val,
+          category: val.category ? JSON.stringify(val.category) : undefined,
+        },
+      },
+      'updata'
+    )
+    console.log(val.category, ' val.category')
     try {
       const res = await $api.updateMany({
         filter: {
-          category: selectedRows.filter((val: string) => val.length !== 10),
+          ids: selectedRows.filter((val: string) => val.length !== 10),
         },
-        data: { ...val },
+        data: {
+          ...val,
+          category: val?.category ? JSON.stringify(val.category) : undefined,
+        },
       })
       if (res.modifiedCount) {
         getDailyAmountTotal(formValue)
@@ -191,11 +218,28 @@ const App: React.FC = () => {
       console.log(res, 'update sucess')
     } catch (error) {}
   }
+  const onBatchDelete = async () => {
+    try {
+      const res = await $api.deleteMany({
+        filter: {
+          ids: selectedRows.filter((val: string) => val.length !== 10),
+        },
+      })
+      if (res.deletedCount) {
+        getDailyAmountTotal(formValue)
+        setSelectedRows([])
+        message.success(`成功删除${res.deletedCount}记录`)
+      }
+    } catch (error) {}
+  }
 
   return (
     <div className="record-page">
       {From}
-      <BatchUpdateArea onBatchUpdate={onBatchUpdate} />
+      <BatchUpdateArea
+        onBatchUpdate={onBatchUpdate}
+        onBatchDelete={onBatchDelete}
+      />
       <TableView
         formValue={formValue}
         tableData={tableData}

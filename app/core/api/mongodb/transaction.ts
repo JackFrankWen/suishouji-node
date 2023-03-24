@@ -296,10 +296,11 @@ export async function get_cost_record(param: any) {
 export async function update_many(param: { filter: any; data: any }) {
   const { data, filter } = param
   const collection = getCollection()
+  console.log(removeUndefinedProps(data), '      removeUndefinedProps(data')
   if (collection) {
     const res = await collection.updateMany(
       {
-        _id: { $in: filter.category },
+        _id: { $in: filter.ids },
       },
       removeUndefinedProps(data)
     )
@@ -307,6 +308,18 @@ export async function update_many(param: { filter: any; data: any }) {
   }
   return []
 }
+export async function delete_many(param: { filter: any }) {
+  const { filter } = param
+  const collection = getCollection()
+  if (collection) {
+    const res = await collection.deleteMany({
+      _id: { $in: filter.ids },
+    })
+    return res
+  }
+  return []
+}
+
 /**
  * 批量插入
  * @date 2023-03-06

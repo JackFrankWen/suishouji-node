@@ -1,7 +1,11 @@
 import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import moment from 'moment'
 import { getCategoryObj } from '../const/category'
-import { get_daily_amount_by_date, update_many } from '../mongodb/transaction'
+import {
+  delete_many,
+  get_daily_amount_by_date,
+  update_many,
+} from '../mongodb/transaction'
 
 export async function getDailyAmountTotal(params: {
   start: string
@@ -12,6 +16,10 @@ export async function getDailyAmountTotal(params: {
 }
 export async function updateMany(params: { filter: any; data: any }) {
   const result = await update_many(params)
+  return result
+}
+export async function deleteMany(params: { filter: any }) {
+  const result = await delete_many(params)
   return result
 }
 
