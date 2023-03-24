@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { Card } from 'antd'
 import { Button, Form, Input, Radio } from 'antd'
+import SelectWrap from '@/src/components/form/SelectWrap'
+import { cpt_const } from '@/core/api/const/web'
 
 type LayoutType = Parameters<typeof Form>[0]['layout']
 
@@ -23,11 +25,18 @@ const App: React.FC = () => {
           <Radio.Button value="inline">Inline</Radio.Button>
         </Radio.Group>
       </Form.Item>
-      <Form.Item label="Field A">
-        <Input placeholder="input placeholder" />
+      <Form.Item name="account_type">
+        <SelectWrap
+          style={{ width: '100px' }}
+          placeholder="账户"
+          options={cpt_const.account_type}
+        />
       </Form.Item>
-      <Form.Item label="Field B">
-        <Input placeholder="input placeholder" />
+      <Form.Item name="tag">
+        <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
+      </Form.Item>
+      <Form.Item name="payment_type">
+        <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
       <Form.Item>
         <Button type="primary">Submit</Button>

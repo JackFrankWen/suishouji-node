@@ -325,10 +325,8 @@ const BasicTable = (props: {
           <Table.Summary.Cell index={1}>
             <a>{totalCost}</a>
           </Table.Summary.Cell>
-        </Table.Summary.Row>
-        <Table.Summary.Row>
-          <Table.Summary.Cell index={0}>收入</Table.Summary.Cell>
-          <Table.Summary.Cell index={1}>
+          <Table.Summary.Cell index={2}>收入</Table.Summary.Cell>
+          <Table.Summary.Cell index={3}>
             <a>{totalIncome}</a>
           </Table.Summary.Cell>
         </Table.Summary.Row>

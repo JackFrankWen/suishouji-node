@@ -1,7 +1,7 @@
 import React from 'react'
 import { Tooltip } from 'antd'
 
-import AppSideMenus from './side-menus.json'
+import AppSideMenus from './side-menus'
 import './app-sidebar.less'
 
 interface SideMenuItem {

@@ -125,23 +125,30 @@ const RuleTable = () => {
       return
     }
     try {
-      const res = await $api.UpdateOne({
+      const res: any = await $api.UpdateOne({
         ...record,
         rule: record.rule.concat(`|${input}`),
       })
+      if (res.code === 200) {
+        setVisiable(false)
+      }
+
       console.log(res, 'res')
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
   return (
     <>
       <Table columns={columns} dataSource={ruleData} scroll={{ x: 1500 }} />
       <Modal
-        title="Basic Modal"
+        title="新增规则"
         open={visiable}
         onOk={onSubmit}
         onCancel={() => setVisiable(false)}
       >
         <Input
+          placeholder="输入规则"
           value={input}
           onChange={(e) => {
             setInput(e.target.value)
