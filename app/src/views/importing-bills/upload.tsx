@@ -11,7 +11,6 @@ import {
   formateToTableDataWechat,
   formateToTableWechatHeader,
 } from './upload-utils'
-import { tableHeaderI } from './importing-table'
 const { Dragger } = Upload
 
 function setCategory(arr: any, rules: any) {
@@ -69,39 +68,47 @@ const AlipayUpload = (props: { ruleData: any }) => {
           if (/微信/.test(csvData[0][0] || '')) {
             const csvHeader = csvData.slice(0, 17)
             const csvContent = csvData.slice(17)
-            const tableProps = formateToTableWechatHeader(csvHeader)
-            let tableData: any = formateToTableDataWechat(
-              csvContent,
-              tableProps.account_type,
-              WECHAT
-            )
-            tableData = setCategory(tableData, props.ruleData)
-            // setTableData()
-            console.log(tableProps, 'tableProps')
-            setTableData(tableData)
-            setTableHeader(tableProps)
-            setTableVisable(true)
-            setUploadVisiable(false)
+            try {
+              const tableProps = formateToTableWechatHeader(csvHeader)
+              let tableData: any = formateToTableDataWechat(
+                csvContent,
+                tableProps.account_type,
+                WECHAT
+              )
+              tableData = setCategory(tableData, props.ruleData)
+              // setTableData()
+              console.log(tableProps, 'tableProps')
+              setTableData(tableData)
+              setTableHeader(tableProps)
+              setTableVisable(true)
+              setUploadVisiable(false)
+            } catch (error) {
+              console.error(error)
+            }
           } else if (/支付宝/.test(csvData[0][0] || '')) {
             const csvHeader = [...csvData.slice(0, 5), ...csvData.slice(-7)]
             const csvContent = csvData.slice(5, csvData.length - 7)
-            const tableProps = formateToTableAlipayHeader(csvHeader)
-            let tableData: any = formateToTableAlipay(
-              csvContent,
-              tableProps.account_type,
-              ALIPAY
-            )
+            try {
+              const tableProps = formateToTableAlipayHeader(csvHeader)
+              let tableData: any = formateToTableAlipay(
+                csvContent,
+                tableProps.account_type,
+                ALIPAY
+              )
 
-            // console.log(csvContent, 'csvHeader')
-            tableData = setCategory(tableData, props.ruleData)
-            //   // setTableData()
-            console.log(csvHeader, 'ppp')
-            //   console.log(tableData, '222')
-            setTableData(tableData)
-            setTableHeader(tableProps)
-            setTableVisable(true)
-            setUploadVisiable(false)
-            console.log('支付宝')
+              // console.log(csvContent, 'csvHeader')
+              tableData = setCategory(tableData, props.ruleData)
+              //   // setTableData()
+              console.log(csvHeader, 'ppp')
+              //   console.log(tableData, '222')
+              setTableData(tableData)
+              setTableHeader(tableProps)
+              setTableVisable(true)
+              setUploadVisiable(false)
+              console.log('支付宝')
+            } catch (error) {
+              console.error(error)
+            }
           }
         },
       })
@@ -182,6 +189,16 @@ const AlipayUpload = (props: { ruleData: any }) => {
               }}
             >
               再次导入
+            </Button>,
+            <Button
+              key={2}
+              onClick={() => {
+                setTableVisable(false)
+                setUploadVisiable(true)
+                setShowResult(false)
+              }}
+            >
+              去查看
             </Button>,
           ]}
         />

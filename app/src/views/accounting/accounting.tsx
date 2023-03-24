@@ -47,12 +47,12 @@ const useAdvancedSearchForm = () => {
     >
       <Row gutter={24}>
         <Space>
-          <Form.Item name="member">
+          <Form.Item name="exist">
             <Radio.Group>
               <Radio.Button value="1">正常</Radio.Button>
               <Radio.Button value="2">分类无</Radio.Button>
               <Radio.Button value="3">ABC无</Radio.Button>
-              <Radio.Button value="4">可削减</Radio.Button>
+              <Radio.Button value="4">消费目的无</Radio.Button>
             </Radio.Group>
           </Form.Item>
           <Form.Item name="account_type">
@@ -177,9 +177,19 @@ const App: React.FC = () => {
 
   const getDailyAmountTotal = async (data: any) => {
     try {
+      const exsit: any = {}
+      if (data.exist === 1) {
+      } else if (data.exist === '2') {
+        exsit.category = { $exists: false }
+      } else if (data.exist === '3') {
+        exsit.abc_type = { $exists: false }
+      } else if (data.exist === '4') {
+        exsit.cost_type = { $exists: false }
+      }
       const res = await $api.getDailyAmountTotal({
         ...data,
         ...getDateTostring(data),
+        ...exsit,
       })
       if (res) {
         setTableData(res)
