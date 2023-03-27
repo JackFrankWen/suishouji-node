@@ -5,12 +5,24 @@ import SelectWrap from '@/src/components/form/SelectWrap'
 import { cpt_const } from '@/core/api/const/web'
 import { category_type } from '@/core/api/const/category'
 
-type LayoutType = Parameters<typeof Form>[0]['layout']
-
-const App: React.FC = () => {
+const RuleForm: React.FC = () => {
   const [form] = Form.useForm()
 
-  const onFormLayoutChange = ({ layout }: { layout: LayoutType }) => {}
+  const onFormLayoutChange = ({ category }: { category: [number, number] }) => {
+    console.log(category, 'category')
+    if (category) {
+      const found = category_type.find((val) => val.value === category[0])
+      const obj = found?.children.find((val) => val.value === category[1])
+      if (obj) {
+        Object.keys(obj).forEach((key) => {
+          console.log(key)
+          if (!['value', 'label'].includes(key)) {
+            form.setFieldValue(key, obj[key])
+          }
+        })
+      }
+    }
+  }
 
   return (
     <Form
@@ -19,18 +31,11 @@ const App: React.FC = () => {
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      <Form.Item name="Rule">
+      <Form.Item name="rule">
         <Input placeholder="规则" />
       </Form.Item>
       <Form.Item name="category">
         <Cascader options={category_type} allowClear placeholder="请选择分类" />
-      </Form.Item>
-      <Form.Item name="account_type">
-        <SelectWrap
-          style={{ width: '100px' }}
-          placeholder="账户"
-          options={cpt_const.account_type}
-        />
       </Form.Item>
       <Form.Item name="tag">
         <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
@@ -38,27 +43,17 @@ const App: React.FC = () => {
       <Form.Item name="payment_type">
         <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
-      <Form.Item name="abc_type">
-        <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
-      </Form.Item>
       <Form.Item name="cost_type">
         <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
       </Form.Item>
+      <Form.Item name="abc_type">
+        <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
+      </Form.Item>
       <Form.Item>
-        <Button type="primary">Submit</Button>
+        <Button type="primary">提交</Button>
       </Form.Item>
     </Form>
   )
 }
 
-const Record = () => {
-  return (
-    <div className="about flex column center" style={{ height: '100%' }}>
-      <Card title="去分析" hoverable>
-        <App />
-      </Card>
-    </div>
-  )
-}
-
-export default Record
+export default RuleForm

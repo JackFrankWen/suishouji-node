@@ -6,7 +6,7 @@ import { getDateTostring } from '@/src/components/utils'
 import {
   Button,
   Cascader,
-  Col,
+  Drawer,
   Form,
   Input,
   message,
@@ -22,11 +22,14 @@ import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import TableView from './daily-table'
 import './accounting.less'
+import RuleForm from '../about/rule-form'
 const { Option } = Select
 const { Search } = Input
 
 const useAdvancedSearchForm = () => {
   const [form] = Form.useForm()
+  const [open, setOpen] = useState(false)
+
   const now = moment() // get the current date/time in Moment.js format
 
   const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
@@ -37,6 +40,13 @@ const useAdvancedSearchForm = () => {
   const onFinish = (values: any) => {
     console.log('搜索', values)
     setFormData(values)
+  }
+  const showDrawer = () => {
+    setOpen(true)
+  }
+
+  const onClose = () => {
+    setOpen(false)
   }
   const classifyItem = async () => {
     const data = form.getFieldsValue(true)
@@ -116,11 +126,22 @@ const useAdvancedSearchForm = () => {
             </Button>
           </Form.Item>
           <Form.Item>
-            <Button>规则</Button>
+            <Button onClick={showDrawer}>规则</Button>
           </Form.Item>
           <Form.Item>
             <Button onClick={classifyItem}>一键分类</Button>
           </Form.Item>
+          {open && (
+            <Drawer
+              title="Basic Drawer"
+              placement="right"
+              onClose={onClose}
+              maskClosable={false}
+              open={open}
+            >
+              <RuleForm />
+            </Drawer>
+          )}
         </Space>
       </Row>
     </Form>
