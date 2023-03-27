@@ -23,6 +23,7 @@ import React, { useEffect, useState } from 'react'
 import TableView from './daily-table'
 import './accounting.less'
 const { Option } = Select
+const { Search } = Input
 
 const useAdvancedSearchForm = () => {
   const [form] = Form.useForm()
@@ -37,7 +38,21 @@ const useAdvancedSearchForm = () => {
     console.log('搜索', values)
     setFormData(values)
   }
-
+  const classifyItem = async () => {
+    const data = form.getFieldsValue(true)
+    try {
+      const res = await $api.autoClassify({
+        ...data,
+        ...getDateTostring(data),
+        ...handleExist({ exist: '2' }),
+      })
+      if (res.modifiedCount) {
+        message.success(`成功更行了${res.modifiedCount}条`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const cpt = (
     <Form
       form={form}
@@ -88,12 +103,23 @@ const useAdvancedSearchForm = () => {
             <RangePickerWrap bordered placeholder="placeholder" />
           </Form.Item>
           <Form.Item name="description">
-            <Input placeholder="输入描述" />
+            <Search
+              placeholder="input search text"
+              onSearch={(val) => {
+                console.log(val, 'string')
+              }}
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
-              Search
+              查询
             </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button>规则</Button>
+          </Form.Item>
+          <Form.Item>
+            <Button onClick={classifyItem}>一键分类</Button>
           </Form.Item>
         </Space>
       </Row>
@@ -166,6 +192,19 @@ const BatchUpdateArea = (props: {
     </Form>
   )
 }
+
+function handleExist(data: any) {
+  const exsit: any = {}
+  if (data.exist === 1) {
+  } else if (data.exist === '2') {
+    exsit.category = { $exists: false }
+  } else if (data.exist === '3') {
+    exsit.abc_type = { $exists: false }
+  } else if (data.exist === '4') {
+    exsit.cost_type = { $exists: false }
+  }
+  return { ...exsit }
+}
 const App: React.FC = () => {
   const [formValue, From] = useAdvancedSearchForm()
   const [selectedRows, setSelectedRows] = useState<string[]>([])
@@ -177,19 +216,10 @@ const App: React.FC = () => {
 
   const getDailyAmountTotal = async (data: any) => {
     try {
-      const exsit: any = {}
-      if (data.exist === 1) {
-      } else if (data.exist === '2') {
-        exsit.category = { $exists: false }
-      } else if (data.exist === '3') {
-        exsit.abc_type = { $exists: false }
-      } else if (data.exist === '4') {
-        exsit.cost_type = { $exists: false }
-      }
       const res = await $api.getDailyAmountTotal({
         ...data,
         ...getDateTostring(data),
-        ...exsit,
+        ...handleExist(data),
       })
       if (res) {
         setTableData(res)

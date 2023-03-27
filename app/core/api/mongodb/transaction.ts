@@ -4,7 +4,7 @@ import { I_Transaction } from './transaction-schema'
 interface MyObject {
   [key: string]: any
 }
-function removeUndefinedProps(obj: MyObject): MyObject {
+export function removeUndefinedProps(obj: MyObject): MyObject {
   const newObj: MyObject = {}
   for (const key in obj) {
     if (obj.hasOwnProperty(key) && obj[key] !== undefined) {
@@ -13,7 +13,7 @@ function removeUndefinedProps(obj: MyObject): MyObject {
   }
   return newObj
 }
-function getComonMatch(param: any) {
+export function getComonMatch(param: any) {
   const {
     start,
     end,
@@ -293,7 +293,10 @@ export async function get_cost_record(param: any) {
  * @param {any} param:any
  * @returns {any}
  */
-export async function update_many(param: { filter: any; data: any }) {
+export async function update_many(param: {
+  filter: { ids: string[] }
+  data: any
+}) {
   const { data, filter } = param
   const collection = getCollection()
   console.log(removeUndefinedProps(data), '      removeUndefinedProps(data')
@@ -305,6 +308,43 @@ export async function update_many(param: { filter: any; data: any }) {
       removeUndefinedProps(data)
     )
     return res
+  }
+  return []
+}
+/**
+ * 批量更新
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function update_many_with_diff_value(
+  param: {
+    query: any
+    update: any
+  }[]
+) {
+  const collection = getCollection()
+  if (collection) {
+    const bulkOps = param.map((obj) => ({
+      updateOne: {
+        filter: obj.query,
+        update: {
+          $set: { ...obj.update },
+        },
+      },
+    }))
+    return new Promise((resolve, reject) => {
+      collection
+        .bulkWrite(bulkOps)
+        .then((result: any) => {
+          resolve(result)
+          console.log(`${result.modifiedCount} transactions updated.`)
+        })
+        .catch((err: any) => {
+          reject(err)
+          console.error(err)
+        })
+    })
   }
   return []
 }
@@ -331,6 +371,27 @@ export async function insert_many(param: I_Transaction[]) {
   return new Promise((resovle, reject) => {
     collection
       .insertMany(param)
+      .then((res: any) => {
+        resovle(res)
+      })
+      .catch((error: any) => {
+        console.log(error)
+        reject(error)
+      })
+  })
+}
+
+/**
+ * 查询
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function find(param: any) {
+  const collection = getCollection()
+  return new Promise((resovle, reject) => {
+    collection
+      .find(getComonMatch(param))
       .then((res: any) => {
         resovle(res)
       })

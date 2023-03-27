@@ -19,12 +19,8 @@ const App: React.FC = () => {
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      <Form.Item label="Form Layout" name="layout">
-        <Radio.Group>
-          <Radio.Button value="horizontal">Horizontal</Radio.Button>
-          <Radio.Button value="vertical">Vertical</Radio.Button>
-          <Radio.Button value="inline">Inline</Radio.Button>
-        </Radio.Group>
+      <Form.Item name="Rule">
+        <Input placeholder="规则" />
       </Form.Item>
       <Form.Item name="category">
         <Cascader options={category_type} allowClear placeholder="请选择分类" />
@@ -41,6 +37,12 @@ const App: React.FC = () => {
       </Form.Item>
       <Form.Item name="payment_type">
         <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
+      </Form.Item>
+      <Form.Item name="abc_type">
+        <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
+      </Form.Item>
+      <Form.Item name="cost_type">
+        <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
       </Form.Item>
       <Form.Item>
         <Button type="primary">Submit</Button>
