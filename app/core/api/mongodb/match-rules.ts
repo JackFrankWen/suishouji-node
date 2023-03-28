@@ -32,16 +32,12 @@ function getId(data: any) {
  * @param {any} param:{start:any;end:any}
  * @returns {any}
  */
-export function UpdateOne(param: I_MatchRuls & { m_id: string }) {
-  const filter = { _id: param.m_id }
-  const update: Partial<I_MatchRuls & { m_id: string; _id: any }> = { ...param }
-  delete update.m_id
-  delete update._id
-  delete update.creation_time
-  delete update.modification_time
+export function UpdateOne(param: { filter: any; update: any }) {
+  console.log(param, 'param')
   return new Promise((resolve, reject) => {
-    MatchRule.findOneAndUpdate(filter, update)
-      .then(() => {
+    MatchRule.findOneAndUpdate(param.filter, param.update)
+      .then((res) => {
+        console.log(res)
         resolve({ code: 200 })
       })
       .catch((error) => {

@@ -126,14 +126,16 @@ const RuleTable = () => {
     }
     try {
       const res: any = await $api.UpdateOne({
-        ...record,
-        rule: record.rule.concat(`|${input}`),
+        filter: { _id: record.m_id },
+        update: {
+          rule: record.rule.concat(`|${input}`),
+        },
       })
       if (res.code === 200) {
         setVisiable(false)
+        getRuleData()
+        message.success('修改成功')
       }
-
-      console.log(res, 'res')
     } catch (error) {
       console.log(error)
     }
