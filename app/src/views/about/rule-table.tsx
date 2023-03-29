@@ -4,10 +4,21 @@ import {
   cost_type,
   tag_type,
 } from '@/core/api/const/web'
-import { Input, message, Modal, Space, Table, Tag } from 'antd'
+import {
+  Drawer,
+  Form,
+  Input,
+  message,
+  Modal,
+  Space,
+  Table,
+  Tag,
+  Button,
+} from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import React, { useEffect, useState } from 'react'
 import { getCategoryString } from '@/core/api/const/category'
+import RuleForm from './rule-form'
 
 interface DataType {
   key: string
@@ -19,6 +30,7 @@ interface DataType {
 
 const RuleTable = () => {
   const [ruleData, setRuleData] = useState<any>()
+  const [isUpdate, setIsUpdate] = useState<boolean>()
   const getRuleData = async () => {
     try {
       const res = await $api.getALlMatchRule()
@@ -45,10 +57,13 @@ const RuleTable = () => {
       title: '规则',
       dataIndex: 'rule',
       render: (ru: string) => {
-        const arr = ru.split('|')
-        return arr.map((str: string, key: number) => {
-          return <Tag key={key}>{str}</Tag>
-        })
+        if (ru && ru.includes('|')) {
+          const arr = ru.split('|')
+          return arr.map((str: string, key: number) => {
+            return <Tag key={key}>{str}</Tag>
+          })
+        }
+        return ru
       },
     },
     {
@@ -102,13 +117,23 @@ const RuleTable = () => {
           <a
             onClick={() => {
               setVisiable(true)
+              setIsUpdate(false)
               setRecord(record)
               console.log(record)
             }}
           >
             新增
           </a>
-          <i className="ri-edit-box-line"></i>
+          <a
+            onClick={() => {
+              setVisiable(true)
+              setIsUpdate(true)
+              setRecord(record)
+              console.log(record)
+            }}
+          >
+            修改
+          </a>
         </Space>
       ),
     },
@@ -140,23 +165,51 @@ const RuleTable = () => {
       console.log(error)
     }
   }
+  const refresh = () => {
+    setVisiable(false)
+    getRuleData()
+  }
   return (
     <>
-      <Table columns={columns} dataSource={ruleData} scroll={{ x: 1500 }} />
-      <Modal
-        title="新增规则"
-        open={visiable}
-        onOk={onSubmit}
-        onCancel={() => setVisiable(false)}
-      >
-        <Input
-          placeholder="输入规则"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value)
-          }}
-        />
-      </Modal>
+      <Table
+        columns={columns}
+        dataSource={ruleData}
+        pagination={{
+          defaultPageSize: 10,
+          pageSizeOptions: [10, 20, 50],
+          showSizeChanger: true,
+        }}
+        scroll={{ x: 1500 }}
+      />
+      {visiable && (
+        <Drawer
+          title="Basic Drawer"
+          placement="right"
+          open={visiable}
+          onClose={() => setVisiable(false)}
+        >
+          {isUpdate ? (
+            <RuleForm data={record} refresh={refresh} />
+          ) : (
+            <Form>
+              <Form.Item>
+                <Input
+                  placeholder="输入规则"
+                  value={input}
+                  onChange={(e) => {
+                    setInput(e.target.value)
+                  }}
+                />
+              </Form.Item>
+              <Form.Item>
+                <Button type="primary" onClick={onSubmit}>
+                  提交
+                </Button>
+              </Form.Item>
+            </Form>
+          )}
+        </Drawer>
+      )}
     </>
   )
 }

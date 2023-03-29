@@ -4,10 +4,10 @@ import { Schema, Types } from 'mongoose'
 export interface I_MatchRuls {
   rule: string
   category: string
-  consumer: string
+  consumer: number
   abc_type: number
   cost_type: number
-  tag: string
+  tag: number
   creation_time: Date
   modification_time: Date
 }
@@ -16,10 +16,10 @@ export const matchRuleSchema = new Schema<I_MatchRuls>(
   {
     rule: String,
     category: String,
-    consumer: String,
+    consumer: Number,
     abc_type: Number,
     cost_type: Number,
-    tag: String,
+    tag: Number,
     creation_time: { type: Date, default: Date.now },
     modification_time: { type: Date, default: Date.now },
   },

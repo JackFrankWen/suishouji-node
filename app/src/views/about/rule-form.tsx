@@ -1,13 +1,25 @@
 import React, { useState } from 'react'
-import { Card, Cascader } from 'antd'
+import { Card, Cascader, message } from 'antd'
 import { Button, Form, Input, Radio } from 'antd'
 import SelectWrap from '@/src/components/form/SelectWrap'
 import { cpt_const } from '@/core/api/const/web'
 import { category_type } from '@/core/api/const/category'
+import { toNumberOrUndefiend } from '@/src/components/utils'
 
-const RuleForm: React.FC = () => {
+const RuleForm = (props: {
+  data?: {
+    m_id: string
+    rule: string
+    category?: string
+    consumer?: string
+    abc_type?: number
+    cost_type?: number
+    tag?: string
+  }
+  refresh: () => void
+}) => {
   const [form] = Form.useForm()
-
+  const { data } = props
   const onFormLayoutChange = ({ category }: { category: [number, number] }) => {
     console.log(category, 'category')
     if (category) {
@@ -23,17 +35,58 @@ const RuleForm: React.FC = () => {
       }
     }
   }
+  const submitRule = async () => {
+    const { data, refresh } = props
+
+    const formValue = form.getFieldsValue()
+    let res: any
+    try {
+      console.log(formValue, 'formValue ')
+      if (data?.m_id) {
+        res = await $api.UpdateOne({
+          filter: { _id: data.m_id },
+          update: {
+            ...formValue,
+            category: JSON.stringify(formValue.category),
+          },
+        })
+        console.log(res)
+      } else {
+        res = await $api.updateOrInsertRule({
+          ...formValue,
+          category: JSON.stringify(formValue.category),
+        })
+      }
+      if (res?.code === 200) {
+        message.success('操作成功')
+        refresh()
+      }
+      console.log(res)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  console.log(data, 'data')
 
   return (
     <Form
       layout="vertical"
       form={form}
+      initialValues={{
+        category: data?.category ? JSON.parse(data?.category) : undefined,
+        abc_type: toNumberOrUndefiend(data?.abc_type),
+        cost_type: toNumberOrUndefiend(data?.cost_type),
+        tag: toNumberOrUndefiend(data?.tag),
+        consumer: toNumberOrUndefiend(data?.consumer),
+      }}
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      <Form.Item name="rule">
-        <Input placeholder="规则" />
-      </Form.Item>
+      {!data?.m_id && (
+        <Form.Item name="rule">
+          <Input placeholder="规则" />
+        </Form.Item>
+      )}
       <Form.Item name="category">
         <Cascader options={category_type} allowClear placeholder="请选择分类" />
       </Form.Item>
@@ -50,7 +103,9 @@ const RuleForm: React.FC = () => {
         <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
       </Form.Item>
       <Form.Item>
-        <Button type="primary">提交</Button>
+        <Button type="primary" onClick={submitRule}>
+          提交
+        </Button>
       </Form.Item>
     </Form>
   )

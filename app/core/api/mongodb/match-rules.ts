@@ -1,6 +1,7 @@
 import { model, connect } from 'mongoose'
+import { Await } from 'react-router-dom'
 import { I_MatchRuls, matchRuleSchema } from './match-rules-schema'
-
+import { removeUndefinedProps } from './transaction'
 const MatchRule = model('MatchRule', matchRuleSchema)
 
 /**
@@ -16,6 +17,9 @@ export async function getALlMatchRule() {
   } catch (error) {
     console.log(error)
   }
+  // return new Promise((resolve,reject)=>{
+  //   MatchRule.find({}).then()
+  // })
 }
 
 function getId(data: any) {
@@ -28,20 +32,40 @@ function getId(data: any) {
 }
 
 /**
- * 查询每个月总支出
+ * findANdupadte
  * @param {any} param:{start:any;end:any}
  * @returns {any}
  */
 export function UpdateOne(param: { filter: any; update: any }) {
   console.log(param, 'param')
   return new Promise((resolve, reject) => {
-    MatchRule.findOneAndUpdate(param.filter, param.update)
+    MatchRule.findOneAndUpdate(param.filter, removeUndefinedProps(param.update))
       .then((res) => {
-        console.log(res)
-        resolve({ code: 200 })
+        resolve({ code: 200, ...res })
       })
       .catch((error) => {
         reject(error)
       })
   })
+}
+export async function CreateRule(param: any) {
+  try {
+    const p = new MatchRule({ ...param })
+    const res = await p.save()
+    return res
+  } catch (error) {}
+}
+/**
+ * findANdupadte
+ * @param {any} param:{start:any;end:any}
+ * @returns {any}
+ */
+export async function RuleFind(param: any) {
+  try {
+    console.log(param, 'param')
+    const query = MatchRule.findOne({ ...param }).lean()
+    return query
+  } catch (error) {
+    console.log(error)
+  }
 }

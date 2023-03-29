@@ -38,7 +38,6 @@ const useAdvancedSearchForm = () => {
   const [formData, setFormData] = useState(initialValues)
 
   const onFinish = (values: any) => {
-    console.log('搜索', values)
     setFormData(values)
   }
   const showDrawer = () => {
@@ -139,7 +138,11 @@ const useAdvancedSearchForm = () => {
               maskClosable={false}
               open={open}
             >
-              <RuleForm />
+              <RuleForm
+                refresh={() => {
+                  onClose()
+                }}
+              />
             </Drawer>
           )}
         </Space>
@@ -156,7 +159,6 @@ const BatchUpdateArea = (props: {
   const [form] = Form.useForm()
   const { onBatchUpdate, onBatchDelete } = props
   const onFinish = (values: any) => {
-    onBatchUpdate(values)
     console.log('Finish:', values)
   }
   const onValuesChange = (data: any) => {

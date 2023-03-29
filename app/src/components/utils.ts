@@ -17,6 +17,9 @@ export function roundToTwoDecimalPlaces(number: any): string {
   return Number(number).toFixed(2)
 }
 export function toNumberOrUndefiend(number: any): number | undefined {
+  if (!number) {
+    return undefined
+  }
   // 判断参数是否为数字类型或可转化为数字类型
   if (isNaN(Number(number))) {
     return undefined
