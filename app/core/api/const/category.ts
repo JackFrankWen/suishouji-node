@@ -60,6 +60,7 @@ export const category_type = [
         label: '工作餐',
         tag: general_cost,
         cost_type: basic,
+        abc_type: a,
       },
       {
         value: 10006,

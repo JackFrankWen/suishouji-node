@@ -15,7 +15,6 @@ import {
   update_many,
   update_many_with_diff_value,
 } from '../mongodb/transaction'
-import { I_Transaction } from '../mongodb/transaction-schema'
 
 export async function getDailyAmountTotal(params: {
   start: string

@@ -99,7 +99,7 @@ const RuleTable = () => {
     {
       title: 'ABC类',
       dataIndex: 'abc_type',
-      width: 80,
+      width: 100,
       render: (val: number) => (val ? abc_type[val] : ''),
     },
     {
