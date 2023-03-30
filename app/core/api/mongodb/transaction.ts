@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { getCollection } from './db'
 import { I_Transaction } from './transaction-schema'
 
@@ -25,9 +26,19 @@ export function getComonMatch(param: any) {
     payment_type,
     cost_type,
   } = param
+  console.log(
+    {
+      start,
+      end,
+    },
+    'dddd'
+  )
 
   const match = removeUndefinedProps({
-    trans_time: { $gte: new Date(start), $lte: new Date(end) },
+    trans_time: {
+      $gte: moment(start).add(8, 'hours').toDate(),
+      $lte: moment(end).add(8, 'hours').toDate(),
+    },
     flow_type: 1,
     consumer,
     tag,
@@ -222,6 +233,7 @@ export async function get_account_total_by_date(param: any) {
 export async function get_daily_amount_by_date(param: any) {
   const collection = getCollection()
   if (collection) {
+    console.log(getComonMatch(param), 'getComonMatch(param)s')
     const res = await collection.aggregate([
       { $match: getComonMatch(param) },
 

@@ -32,8 +32,10 @@ const RangePickerWrap = (props: {
   const { bordered = false, onChange, value, placeholder } = props
 
   const [date, setDate] = useState<any>(value)
+  const [open, setOpen] = useState<boolean>(false)
   const setClickDate = (val: any) => {
     setDate(val)
+    setOpen(false)
     if (onChange) onChange(val)
   }
   const renderExtraFooter = () => {
@@ -54,9 +56,11 @@ const RangePickerWrap = (props: {
   return (
     <RangePicker
       value={date}
+      open={open}
       format="YYYY-MM-DD"
       onChange={(dates) => setClickDate(dates)}
       bordered={bordered}
+      onOpenChange={(visiable) => setOpen(visiable)}
       renderExtraFooter={renderExtraFooter}
     />
   )

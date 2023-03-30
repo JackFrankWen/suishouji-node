@@ -108,7 +108,7 @@ const useAdvancedSearchForm = () => {
           <Form.Item name="date" label="交易">
             <RangePickerWrap bordered placeholder="placeholder" />
           </Form.Item>
-          <Form.Item name="create_date" label="创建时间">
+          <Form.Item name="create_date" label="创建">
             <RangePickerWrap bordered placeholder="placeholder" />
           </Form.Item>
           <Form.Item name="description">
@@ -253,17 +253,6 @@ const App: React.FC = () => {
     }
   }
   const onBatchUpdate = async (val: any) => {
-    console.log(
-      {
-        filter: { selectedRows },
-        data: {
-          ...val,
-          category: val.category ? JSON.stringify(val.category) : undefined,
-        },
-      },
-      'updata'
-    )
-    console.log(val.category, ' val.category')
     try {
       const res = await $api.updateMany({
         filter: {
