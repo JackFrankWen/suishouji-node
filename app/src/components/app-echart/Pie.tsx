@@ -20,6 +20,7 @@ const Pie = (props: {
         // Try 'horizontal'
         orient: 'vertical',
         right: 10,
+        data: data.map((val) => val.name),
         top: 'center',
       },
       series: [
