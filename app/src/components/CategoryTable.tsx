@@ -142,6 +142,7 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
         columns={columns}
         expandable={{
           indentSize: 0,
+          expandRowByClick: true,
           expandedRowRender: expandedRowRender(onRowClick),
         }}
         dataSource={props.data}

@@ -134,20 +134,12 @@ const TableView = (props: {
   setSelectedRows: (a: any) => void
 }) => {
   const { formValue, setSelectedRows, tableData } = props
+  const [selectedRowKeys, setKeys] = useState([])
   const rowSelection: TableRowSelection<DataType> = {
+    selectedRowKeys,
     onChange: (selectedRowKeys, selectedRows) => {
       setSelectedRows(selectedRowKeys)
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        'selectedRows: ',
-        selectedRows
-      )
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows)
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-      console.log(selected, selectedRows, changeRows)
+      setKeys(selectedRowKeys)
     },
   }
   return (
