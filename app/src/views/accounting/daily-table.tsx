@@ -18,10 +18,13 @@ interface DataType {
   name: string
   age: number
   address: string
+  m_id: string
+
   child: ExpandedDataType[]
 }
 
 interface ExpandedDataType {
+  m_id: string
   trans_time_formate: string
   amount: string
   category: string
@@ -131,16 +134,26 @@ const columns: ColumnsType<DataType> = [
 const TableView = (props: {
   formValue: any
   tableData: any
+  selectedRows: React.Key[]
   setSelectedRows: (a: any) => void
 }) => {
-  const { formValue, setSelectedRows, tableData } = props
-  const [selectedRowKeys, setKeys] = useState([])
+  const { selectedRows = [], setSelectedRows, tableData } = props
   const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys,
-    onChange: (selectedRowKeys, selectedRows) => {
+    selectedRowKeys: selectedRows,
+    onChange: (selectedRowKeys: React.Key[], selectedRows) => {
       setSelectedRows(selectedRowKeys)
-      setKeys(selectedRowKeys)
     },
+  }
+  console.log(selectedRows, 'selectedRows')
+  const selectRow = (record: ExpandedDataType | DataType) => {
+    const selectedRowKeys = [...selectedRows]
+    console.log(record, 'record')
+    if (selectedRowKeys.indexOf(record.m_id) >= 0) {
+      selectedRowKeys.splice(selectedRowKeys.indexOf(record.m_id), 1)
+    } else {
+      selectedRowKeys.push(record.m_id)
+    }
+    setSelectedRows(selectedRowKeys)
   }
   return (
     <div className="edit-area">
@@ -148,6 +161,11 @@ const TableView = (props: {
         rowKey="m_id"
         size="small"
         columns={columns}
+        onRow={(record) => ({
+          onClick: () => {
+            selectRow(record)
+          },
+        })}
         expandable={{
           expandIcon: () => <></>,
           defaultExpandAllRows: true,

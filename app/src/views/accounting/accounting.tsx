@@ -160,6 +160,7 @@ const BatchUpdateArea = (props: {
   const { onBatchUpdate, onBatchDelete } = props
   const onFinish = (values: any) => {
     console.log('Finish:', values)
+    onBatchUpdate(values)
   }
   const onValuesChange = (data: any) => {
     console.log(data, 'data')
@@ -265,6 +266,7 @@ const App: React.FC = () => {
       })
       if (res.modifiedCount) {
         getDailyAmountTotal(formValue)
+        setSelectedRows([])
         message.success(`成功${res.modifiedCount}记录`)
       }
       console.log(res, 'update sucess')
@@ -293,6 +295,7 @@ const App: React.FC = () => {
         onBatchDelete={onBatchDelete}
       />
       <TableView
+        selectedRows={selectedRows}
         formValue={formValue}
         tableData={tableData}
         setSelectedRows={(a) => {
