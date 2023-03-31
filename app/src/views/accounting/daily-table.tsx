@@ -5,6 +5,8 @@ import type { TableColumnsType } from 'antd'
 
 import React, { useEffect, useState } from 'react'
 import './log-viewer.less'
+import TableSettingTool from '@/src/components/TableSettingTool'
+
 import { getDateTostring } from '@/src/components/utils'
 import {
   abc_type,
@@ -138,6 +140,7 @@ const TableView = (props: {
   setSelectedRows: (a: any) => void
 }) => {
   const { selectedRows = [], setSelectedRows, tableData } = props
+  const [tableCol, setTableCol] = useState(columns)
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys: selectedRows,
     onChange: (selectedRowKeys: React.Key[], selectedRows) => {
@@ -157,10 +160,19 @@ const TableView = (props: {
   }
   return (
     <div className="edit-area">
+      <TableSettingTool
+        defaultColumns={[...columns]}
+        onChange={(checkedGroup: string[]) => {
+          const data = columns.filter((data: any) =>
+            checkedGroup.includes(data.dataIndex)
+          )
+          setTableCol(data)
+        }}
+      />
       <Table
         rowKey="m_id"
         size="small"
-        columns={columns}
+        columns={tableCol}
         onRow={(record) => ({
           onClick: () => {
             selectRow(record)

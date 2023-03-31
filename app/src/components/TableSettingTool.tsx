@@ -62,7 +62,7 @@ function TableSettingTool(props: {
     setIndeterminate(!!val.length && val.length < defaultValue.length)
 
     setValue(val)
-    onChange(data)
+    onChange(data.map((data: any) => data.dataIndex))
   }
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
     setValue(e.target.checked ? defaultValue : [])
