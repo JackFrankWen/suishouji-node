@@ -2,7 +2,7 @@ import { category_type } from '@/core/api/const/category'
 import { cpt_const } from '@/core/api/const/web'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import SelectWrap from '@/src/components/form/SelectWrap'
-import { getDateTostring } from '@/src/components/utils'
+import { getDateTostring, toNumberOrUndefiend } from '@/src/components/utils'
 import {
   Button,
   Cascader,
@@ -86,6 +86,12 @@ const useAdvancedSearchForm = () => {
               options={cpt_const.account_type}
             />
           </Form.Item>
+          <Form.Item name="consumer">
+            <SelectWrap
+              placeholder="消费成员"
+              options={cpt_const.consumer_type}
+            />
+          </Form.Item>
           <Form.Item name="tag">
             <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
           </Form.Item>
@@ -162,8 +168,21 @@ const BatchUpdateArea = (props: {
     console.log('Finish:', values)
     onBatchUpdate(values)
   }
-  const onValuesChange = (data: any) => {
-    console.log(data, 'data')
+  const onValuesChange = ({ category }: { category: [number, number] }) => {
+    console.log(form.getFieldValue(), 'category')
+
+    if (category) {
+      const found = category_type.find((val) => val.value === category[0])
+      const obj = found?.children.find((val) => val.value === category[1])
+      if (obj) {
+        Object.keys(obj).forEach((key) => {
+          console.log(key)
+          if (!['value', 'label'].includes(key)) {
+            form.setFieldValue(key, obj[key])
+          }
+        })
+      }
+    }
   }
   return (
     <Form
@@ -171,10 +190,28 @@ const BatchUpdateArea = (props: {
       className="batch-update-area"
       layout="inline"
       onFinish={onFinish}
-      onValuesChange={onValuesChange}
     >
       <Form.Item name="category">
-        <Cascader options={category_type} allowClear placeholder="请选择分类" />
+        <Cascader
+          options={category_type}
+          onChange={(category) => {
+            const found = category_type.find((val) => val.value === category[0])
+            const obj: any = found?.children.find(
+              (val) => val.value === category[1]
+            )
+
+            form.setFieldsValue({
+              account_type: undefined,
+              payment_type: undefined,
+              tag: toNumberOrUndefiend(obj?.tag),
+              abc_type: toNumberOrUndefiend(obj?.abc_type),
+              consumer: toNumberOrUndefiend(obj?.consumer),
+              cost_type: toNumberOrUndefiend(obj?.cost_type),
+            })
+          }}
+          allowClear
+          placeholder="请选择分类"
+        />
       </Form.Item>
       <Form.Item name="account_type">
         <SelectWrap
@@ -189,6 +226,9 @@ const BatchUpdateArea = (props: {
       <Form.Item name="payment_type">
         <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
+      <Form.Item name="consumer">
+        <SelectWrap placeholder="消费成员" options={cpt_const.consumer_type} />
+      </Form.Item>
       <Form.Item name="abc_type">
         <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
       </Form.Item>
@@ -196,7 +236,7 @@ const BatchUpdateArea = (props: {
         <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
       </Form.Item>
       <Form.Item shouldUpdate>
-        <Space>
+        <Space.Compact>
           <Button type="primary" htmlType="submit">
             批量修改
           </Button>
@@ -211,7 +251,7 @@ const BatchUpdateArea = (props: {
           >
             <Button>批量删除</Button>
           </Popconfirm>
-        </Space>
+        </Space.Compact>
       </Form.Item>
     </Form>
   )
