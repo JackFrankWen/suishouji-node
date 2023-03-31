@@ -39,12 +39,14 @@ const RangePickerWrap = (props: {
     if (onChange) onChange(val)
   }
   const renderExtraFooter = () => {
+    const curMonth = getFirstDayAndLastDay(0, 'month')
     const lastMonth = getFirstDayAndLastDay(1, 'month')
     const lastTwoMonth = getFirstDayAndLastDay(2, 'month')
     const lastYear = getFirstDayAndLastDay(1, 'year')
     const lastTwoyear = getFirstDayAndLastDay(2, 'year')
     return (
       <Space>
+        <a onClick={() => setClickDate(curMonth)}>当月</a>
         <a onClick={() => setClickDate(lastMonth)}>上月</a>
         <a onClick={() => setClickDate(lastTwoMonth)}>上上月</a>
         <a onClick={() => setClickDate(lastYear)}>去年</a>

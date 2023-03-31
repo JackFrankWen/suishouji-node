@@ -15,6 +15,7 @@ import {
   payment_type,
   tag_type,
 } from '@/core/api/const/web'
+import moment from 'moment'
 
 interface DataType {
   name: string
@@ -42,7 +43,8 @@ interface ExpandedDataType {
   trans_time: Date
   modification_time: Date
 }
-
+const formatTime = (val: string) =>
+  val ? moment(val).format('YYYY-MM-DD HH:MM:SS') : ''
 const columns: ColumnsType<DataType> = [
   {
     title: '交易日期',
@@ -121,13 +123,16 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: '创建日期',
-    dataIndex: 'creation_time_formate',
+    dataIndex: 'creation_time',
+    render: formatTime,
     key: 'creation_time',
     ellipsis: true,
   },
   {
     title: '最后修改',
     dataIndex: 'modification_time_formate',
+    render: formatTime,
+
     key: 'modification_time',
     ellipsis: true,
   },

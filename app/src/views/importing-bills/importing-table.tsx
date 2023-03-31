@@ -256,11 +256,15 @@ const BasicTable = (props: {
           </span>
         ) : (
           <Space>
-            <i
-              className="ri-delete-bin-line"
-              onClick={() => onDelete(record)}
-              style={{ color: 'red' }}
-            ></i>
+            <Popconfirm
+              title="Are you sure to delete this task?"
+              onConfirm={() => onDelete(record)}
+              onCancel={() => {}}
+              okText="Yes"
+              cancelText="No"
+            >
+              <i className="ri-delete-bin-line" style={{ color: 'red' }}></i>
+            </Popconfirm>
           </Space>
         )
       },

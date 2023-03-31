@@ -12,9 +12,7 @@ export interface I_Transaction {
   tag: number
   abc_type: number
   cost_type: number
-  creation_time: Date
   trans_time: Date
-  modification_time: Date
 }
 
 export const transactionSchema = new Schema<I_Transaction>(
@@ -30,8 +28,9 @@ export const transactionSchema = new Schema<I_Transaction>(
     abc_type: Number,
     cost_type: Number,
     trans_time: Date,
-    creation_time: { type: Date, default: Date.now },
-    modification_time: { type: Date, default: Date.now },
   },
-  { collection: 'transaction' }
+  {
+    collection: 'transaction',
+    timestamps: { createdAt: 'creation_time', updatedAt: 'modification_time' },
+  }
 )
