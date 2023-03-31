@@ -146,8 +146,9 @@ const BasicTable = (props: {
     {
       title: '金额',
       dataIndex: 'amount',
-      render: (val: string) => {
-        return val ? `¥${val}` : ''
+      render: (val: string, { flow_type }: { flow_type: number }) => {
+        const type = flow_type === 1 ? 'danger' : 'success'
+        return val ? <Typography.Text type={type}>¥{val}</Typography.Text> : ''
       },
       editable: true,
       width: 100,
@@ -200,7 +201,12 @@ const BasicTable = (props: {
       dataIndex: 'flow_type',
       width: 80,
       defaultCheck: false,
-      render: (val: number) => (val === 1 ? '支出' : '收入'),
+      render: (val: number) =>
+        val === 1 ? (
+          <Typography.Text type="danger">支出</Typography.Text>
+        ) : (
+          <Typography.Text type="success">收入</Typography.Text>
+        ),
     },
     {
       title: '标签',

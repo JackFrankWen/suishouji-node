@@ -95,6 +95,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
                 tableProps.account_type,
                 ALIPAY
               )
+              console.log(tableData, 'tableData')
 
               // console.log(csvContent, 'csvHeader')
               tableData = setCategory(tableData, props.ruleData)
