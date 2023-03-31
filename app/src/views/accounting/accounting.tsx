@@ -168,22 +168,6 @@ const BatchUpdateArea = (props: {
     console.log('Finish:', values)
     onBatchUpdate(values)
   }
-  const onValuesChange = ({ category }: { category: [number, number] }) => {
-    console.log(form.getFieldValue(), 'category')
-
-    if (category) {
-      const found = category_type.find((val) => val.value === category[0])
-      const obj = found?.children.find((val) => val.value === category[1])
-      if (obj) {
-        Object.keys(obj).forEach((key) => {
-          console.log(key)
-          if (!['value', 'label'].includes(key)) {
-            form.setFieldValue(key, obj[key])
-          }
-        })
-      }
-    }
-  }
   return (
     <Form
       form={form}
