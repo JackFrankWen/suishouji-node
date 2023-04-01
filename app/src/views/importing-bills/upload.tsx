@@ -4,6 +4,8 @@ import { Upload, Tabs } from 'antd'
 import Papa from 'papaparse'
 import './importing-bills.less'
 import BasicTable from './importing-table'
+import { Link } from 'react-router-dom'
+
 import { toNumberOrUndefiend } from '@/src/components/utils'
 import {
   formateToTableAlipay,
@@ -191,16 +193,9 @@ const AlipayUpload = (props: { ruleData: any }) => {
             >
               再次导入
             </Button>,
-            <Button
-              key={2}
-              onClick={() => {
-                setTableVisable(false)
-                setUploadVisiable(true)
-                setShowResult(false)
-              }}
-            >
-              去查看
-            </Button>,
+            <Link key={2} to="/Accounting">
+              <Button>去查看</Button>
+            </Link>,
           ]}
         />
       )}

@@ -421,8 +421,11 @@ const BasicTable = (props: {
             rowClassName="editable-row"
             summary={tableSummary}
             scroll={{ x: 1500 }}
+            // pagination={false}
             pagination={{
               showSizeChanger: true,
+              defaultPageSize: 50,
+              pageSizeOptions: [50, 100, 200, 500],
               onChange: cancel,
             }}
           />
