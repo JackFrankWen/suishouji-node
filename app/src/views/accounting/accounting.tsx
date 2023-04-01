@@ -38,7 +38,13 @@ const useAdvancedSearchForm = () => {
   const [formData, setFormData] = useState(initialValues)
 
   const onFinish = (values: any) => {
-    setFormData(values)
+    const searchVal = {
+      ...values,
+      description: values.description
+        ? { $regex: values.description }
+        : undefined,
+    }
+    setFormData(searchVal)
   }
   const showDrawer = () => {
     setOpen(true)
@@ -165,7 +171,6 @@ const BatchUpdateArea = (props: {
   const [form] = Form.useForm()
   const { onBatchUpdate, onBatchDelete } = props
   const onFinish = (values: any) => {
-    console.log('Finish:', values)
     onBatchUpdate(values)
   }
   return (

@@ -25,6 +25,7 @@ export function getComonMatch(param: any) {
     account_type,
     payment_type,
     cost_type,
+    description,
   } = param
   console.log(
     {
@@ -40,6 +41,7 @@ export function getComonMatch(param: any) {
       $lte: moment(end).toDate(),
     },
     flow_type: 1,
+    description,
     consumer,
     tag,
     category,
