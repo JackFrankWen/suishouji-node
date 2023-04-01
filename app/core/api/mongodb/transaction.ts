@@ -36,8 +36,8 @@ export function getComonMatch(param: any) {
 
   const match = removeUndefinedProps({
     trans_time: {
-      $gte: moment(start).add(8, 'hours').toDate(),
-      $lte: moment(end).add(8, 'hours').toDate(),
+      $gte: moment(start).toDate(),
+      $lte: moment(end).toDate(),
     },
     flow_type: 1,
     consumer,
@@ -56,24 +56,28 @@ function addCommonFeilds() {
       $dateToString: {
         format: '%Y-%m-%d',
         date: '$trans_time',
+        timezone: '+08:00',
       },
     },
     trans_time_formate: {
       $dateToString: {
         format: '%Y-%m-%d %H:%M:%S',
         date: '$trans_time',
+        timezone: '+08:00',
       },
     },
     creation_time_formate: {
       $dateToString: {
         format: '%Y-%m-%d %H:%M:%S',
         date: '$creation_time',
+        timezone: '+08:00',
       },
     },
     modification_time_formate: {
       $dateToString: {
         format: '%Y-%m-%d %H:%M:%S',
         date: '$modification_time',
+        timezone: '+08:00',
       },
     },
   }
@@ -266,7 +270,7 @@ export async function get_daily_amount_by_date(param: any) {
       },
       {
         $sort: {
-          trans_time_formate: 1,
+          trans_time_formate: -1,
         },
       },
     ])

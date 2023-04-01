@@ -123,15 +123,15 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: '创建日期',
-    dataIndex: 'creation_time',
-    render: formatTime,
+    dataIndex: 'creation_time_formate',
+    // render: formatTime,
     key: 'creation_time',
     ellipsis: true,
   },
   {
     title: '最后修改',
     dataIndex: 'modification_time_formate',
-    render: formatTime,
+    // render: formatTime,
 
     key: 'modification_time',
     ellipsis: true,
