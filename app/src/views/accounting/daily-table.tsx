@@ -1,13 +1,10 @@
 import { Table, Tag } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
-import type { TableColumnsType } from 'antd'
 
 import React, { useEffect, useState } from 'react'
-import './log-viewer.less'
 import TableSettingTool from '@/src/components/TableSettingTool'
 
-import { getDateTostring } from '@/src/components/utils'
 import {
   abc_type,
   account_type,

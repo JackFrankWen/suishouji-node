@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
   const lastDayOfYear = now.clone().endOf('year') // get
-  const initialValues = { type: 'year', date: [firstDayOfYear, lastDayOfYear] }
+  const initialValues = { date: [firstDayOfYear, lastDayOfYear] }
 
   const [formValue, setFormValue] = useState(initialValues)
   const [selectedRows, setSelectedRows] = useState<string[]>([])
