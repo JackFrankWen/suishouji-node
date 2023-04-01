@@ -23,19 +23,15 @@ import React, { useEffect, useState } from 'react'
 import TableView from './daily-table'
 import './accounting.less'
 import RuleForm from '../about/rule-form'
-const { Option } = Select
 const { Search } = Input
 
-const useAdvancedSearchForm = () => {
+const AdvancedSearchForm = (props: {
+  onChange: (a: any) => void
+  formValue: any
+}) => {
+  const { formValue, onChange } = props
   const [form] = Form.useForm()
   const [open, setOpen] = useState(false)
-
-  const now = moment() // get the current date/time in Moment.js format
-
-  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
-  const lastDayOfYear = now.clone().endOf('year') // get
-  const initialValues = { type: 'year', date: [firstDayOfYear, lastDayOfYear] }
-  const [formData, setFormData] = useState(initialValues)
 
   const onFinish = (values: any) => {
     const searchVal = {
@@ -44,7 +40,7 @@ const useAdvancedSearchForm = () => {
         ? { $regex: values.description }
         : undefined,
     }
-    setFormData(searchVal)
+    onChange(searchVal)
   }
   const showDrawer = () => {
     setOpen(true)
@@ -68,10 +64,10 @@ const useAdvancedSearchForm = () => {
       console.log(error)
     }
   }
-  const cpt = (
+  return (
     <Form
       form={form}
-      initialValues={formData}
+      initialValues={formValue}
       className="ant-advanced-search-form"
       onFinish={onFinish}
     >
@@ -161,7 +157,7 @@ const useAdvancedSearchForm = () => {
       </Row>
     </Form>
   )
-  return [formData, cpt]
+  // return [formData, cpt]
 }
 
 const BatchUpdateArea = (props: {
@@ -259,7 +255,13 @@ function handleExist(data: any) {
   return { ...exsit }
 }
 const App: React.FC = () => {
-  const [formValue, From] = useAdvancedSearchForm()
+  const now = moment() // get the current date/time in Moment.js format
+
+  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
+  const lastDayOfYear = now.clone().endOf('year') // get
+  const initialValues = { type: 'year', date: [firstDayOfYear, lastDayOfYear] }
+
+  const [formValue, setFormValue] = useState(initialValues)
   const [selectedRows, setSelectedRows] = useState<string[]>([])
   const [tableData, setTableData] = useState<any>([])
 
@@ -267,6 +269,9 @@ const App: React.FC = () => {
     getDailyAmountTotal(formValue)
   }, [formValue])
 
+  const refresh = () => {
+    getDailyAmountTotal(formValue)
+  }
   const getDailyAmountTotal = async (data: any) => {
     try {
       const res = await $api.getDailyAmountTotal({
@@ -318,7 +323,7 @@ const App: React.FC = () => {
 
   return (
     <div className="record-page">
-      {From}
+      <AdvancedSearchForm onChange={setFormValue} formValue={formValue} />
       <BatchUpdateArea
         onBatchUpdate={onBatchUpdate}
         onBatchDelete={onBatchDelete}
