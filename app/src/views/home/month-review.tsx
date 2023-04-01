@@ -2,7 +2,7 @@ import { Card, Col, Row, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
 
 import Pie from '@/src/components/app-echart/Pie'
-import Memerber from '@/src/components/form/Member'
+import Memerber from '@/src/components/form/useSelect'
 import CategoryTable from '@/src/components/CategoryTable'
 import { getDateTostring } from '@/src/components/utils'
 import ReviewCost from './componets/review-cost'

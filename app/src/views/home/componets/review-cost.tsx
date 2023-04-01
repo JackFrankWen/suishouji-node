@@ -2,15 +2,20 @@ import { Card, Col, Row, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
 
 import Pie from '@/src/components/app-echart/Pie'
-import Memerber, { useConsumer } from '@/src/components/form/Member'
+import Memerber, { useConsumer } from '@/src/components/form/useSelect'
 import { getDateTostring } from '@/src/components/utils'
+import { cpt_const } from '@/core/api/const/web'
 
 export default function ReviewCost(props: { formValue: any }) {
   const { formValue } = props
   const [abcPieData, setABCPiedata] = useState<any>([])
   const [costPieData, setCostPiedata] = useState<any>([])
-  const [consumerVal, ConsumerCpt] = useConsumer()
-  const [consumerVal2, ConsumerCpt2] = useConsumer()
+  const [consumerVal, ConsumerCpt] = useConsumer({
+    options: cpt_const.consumer_type,
+  })
+  const [consumerVal2, ConsumerCpt2] = useConsumer({
+    options: cpt_const.consumer_type,
+  })
 
   const getAbcTotal = async (data: any) => {
     try {

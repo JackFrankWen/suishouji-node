@@ -4,6 +4,7 @@ import { getDateTostring, roundToTwoDecimalPlaces } from './utils'
 import React, { useEffect, useState } from 'react'
 import { ColumnsType } from 'antd/es/table/interface'
 import useModal from './ModalWrap'
+import { abc_type, cost_type, tag_type } from '@/core/api/const/web'
 
 interface ExpandedDataType {
   name: string
@@ -73,6 +74,24 @@ const columns2 = [
     width: 200,
     dataIndex: 'trans_time_formate',
     key: 'trans_time_formate',
+  },
+  {
+    title: '标签',
+    dataIndex: 'tag',
+    width: 90,
+    render: (val: number) => (val ? tag_type[val] : ''),
+  },
+  {
+    title: 'ABC类',
+    dataIndex: 'abc_type',
+    width: 80,
+    render: (val: number) => (val ? abc_type[val] : ''),
+  },
+  {
+    title: '消费方式',
+    dataIndex: 'cost_type',
+    width: 100,
+    render: (val: number) => (val ? cost_type[val] : ''),
   },
 ]
 const expandedRowRender = (toggle: any) => (record: DataType) => {

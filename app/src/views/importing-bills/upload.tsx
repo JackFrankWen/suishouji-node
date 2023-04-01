@@ -191,7 +191,7 @@ const AlipayUpload = (props: { ruleData: any }) => {
                 setShowResult(false)
               }}
             >
-              再次导入
+              继续导入
             </Button>,
             <Link key={2} to="/Accounting">
               <Button>去查看</Button>
