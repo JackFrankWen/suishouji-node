@@ -84,10 +84,9 @@ export function formateToTableAlipay(
   account_type: number,
   payment_type: number
 ) {
-  let costArr = arr.filter((subArr: string[]) => !/退款成功/.test(subArr[11]))
-  costArr = costArr.filter((subArr: string[]) => !/交易关闭/.test(subArr[11]))
-  costArr = costArr.filter((subArr: string[]) => !/资金转移/.test(subArr[15]))
+  let costArr = arr.filter((subArr: string[]) => !/交易成功/.test(subArr[11]))
   costArr = costArr.filter((subArr: string[]) => !/不计收支/.test(subArr[10]))
+  costArr = costArr.filter((subArr: string[]) => !/资金转移/.test(subArr[15]))
   return costArr.map((subArr) => {
     // 0: "交易号"
     // 1: "商家订单号"

@@ -54,7 +54,7 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: '描述',
-    width: 200,
+    width: 250,
     dataIndex: 'description',
     key: 'description',
     ellipsis: true,

@@ -4,10 +4,10 @@ import Bar from '@/src/components/app-echart/Bar'
 import CategoryTable from '@/src/components/CategoryTable'
 import BarVertial from '@/src/components/app-echart/BarVerti'
 import { getDateTostring } from '@/src/components/utils'
-import ReviewCost from './review-cost'
-import ReviewPerson from './review-person'
-import Summarize from './review-sum'
-import TableSection from './review-table'
+import ReviewCost from './componets/review-cost'
+import ReviewPerson from './componets/review-person'
+import Summarize from './componets/review-sum'
+import TableSection from './componets/review-table'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
