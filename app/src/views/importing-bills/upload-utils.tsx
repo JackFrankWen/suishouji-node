@@ -84,7 +84,7 @@ export function formateToTableAlipay(
   account_type: number,
   payment_type: number
 ) {
-  let costArr = arr.filter((subArr: string[]) => !/交易成功/.test(subArr[11]))
+  let costArr = arr.filter((subArr: string[]) => /交易成功/.test(subArr[11]))
   costArr = costArr.filter((subArr: string[]) => !/不计收支/.test(subArr[10]))
   costArr = costArr.filter((subArr: string[]) => !/资金转移/.test(subArr[15]))
   return costArr.map((subArr) => {
@@ -108,13 +108,14 @@ export function formateToTableAlipay(
     const description = `${trimString(subArr[7])}（${trimString(
       subArr[8]
     )}）${trimString(subArr[14])}`
+    console.log(/支出/.test(subArr[15]) ? 1 : 2, subArr[15])
     return {
       id: subArr[0],
       amount: amount.trim(),
       description: description,
       account_type: account_type,
       payment_type: payment_type,
-      flow_type: /支/.test(subArr[10]) ? 1 : 2,
+      flow_type: /支出/.test(subArr[10]) ? 1 : 2,
       category: undefined,
       consumer: undefined,
       tag: undefined,
