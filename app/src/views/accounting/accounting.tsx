@@ -125,7 +125,7 @@ const useAdvancedSearchForm = () => {
           </Form.Item>
           <Form.Item name="description">
             <Search
-              placeholder="input search text"
+              placeholder="请输入描述"
               onSearch={(val) => {
                 console.log(val, 'string')
               }}
