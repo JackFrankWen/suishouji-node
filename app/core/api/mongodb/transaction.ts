@@ -190,6 +190,65 @@ export async function get_member_total_by_date(param: any) {
   return []
 }
 /**
+ * 查询成员汇总
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_abc_total_by_date(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $group: {
+          _id: {
+            abc_type: '$abc_type',
+          },
+          total: {
+            $sum: '$amount',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id.abc_type',
+          value: '$total',
+        },
+      },
+    ])
+    return res
+  }
+  return []
+}
+export async function get_cost_type_total_by_date(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $group: {
+          _id: {
+            cost_type: '$cost_type',
+          },
+          total: {
+            $sum: '$amount',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          name: '$_id.cost_type',
+          value: '$total',
+        },
+      },
+    ])
+    return res
+  }
+  return []
+}
+/**
  * 获取账户金额
  * @date 2023-03-06
  * @param {any} param:any

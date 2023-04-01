@@ -1,11 +1,13 @@
 import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 import moment from 'moment'
 import { getCategoryObj } from '../const/category'
-import { account_type, consumer_type } from '../const/web'
+import { abc_type, account_type, consumer_type, cost_type } from '../const/web'
 import {
+  get_abc_total_by_date,
   get_account_total_by_date,
   get_category_total_by_date,
   get_cost_record,
+  get_cost_type_total_by_date,
   get_every_month_amount,
   get_member_total_by_date,
 } from '../mongodb/transaction'
@@ -34,6 +36,14 @@ export async function getCategoryAvg(params: { start: string; end: string }) {
 export async function getMemberTotal(params: { start: string; end: string }) {
   const result = await get_member_total_by_date(params)
   return transferMeberData(result)
+}
+export async function getCostTypeToal(params: { start: string; end: string }) {
+  const result = await get_cost_type_total_by_date(params)
+  return transferCostTypeData(result)
+}
+export async function getABCTotal(params: { start: string; end: string }) {
+  const result = await get_abc_total_by_date(params)
+  return transferABCData(result)
 }
 export async function getAccountTotal(params: { start: string; end: string }) {
   const result = await get_account_total_by_date(params)
@@ -201,6 +211,18 @@ type PieData = {
 function transferMeberData(list: any): PieData[] {
   return list.map((val: PieData) => ({
     name: consumer_type[val.name],
+    value: val.value.toString(),
+  }))
+}
+function transferCostTypeData(list: any): PieData[] {
+  return list.map((val: PieData) => ({
+    name: cost_type[val.name],
+    value: val.value.toString(),
+  }))
+}
+function transferABCData(list: any): PieData[] {
+  return list.map((val: PieData) => ({
+    name: abc_type[val.name],
     value: val.value.toString(),
   }))
 }
