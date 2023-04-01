@@ -52,10 +52,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
 const EditableCell: React.FC<EditableCellProps> = ({
   editing,
   dataIndex,
-  title,
   inputType,
-  record,
-  index,
   children,
   ...restProps
 }) => {

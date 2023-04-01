@@ -20,10 +20,9 @@ import moment from 'moment'
 interface DataType {
   name: string
   age: number
-  address: string
   m_id: string
 
-  child: ExpandedDataType[]
+  children: ExpandedDataType[]
 }
 
 interface ExpandedDataType {
@@ -43,14 +42,19 @@ interface ExpandedDataType {
   trans_time: Date
   modification_time: Date
 }
-const formatTime = (val: string) =>
-  val ? moment(val).format('YYYY-MM-DD HH:MM:SS') : ''
+const renderBold = (txt: string, obj: DataType) => {
+  if (obj?.children) {
+    return <span style={{ fontWeight: 'bold' }}>{txt}</span>
+  }
+  return txt
+}
 const columns: ColumnsType<DataType> = [
   {
     title: '交易日期',
     width: 200,
     dataIndex: 'trans_time_formate',
     key: 'trans_time_formate',
+    render: renderBold,
   },
   {
     title: '描述',
@@ -63,6 +67,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: '金额',
     dataIndex: 'amount',
+    render: renderBold,
     key: 'amount',
     width: 120,
   },
