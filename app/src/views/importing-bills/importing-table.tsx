@@ -173,7 +173,7 @@ const BasicTable = (props: {
       defaultCheck: true,
     },
     {
-      title: '对象',
+      title: '消费成员',
       width: 80,
       dataIndex: 'consumer',
       defaultCheck: false,

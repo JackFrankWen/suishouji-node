@@ -108,7 +108,6 @@ export function formateToTableAlipay(
     const description = `${trimString(subArr[7])}（${trimString(
       subArr[8]
     )}）${trimString(subArr[14])}`
-    console.log(/支出/.test(subArr[15]) ? 1 : 2, subArr[15])
     return {
       id: subArr[0],
       amount: amount.trim(),
@@ -117,7 +116,7 @@ export function formateToTableAlipay(
       payment_type: payment_type,
       flow_type: /支出/.test(subArr[10]) ? 1 : 2,
       category: undefined,
-      consumer: undefined,
+      consumer: account_type,
       tag: undefined,
       cost_type: undefined,
       abc_type: undefined,

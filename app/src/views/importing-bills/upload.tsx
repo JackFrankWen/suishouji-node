@@ -24,7 +24,7 @@ function setCategory(arr: any, rules: any) {
         return {
           ...val,
           category: element.category,
-          consumer: toNumberOrUndefiend(element.consumer),
+          consumer: toNumberOrUndefiend(element.consumer) || val.consumer,
           tag: toNumberOrUndefiend(element.tag),
           cost_type: toNumberOrUndefiend(element.cost_type),
           abc_type: toNumberOrUndefiend(element.abc_type),
