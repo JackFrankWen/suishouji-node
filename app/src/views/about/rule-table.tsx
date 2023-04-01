@@ -4,6 +4,7 @@ import type { ColumnsType } from 'antd/es/table'
 import React, { useEffect, useState } from 'react'
 import { getCategoryString } from '@/core/api/const/category'
 import RuleForm from './rule-form'
+import useLoadingButton from '@/src/components/form/useButton'
 
 interface DataType {
   key: string
@@ -16,6 +17,7 @@ interface DataType {
 const RuleTable = () => {
   const [ruleData, setRuleData] = useState<any>()
   const [isUpdate, setIsUpdate] = useState<boolean>()
+  const { LoadingBtn, setLoadingFalse } = useLoadingButton()
   const getRuleData = async () => {
     try {
       const res = await $api.getALlMatchRule()
@@ -143,6 +145,7 @@ const RuleTable = () => {
       })
       if (res.code === 200) {
         setVisiable(false)
+        setLoadingFalse()
         getRuleData()
         message.success('修改成功')
       }
@@ -187,9 +190,9 @@ const RuleTable = () => {
                 />
               </Form.Item>
               <Form.Item>
-                <Button type="primary" onClick={onSubmit}>
+                <LoadingBtn type="primary" onClick={onSubmit}>
                   提交
-                </Button>
+                </LoadingBtn>
               </Form.Item>
             </Form>
           )}

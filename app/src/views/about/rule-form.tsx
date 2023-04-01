@@ -5,6 +5,7 @@ import SelectWrap from '@/src/components/form/SelectWrap'
 import { cpt_const } from '@/core/api/const/web'
 import { category_type } from '@/core/api/const/category'
 import { toNumberOrUndefiend } from '@/src/components/utils'
+import useLoadingButton from '@/src/components/form/useButton'
 
 const RuleForm = (props: {
   data?: {
@@ -19,6 +20,8 @@ const RuleForm = (props: {
   refresh: () => void
 }) => {
   const [form] = Form.useForm()
+  const { LoadingBtn, setLoadingFalse } = useLoadingButton()
+
   const { data } = props
   const onFormLayoutChange = ({ category }: { category: [number, number] }) => {
     console.log(category, 'category')
@@ -59,6 +62,7 @@ const RuleForm = (props: {
       }
       if (res?.code === 200) {
         message.success('操作成功')
+        setLoadingFalse()
         refresh()
       }
       console.log(res)
@@ -103,9 +107,9 @@ const RuleForm = (props: {
         <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" onClick={submitRule}>
+        <LoadingBtn type="primary" onClick={submitRule}>
           提交
-        </Button>
+        </LoadingBtn>
       </Form.Item>
     </Form>
   )

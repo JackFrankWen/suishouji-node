@@ -23,6 +23,7 @@ import {
   cpt_const,
   tag_type,
 } from '@/core/api/const/web'
+import useLoadingButton from '@/src/components/form/useButton'
 
 export interface DataType {
   id: string
@@ -91,7 +92,7 @@ const BasicTable = (props: {
   const [form] = Form.useForm()
   const [data, setData] = useState(tableData)
   const [editingKey, setEditingKey] = useState('')
-
+  const { LoadingBtn } = useLoadingButton()
   const isEditing = (record: DataType) => record.id === editingKey
 
   const edit = (record: DataType) => {
@@ -384,9 +385,9 @@ const BasicTable = (props: {
           </Space>
           <Space>
             <Button onClick={onCancel}>取消</Button>
-            <Button type="primary" onClick={submit}>
+            <LoadingBtn type="primary" onClick={submit}>
               上传
-            </Button>
+            </LoadingBtn>
             <TableSettingTool
               defaultColumns={mergedColumns}
               onChange={(checkedGroup: string[]) => {
