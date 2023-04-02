@@ -27,9 +27,9 @@ export const abc_type = {
   3: '过度开支',
 }
 export const cost_type = {
-  1: '生存开销',
+  1: '生存开销', // 喝 贵一点牛奶算 5000， 好的牛奶 8000 进口
   2: '发展开销',
-  3: '享受开销',
+  3: '享受开销', // 奶茶电影
 }
 export const flow_type = {
   1: '支出',
