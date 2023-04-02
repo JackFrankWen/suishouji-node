@@ -178,7 +178,7 @@ const TableView = (props: {
       />
       <Table
         rowKey="m_id"
-        size="small"
+        size="middle"
         columns={tableCol}
         onRow={(record) => ({
           onClick: () => {
