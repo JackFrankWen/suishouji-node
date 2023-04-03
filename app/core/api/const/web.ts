@@ -14,22 +14,26 @@ export const consumer_type = {
   2: '老婆',
   3: '家庭',
   4: '牧牧',
+  99: '未分类',
 }
 export const tag_type = {
   1: '日常支出',
   2: '变动支出',
   3: '固定支出',
   4: '牛单独',
+  99: '未分类',
 }
 export const abc_type = {
   1: '必要开支',
   2: '可有可无',
   3: '过度开支',
+  99: '未分类',
 }
 export const cost_type = {
   1: '生存开销', // 喝 贵一点牛奶算 5000， 好的牛奶 8000 进口
   2: '发展开销',
   3: '享受开销', // 奶茶电影
+  99: '未分类',
 }
 export const flow_type = {
   1: '支出',

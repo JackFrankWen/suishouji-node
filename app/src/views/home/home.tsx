@@ -7,18 +7,18 @@ import YearReview from './year-review'
 
 const App: React.FC = () => {
   const [formValue, Form] = useReviewForm()
-  useEffect(() => {
-    Modal.success({
-      title: '使用手册',
-      content: (
-        <ul>
-          <li>1、了解自己的财务状况和支出水平，制定合理的生活标准。</li>
-          <li>2】</li>
-          <li>3.了解自己的消费结构，减少冲动消费，合理分配收入。</li>
-        </ul>
-      ),
-    })
-  }, [])
+  // useEffect(() => {
+  //   Modal.success({
+  //     title: '使用手册',
+  //     content: (
+  //       <ul>
+  //         <li>1、了解自己的财务状况和支出水平，制定合理的生活标准。</li>
+  //         <li>2】</li>
+  //         <li>3.了解自己的消费结构，减少冲动消费，合理分配收入。</li>
+  //       </ul>
+  //     ),
+  //   })
+  // }, [])
   return (
     <div>
       {/* <div className="page-home-header">

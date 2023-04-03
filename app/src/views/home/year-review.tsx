@@ -1,4 +1,4 @@
-import { Card, Col, Row } from 'antd'
+import { Card, Cascader, Col, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
 import Bar from '@/src/components/app-echart/Bar'
 import CategoryTable from '@/src/components/CategoryTable'
@@ -8,6 +8,8 @@ import ReviewCost from './componets/review-cost'
 import ReviewPerson from './componets/review-person'
 import Summarize from './componets/review-sum'
 import TableSection from './componets/review-table'
+import Line from '@/src/components/app-echart/Line'
+import { category_type } from '@/core/api/const/category'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
@@ -41,31 +43,6 @@ function AvgBarSection(props: { formValue: any }) {
     </Row>
   )
 }
-// function TableSection(props: { formValue: any }) {
-//   const { formValue } = props
-
-//   const [category, setCategory] = useState<any>([])
-//   const getCategory = async (data) => {
-//     try {
-//       const res = await $api.getCategory(getDateTostring(data))
-//       if (res) {
-//         setCategory(res)
-//       }
-//     } catch (error) {
-//       console.log(error)
-//     }
-//   }
-//   useEffect(() => {
-//     getCategory(formValue)
-//   }, [formValue])
-//   return (
-//     <Row gutter={16} className="home-section">
-//       <Col span={24}>
-//         <CategoryTable data={category} />
-//       </Col>
-//     </Row>
-//   )
-// }
 function YearReview(props: { formValue: any }) {
   const { formValue } = props
   const [monthBar, setMonthbar] = useState<{
@@ -96,6 +73,25 @@ function YearReview(props: { formValue: any }) {
         <Col span={24}>
           <Card bordered={false}>
             <Bar {...monthBar} />
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={16} className="home-section">
+        <Col span={24}>
+          <Card
+            title="每月平均开支"
+            bordered={false}
+            extra={
+              <Cascader
+                options={category_type}
+                allowClear
+                placeholder="请选择分类"
+                multiple
+                maxTagCount="responsive"
+              />
+            }
+          >
+            <Line />
           </Card>
         </Col>
       </Row>
