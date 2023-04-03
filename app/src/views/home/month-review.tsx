@@ -1,4 +1,4 @@
-import { Card, Col, Row, Statistic } from 'antd'
+import { Card, Col, Radio, Row } from 'antd'
 import React, { useEffect, useState } from 'react'
 
 import ReviewCost from './componets/review-cost'
@@ -11,9 +11,9 @@ import { abc_type_budget, cost_type_budget } from '@/core/api/const/web'
 
 function BudgetArea(props: { formValue: any }) {
   const { formValue } = props
-  const [abcTotal, setABCtotal] = useState<any>()
+  const [abcTotal, setABCtotal] = useState<any>([])
   const [costPieData, setCostPiedata] = useState<any>([])
-
+  const [budgetData, setData] = useState<any>([])
   const getABCTotal = async (data: any) => {
     try {
       const res = await $api.getABCTotal(data)
@@ -40,15 +40,13 @@ function BudgetArea(props: { formValue: any }) {
       console.log(res)
       if (res) {
         const budgetData = res.map((val) => {
-          console.log(val.type, 'abccccdd')
-          console.log(cost_type_budget[val.type], 'abccccdd')
-
           return {
             ...val,
             budget: cost_type_budget[val.type],
           }
         })
         setCostPiedata(budgetData)
+        setData(budgetData)
       }
     } catch (error) {
       console.log(error)
@@ -58,11 +56,33 @@ function BudgetArea(props: { formValue: any }) {
     const data = getDateTostring(formValue)
     getABCTotal(data)
   }, [formValue])
+
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
-        <Card title="预算对比" bordered={false}>
-          <BarBudget data={costPieData} />
+        <Card
+          title="预算对比"
+          bordered={false}
+          extra={
+            <Radio.Group
+              defaultValue="cost_type"
+              options={[
+                // { label: 'tag', value: 'tag' },
+                { label: '消费目的', value: 'cost_type' },
+                { label: ' ABC分类', value: 'abc_type' },
+              ]}
+              onChange={(e) => {
+                if (e.target.value === 'cost_type') {
+                  setData(costPieData)
+                } else if (e.target.value === 'abc_type') {
+                  setData(abcTotal)
+                }
+              }}
+              optionType="button"
+            />
+          }
+        >
+          <BarBudget data={budgetData} />
         </Card>
       </Col>
     </Row>
