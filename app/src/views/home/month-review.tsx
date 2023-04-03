@@ -1,28 +1,80 @@
 import { Card, Col, Row, Statistic } from 'antd'
 import React, { useEffect, useState } from 'react'
 
-import Pie from '@/src/components/app-echart/Pie'
-import Memerber from '@/src/components/form/useSelect'
-import CategoryTable from '@/src/components/CategoryTable'
-import { getDateTostring } from '@/src/components/utils'
 import ReviewCost from './componets/review-cost'
 import ReviewPerson from './componets/review-person'
 import Summarize from './componets/review-sum'
 import TableSection from './componets/review-table'
 import BarBudget from '@/src/components/app-echart/BarBudget'
+import { getDateTostring } from '@/src/components/utils'
+import { abc_type_budget, cost_type_budget } from '@/core/api/const/web'
+
+function BudgetArea(props: { formValue: any }) {
+  const { formValue } = props
+  const [abcTotal, setABCtotal] = useState<any>()
+  const [costPieData, setCostPiedata] = useState<any>([])
+
+  const getABCTotal = async (data: any) => {
+    try {
+      const res = await $api.getABCTotal(data)
+      console.log(res, 'abc')
+      if (res) {
+        const budgetData = res.map((val) => ({
+          ...val,
+          budget: abc_type_budget[val.type],
+        }))
+        setABCtotal(budgetData)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    const data = getDateTostring(formValue)
+    getCost({ ...data })
+  }, [formValue])
+
+  const getCost = async (data: any) => {
+    try {
+      const res = await $api.getCostTypeToal(data)
+      console.log(res)
+      if (res) {
+        const budgetData = res.map((val) => {
+          console.log(val.type, 'abccccdd')
+          console.log(cost_type_budget[val.type], 'abccccdd')
+
+          return {
+            ...val,
+            budget: cost_type_budget[val.type],
+          }
+        })
+        setCostPiedata(budgetData)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    const data = getDateTostring(formValue)
+    getABCTotal(data)
+  }, [formValue])
+  return (
+    <Row gutter={16} className="home-section">
+      <Col span={24}>
+        <Card title="预算对比" bordered={false}>
+          <BarBudget data={costPieData} />
+        </Card>
+      </Col>
+    </Row>
+  )
+}
 
 function MonthReivew(props: { formValue: any }) {
   return (
     <>
       <Summarize formValue={props.formValue} />
-      <Row gutter={16} className="home-section">
-        <Col span={24}>
-          <Card title="预算对比" bordered={false}>
-            <BarBudget />
-          </Card>
-        </Col>
-      </Row>
       <TableSection formValue={props.formValue} />
+      <BudgetArea formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />
     </>

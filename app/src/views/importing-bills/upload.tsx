@@ -25,9 +25,9 @@ function setCategory(arr: any, rules: any) {
           ...val,
           category: element.category,
           consumer: toNumberOrUndefiend(element.consumer) || val.consumer,
-          tag: toNumberOrUndefiend(element.tag),
-          cost_type: toNumberOrUndefiend(element.cost_type),
-          abc_type: toNumberOrUndefiend(element.abc_type),
+          tag: toNumberOrUndefiend(element.tag) || val.tag,
+          cost_type: toNumberOrUndefiend(element.cost_type) || val.cost_type,
+          abc_type: toNumberOrUndefiend(element.abc_type) || val.abc_type,
         }
       }
     }

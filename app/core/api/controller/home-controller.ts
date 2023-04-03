@@ -41,7 +41,10 @@ export async function getCostTypeToal(params: { start: string; end: string }) {
   const result = await get_cost_type_total_by_date(params)
   return transferCostTypeData(result)
 }
-export async function getABCTotal(params: { start: string; end: string }) {
+export async function getABCTotal(params: {
+  start: string
+  end: string
+}): Promise<PieData[]> {
   const result = await get_abc_total_by_date(params)
   return transferABCData(result)
 }
@@ -205,24 +208,30 @@ function sortByValue(arr: CategoryReturnType) {
 
 type PieData = {
   name: string
+  type: number
   value: string
 }
 
 function transferMeberData(list: any): PieData[] {
   return list.map((val: PieData) => ({
     name: consumer_type[val.name],
+    type: val.name,
     value: val.value.toString(),
   }))
 }
 function transferCostTypeData(list: any): PieData[] {
   return list.map((val: PieData) => ({
     name: cost_type[val.name],
+    type: val.name,
+
     value: val.value.toString(),
   }))
 }
 function transferABCData(list: any): PieData[] {
   return list.map((val: PieData) => ({
     name: abc_type[val.name],
+    type: val.name,
+
     value: val.value.toString(),
   }))
 }

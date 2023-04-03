@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 import ReactECharts from 'echarts-for-react'
-const BarBudget = (props: {}) => {
+const BarBudget = (props: {
+  data: { name: string; value: string; budget: string }[]
+}) => {
   const [chartOptions, setChartOptions] = useState({})
-
+  const { data = [] } = props
+  console.log(data, 'abcddd')
   useEffect(() => {
     const app: any = {}
 
@@ -92,7 +95,8 @@ const BarBudget = (props: {}) => {
         {
           type: 'category',
           axisTick: { show: false },
-          data: ['生存开销', '发展开销', '享受开销'],
+          // data: ['生存开销', '发展开销', '享受开销'],
+          data: data.map((val) => val.name),
         },
       ],
       yAxis: [
@@ -109,7 +113,8 @@ const BarBudget = (props: {}) => {
           emphasis: {
             focus: 'series',
           },
-          data: [320, 332, 301],
+          // data: [320, 332, 301],
+          data: data.map((val) => val.budget),
         },
         {
           name: '实际开支',
@@ -118,11 +123,12 @@ const BarBudget = (props: {}) => {
           emphasis: {
             focus: 'series',
           },
-          data: [220, 182, 191],
+          // data: [220, 182, 191],
+          data: data.map((val) => val.value),
         },
       ],
     })
-  }, [])
+  }, [data])
 
   return <ReactECharts option={chartOptions} />
 }
