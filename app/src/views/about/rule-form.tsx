@@ -27,14 +27,17 @@ const RuleForm = (props: {
     console.log(category, 'category')
     if (category) {
       const found = category_type.find((val) => val.value === category[0])
-      const obj = found?.children.find((val) => val.value === category[1])
-      if (obj) {
-        Object.keys(obj).forEach((key) => {
-          console.log(key)
-          if (!['value', 'label'].includes(key)) {
-            form.setFieldValue(key, obj[key])
-          }
-        })
+      if (found) {
+        // @ts-ignore
+        const obj = found.children.find((val) => val.value === category[1])
+        if (obj) {
+          Object.keys(obj).forEach((key) => {
+            console.log(key)
+            if (!['value', 'label'].includes(key)) {
+              form.setFieldValue(key, obj[key])
+            }
+          })
+        }
       }
     }
   }

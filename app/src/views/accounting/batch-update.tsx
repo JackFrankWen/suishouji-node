@@ -27,8 +27,9 @@ const BatchUpdateArea = (props: {
           options={category_type}
           onChange={(category) => {
             const found = category_type.find((val) => val.value === category[0])
+            // @ts-ignore
             const obj: any = found?.children.find(
-              (val) => val.value === category[1]
+              (val: any) => val.value === category[1]
             )
 
             form.setFieldsValue({
