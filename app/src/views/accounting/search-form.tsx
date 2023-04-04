@@ -70,10 +70,18 @@ const AdvancedSearchForm = (props: {
       console.log(error)
     }
   }
+  const onValuesChange = ({ exist }: { exist: string }) => {
+    const val = form.getFieldsValue()
+    console.log(val, 'abbb')
+    if (exist) {
+      onChange({ ...val, ...getDateTostring(val), ...handleExist({ exist }) })
+    }
+  }
   return (
     <Form
       form={form}
       initialValues={formValue}
+      onValuesChange={onValuesChange}
       className="ant-advanced-search-form"
       onFinish={onFinish}
     >

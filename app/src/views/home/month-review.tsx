@@ -93,8 +93,8 @@ function MonthReivew(props: { formValue: any }) {
   return (
     <>
       <Summarize formValue={props.formValue} />
-      <TableSection formValue={props.formValue} />
       <BudgetArea formValue={props.formValue} />
+      <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />
     </>

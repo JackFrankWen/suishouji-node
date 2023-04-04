@@ -7,9 +7,9 @@ const useReviewForm = () => {
   const [form] = Form.useForm()
   const now = moment() // get the current date/time in Moment.js format
 
-  const firstDayOfYear = now.clone().startOf('year') // get the first day of the current year
-  const lastDayOfYear = now.clone().endOf('year') // get
-  const initialValues = { type: 'year', date: [firstDayOfYear, lastDayOfYear] }
+  const firstDayOfYear = now.clone().startOf('month') // get the first day of the current year
+  const lastDayOfYear = now.clone().endOf('month') // get
+  const initialValues = { type: 'month', date: [firstDayOfYear, lastDayOfYear] }
   const [formData, setFormData] = useState(initialValues)
 
   const onFormLayoutChange = (val: any) => {

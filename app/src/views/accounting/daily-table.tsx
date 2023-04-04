@@ -1,4 +1,4 @@
-import { Table, Tag } from 'antd'
+import { Table, Tag, Tooltip } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
 
@@ -12,7 +12,6 @@ import {
   payment_type,
   tag_type,
 } from '@/core/api/const/web'
-import moment from 'moment'
 
 interface DataType {
   name: string
@@ -58,7 +57,11 @@ const columns: ColumnsType<DataType> = [
     width: 250,
     dataIndex: 'description',
     key: 'description',
-    ellipsis: true,
+    render: (description: string) => (
+      <Tooltip placement="topLeft" title={description}>
+        <div className="ellipsis">{description}</div>
+      </Tooltip>
+    ),
   },
   { title: '分类', dataIndex: 'name', key: 'name', width: 120 },
   {
@@ -178,6 +181,7 @@ const TableView = (props: {
       />
       <Table
         rowKey="m_id"
+        tableLayout="fixed"
         size="middle"
         columns={tableCol}
         onRow={(record) => ({
