@@ -5,6 +5,7 @@ import { abc_type, account_type, consumer_type, cost_type } from '../const/web'
 import {
   get_abc_total_by_date,
   get_account_total_by_date,
+  get_category_line_by_data,
   get_category_total_by_date,
   get_cost_record,
   get_cost_type_total_by_date,
@@ -15,10 +16,28 @@ export async function getEveryMonthAmount(params: {
   start: string
   end: string
 }) {
-  const { start, end } = params
-
   const result = await get_every_month_amount(params)
   return getBarData(result)
+}
+export async function getCategoryLine(params: any) {
+  try {
+    const result = await get_category_line_by_data(params)
+    return transferCategoryName(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
+function transferCategoryName(arr: { category: string; amount: any }[]) {
+  const category_obj = getCategoryObj()
+  return arr.map((val) => {
+    const arr = val.category ? JSON.parse(val.category) : []
+    const [, child_id] = arr
+    return {
+      ...val,
+      name: category_obj[child_id],
+      amount: val.amount.map((val: any) => Number(val.toString())),
+    }
+  })
 }
 export async function getCategory(params: { start: string; end: string }) {
   const result = await get_category_total_by_date(params)

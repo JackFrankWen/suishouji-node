@@ -24,7 +24,11 @@ function handleCategory(data: any) {
   if (data.category && Array.isArray(data.category)) {
     return {
       ...data,
-      category: { $in: data.category.map((val: []) => JSON.stringify(val)) },
+      category: {
+        $in: data.category.map(
+          (val: [number, number]) => `[${val[0]}, ${val[1]}]`
+        ),
+      },
     }
   }
   return { ...data }

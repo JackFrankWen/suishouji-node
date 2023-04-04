@@ -43,6 +43,62 @@ function AvgBarSection(props: { formValue: any }) {
     </Row>
   )
 }
+function CategoryLine(props: { formValue: any }) {
+  const { formValue } = props
+  const [monthBar, setMonthbar] = useState<any>()
+  const [categoryVal, setCategoryVal] = useState<any>([
+    [10000, 10001],
+    [10000, 10002],
+    [10000, 10003],
+  ])
+  const getCategoryLine = async (data: any) => {
+    try {
+      const res = await $api.getCategoryLine(data)
+      if (res) {
+        setMonthbar(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getCategoryLine({
+      ...getDateTostring(formValue),
+      category: {
+        $in: categoryVal.map(
+          (val: [number, number]) => `[${val[0]}, ${val[1]}]`
+        ),
+      },
+    })
+  }, [formValue, categoryVal])
+  console.log(monthBar, 'CategoryLine')
+  return (
+    <Row gutter={16} className="home-section">
+      <Col span={24}>
+        <Card
+          title="折线图"
+          bordered={false}
+          extra={
+            <Cascader
+              onChange={(val) => {
+                setCategoryVal(val)
+              }}
+              value={categoryVal}
+              options={category_type}
+              showCheckedStrategy="SHOW_CHILD"
+              allowClear
+              placeholder="请选择分类"
+              multiple
+              maxTagCount="responsive"
+            />
+          }
+        >
+          <Line data={monthBar} />
+        </Card>
+      </Col>
+    </Row>
+  )
+}
 function YearReview(props: { formValue: any }) {
   const { formValue } = props
   const [monthBar, setMonthbar] = useState<{
@@ -76,25 +132,8 @@ function YearReview(props: { formValue: any }) {
           </Card>
         </Col>
       </Row>
-      <Row gutter={16} className="home-section">
-        <Col span={24}>
-          <Card
-            title="每月平均开支"
-            bordered={false}
-            extra={
-              <Cascader
-                options={category_type}
-                allowClear
-                placeholder="请选择分类"
-                multiple
-                maxTagCount="responsive"
-              />
-            }
-          >
-            <Line />
-          </Card>
-        </Col>
-      </Row>
+
+      <CategoryLine formValue={props.formValue} />
       <AvgBarSection formValue={props.formValue} />
       <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />

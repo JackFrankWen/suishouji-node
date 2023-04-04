@@ -478,3 +478,111 @@ export async function find(param: any) {
       })
   })
 }
+/**
+ * 查询折线图
+ * @date 2023-03-06
+ * @param {any} param:any
+ * @returns {any}
+ */
+export async function get_category_line_by_data(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    console.log(getComonMatch(param), 'getComonMatch(param)')
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $group: {
+          _id: {
+            category: '$category',
+            year: {
+              $year: {
+                date: {
+                  $toDate: '$trans_time',
+                },
+              },
+            },
+            month: {
+              $month: {
+                date: {
+                  $toDate: '$trans_time',
+                },
+              },
+            },
+          },
+          amount: {
+            $sum: '$amount',
+          },
+        },
+      },
+      // Then, group documents again by category and accumulate monthly amounts
+      {
+        $group: {
+          _id: {
+            category: '$_id.category',
+          },
+          monthlyAmounts: {
+            $push: {
+              month: '$_id.month',
+              year: '$_id.year',
+              amount: '$amount',
+            },
+          },
+        },
+      },
+      // Finally, format the result and sort by year/month
+      {
+        $project: {
+          _id: 0,
+          category: '$_id.category',
+          amount: {
+            $map: {
+              input: {
+                $range: [1, 13],
+              },
+              as: 'm',
+              in: {
+                $reduce: {
+                  input: '$monthlyAmounts',
+                  initialValue: 0,
+                  in: {
+                    $cond: [
+                      {
+                        $eq: ['$$this.month', '$$m'],
+                      },
+                      '$$this.amount',
+                      '$$value',
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          date: {
+            $map: {
+              input: {
+                $range: [1, 13],
+              },
+              as: 'm',
+              in: {
+                $dateToString: {
+                  date: {
+                    $dateFromParts: {
+                      year: {
+                        $max: '$monthlyAmounts.year',
+                      },
+                      month: '$$m',
+                      day: 1,
+                    },
+                  },
+                  format: '%Y-%m',
+                },
+              },
+            },
+          },
+        },
+      },
+    ])
+    return res
+  }
+  return []
+}
