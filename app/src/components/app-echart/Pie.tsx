@@ -27,7 +27,8 @@ const Pie = (props: {
         {
           type: 'pie',
           radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
+          avoidLabelOverlap: true,
+          minAngle: 5,
           itemStyle: {
             borderRadius: 10,
             borderColor: '#fff',
