@@ -23,7 +23,7 @@ function setCategory(arr: any, rules: any) {
       if (hasRule) {
         return {
           ...val,
-          category: element.category,
+          category: element.category.replace(/\s/g, ''),
           consumer: toNumberOrUndefiend(element.consumer) || val.consumer,
           tag: toNumberOrUndefiend(element.tag) || val.tag,
           cost_type: toNumberOrUndefiend(element.cost_type) || val.cost_type,

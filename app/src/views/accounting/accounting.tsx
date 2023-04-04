@@ -21,7 +21,7 @@ function handleExist(data: any) {
   return { ...exsit }
 }
 function handleCategory(data: any) {
-  if (data.category) {
+  if (data.category && Array.isArray(data.category)) {
     return {
       ...data,
       category: { $in: data.category.map((val: []) => JSON.stringify(val)) },
