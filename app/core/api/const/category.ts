@@ -144,7 +144,6 @@ export const category_type = [
         tag: variable_cost,
         abc_type: b,
         cost_type: develop,
-        consumer: family,
       },
     ],
   },

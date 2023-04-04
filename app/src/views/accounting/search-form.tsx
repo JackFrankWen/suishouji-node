@@ -71,10 +71,18 @@ const AdvancedSearchForm = (props: {
       console.log(error)
     }
   }
-  const onValuesChange = ({ exist }: { exist: string }) => {
-    const val = form.getFieldsValue()
-    console.log(val, 'abbb')
+  const onValuesChange = ({
+    exist,
+    category,
+  }: {
+    exist: string
+    category: any
+  }) => {
     if (exist) {
+      form.setFieldValue('category', [])
+      form.setFieldValue('abc_type', undefined)
+      form.setFieldValue('cost_type', undefined)
+      const val = form.getFieldsValue()
       onChange({ ...val, ...getDateTostring(val), ...handleExist({ exist }) })
     }
   }
@@ -103,17 +111,19 @@ const AdvancedSearchForm = (props: {
       </Row>
       <Row>
         <Space>
-          <Form.Item name="category">
-            <Cascader
-              options={category_type}
-              allowClear
-              multiple
-              showCheckedStrategy="SHOW_CHILD"
-              maxTagCount={3}
-              style={{ width: '100%', minWidth: '120px' }}
-              placeholder="请选择分类"
-            />
-          </Form.Item>
+          {form.getFieldValue('exist') !== '2' && (
+            <Form.Item name="category">
+              <Cascader
+                options={category_type}
+                allowClear
+                multiple
+                showCheckedStrategy="SHOW_CHILD"
+                maxTagCount={3}
+                style={{ width: '100%', minWidth: '120px' }}
+                placeholder="请选择分类"
+              />
+            </Form.Item>
+          )}
           <Form.Item name="account_type">
             <SelectWrap
               style={{ width: '100px' }}
