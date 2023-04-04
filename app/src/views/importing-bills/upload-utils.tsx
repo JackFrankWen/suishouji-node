@@ -19,7 +19,7 @@ export function formateToTableDataWechat(
     // 9: "商户单号"
     // 10: "备注"
     const amount = subArr[5] || ''
-    const description = `${subArr[3]}（${subArr[2]}）${subArr[10]}`
+    const description = `${subArr[3]};${subArr[2]};${subArr[10]}`
     return {
       id: subArr[8],
       amount: amount.replace('¥', ''),
@@ -105,9 +105,9 @@ export function formateToTableAlipay(
     // 14: "备注                  "
     // 15: "资金状态 "
     const amount = subArr[9] || ''
-    const description = `${trimString(subArr[7])}（${trimString(
+    const description = `${trimString(subArr[7])};${trimString(
       subArr[8]
-    )}）${trimString(subArr[14])}`
+    )};${trimString(subArr[14])}`
     return {
       id: subArr[0],
       amount: amount.trim(),

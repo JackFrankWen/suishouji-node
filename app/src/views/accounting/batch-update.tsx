@@ -3,6 +3,7 @@ import { cpt_const } from '@/core/api/const/web'
 import SelectWrap from '@/src/components/form/SelectWrap'
 import { getDateTostring, toNumberOrUndefiend } from '@/src/components/utils'
 import { Button, Cascader, Form, Popconfirm, Space } from 'antd'
+import type { DefaultOptionType } from 'antd/es/cascader'
 
 import React, { useEffect, useState } from 'react'
 
@@ -24,22 +25,38 @@ const BatchUpdateArea = (props: {
     >
       <Form.Item name="category">
         <Cascader
+          style={{ minWidth: '120px' }}
           options={category_type}
+          showSearch={{
+            filter: (inputValue: string, path: DefaultOptionType[]) =>
+              path.some(
+                (option) =>
+                  (option.label as string)
+                    .toLowerCase()
+                    .indexOf(inputValue.toLowerCase()) > -1
+              ),
+          }}
           onChange={(category) => {
-            const found = category_type.find((val) => val.value === category[0])
-            // @ts-ignore
-            const obj: any = found?.children.find(
-              (val: any) => val.value === category[1]
-            )
+            if (category && category[0]) {
+              const found = category_type.find(
+                (val) => val.value === category[0]
+              )
+              if (found) {
+                // @ts-ignore
+                const obj: any = found?.children.find(
+                  (val: any) => val.value === category[1]
+                )
 
-            form.setFieldsValue({
-              account_type: undefined,
-              payment_type: undefined,
-              tag: toNumberOrUndefiend(obj?.tag),
-              abc_type: toNumberOrUndefiend(obj?.abc_type),
-              consumer: toNumberOrUndefiend(obj?.consumer),
-              cost_type: toNumberOrUndefiend(obj?.cost_type),
-            })
+                form.setFieldsValue({
+                  account_type: undefined,
+                  payment_type: undefined,
+                  tag: toNumberOrUndefiend(obj?.tag),
+                  abc_type: toNumberOrUndefiend(obj?.abc_type),
+                  consumer: toNumberOrUndefiend(obj?.consumer),
+                  cost_type: toNumberOrUndefiend(obj?.cost_type),
+                })
+              }
+            }
           }}
           allowClear
           placeholder="请选择分类"

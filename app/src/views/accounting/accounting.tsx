@@ -99,7 +99,11 @@ const App: React.FC = () => {
 
   return (
     <div className="record-page">
-      <AdvancedSearchForm onChange={setFormValue} formValue={formValue} />
+      <AdvancedSearchForm
+        onChange={setFormValue}
+        formValue={formValue}
+        refresh={refresh}
+      />
       <BatchUpdateArea
         onBatchUpdate={onBatchUpdate}
         onBatchDelete={onBatchDelete}

@@ -34,9 +34,10 @@ function handleExist(data: any) {
 }
 const AdvancedSearchForm = (props: {
   onChange: (a: any) => void
+  refresh: () => void
   formValue: any
 }) => {
-  const { formValue, onChange } = props
+  const { formValue, onChange, refresh } = props
   const [form] = Form.useForm()
   const [open, setOpen] = useState(false)
 
@@ -44,7 +45,7 @@ const AdvancedSearchForm = (props: {
     const searchVal = {
       ...values,
       description: values.description
-        ? { $regex: values.description }
+        ? { $regex: '.*' + values.description + '.*' }
         : undefined,
     }
     onChange(searchVal)
@@ -64,7 +65,9 @@ const AdvancedSearchForm = (props: {
         ...getDateTostring(data),
         ...handleExist({ exist: '2' }),
       })
+      console.log(res, 'autoClassify')
       if (res.modifiedCount) {
+        refresh()
         message.success(`成功更行了${res.modifiedCount}条`)
       }
     } catch (error) {

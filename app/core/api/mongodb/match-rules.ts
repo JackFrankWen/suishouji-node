@@ -52,7 +52,7 @@ export async function CreateRule(param: any) {
   try {
     const p = new MatchRule({ ...param })
     const res = await p.save()
-    return res
+    return { code: 200, ...res }
   } catch (error) {}
 }
 /**

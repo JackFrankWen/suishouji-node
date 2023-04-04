@@ -43,6 +43,7 @@ export async function autoClassify(params: {
     const dataList = await find(params)
     const rules = await getALlMatchRule()
     const data = getDataForUpdate(dataList, rules)
+    console.log(dataList, 'dataList')
     console.log(data, 'data')
     const result = await update_many_with_diff_value(data)
 
@@ -88,6 +89,7 @@ function getDataForUpdate(dataList: any, rules: any): any {
   dataList.forEach((element: any) => {
     rules.forEach((rule: I_MatchRuls) => {
       const rightReg = new RegExp(rule.rule)
+      console.log(rule.rule, element.description)
       if (rightReg.test(element.description)) {
         console.log(element, 'element')
         const p = {
