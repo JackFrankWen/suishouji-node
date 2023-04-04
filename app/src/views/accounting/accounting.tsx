@@ -20,6 +20,15 @@ function handleExist(data: any) {
   }
   return { ...exsit }
 }
+function handleCategory(data: any) {
+  if (data.category) {
+    return {
+      ...data,
+      category: { $in: data.category.map((val: []) => JSON.stringify(val)) },
+    }
+  }
+  return { ...data }
+}
 const App: React.FC = () => {
   const now = moment() // get the current date/time in Moment.js format
 
@@ -44,6 +53,7 @@ const App: React.FC = () => {
         ...data,
         ...getDateTostring(data),
         ...handleExist(data),
+        ...handleCategory(data),
       })
       if (res) {
         setTableData(res)

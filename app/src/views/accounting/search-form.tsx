@@ -1,3 +1,4 @@
+import { category_type } from '@/core/api/const/category'
 import { cpt_const } from '@/core/api/const/web'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import SelectWrap from '@/src/components/form/SelectWrap'
@@ -85,7 +86,7 @@ const AdvancedSearchForm = (props: {
       className="ant-advanced-search-form"
       onFinish={onFinish}
     >
-      <Row gutter={24}>
+      <Row>
         <Space>
           <Form.Item name="exist">
             <Radio.Group>
@@ -94,6 +95,24 @@ const AdvancedSearchForm = (props: {
               <Radio.Button value="3">ABC无</Radio.Button>
               <Radio.Button value="4">消费目的无</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+          <Form.Item name="create_date" label="创建">
+            <RangePickerWrap bordered placeholder="placeholder" />
+          </Form.Item>
+        </Space>
+      </Row>
+      <Row>
+        <Space>
+          <Form.Item name="category">
+            <Cascader
+              options={category_type}
+              allowClear
+              multiple
+              showCheckedStrategy="SHOW_CHILD"
+              maxTagCount={3}
+              style={{ width: '100%', minWidth: '120px' }}
+              placeholder="请选择分类"
+            />
           </Form.Item>
           <Form.Item name="account_type">
             <SelectWrap
@@ -128,9 +147,6 @@ const AdvancedSearchForm = (props: {
       <Row>
         <Space>
           <Form.Item name="date" label="交易">
-            <RangePickerWrap bordered placeholder="placeholder" />
-          </Form.Item>
-          <Form.Item name="create_date" label="创建">
             <RangePickerWrap bordered placeholder="placeholder" />
           </Form.Item>
           <Form.Item name="description">

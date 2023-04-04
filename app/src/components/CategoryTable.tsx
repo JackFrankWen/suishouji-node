@@ -1,4 +1,4 @@
-import { Modal, Table, Tag, Tooltip } from 'antd'
+import { Modal, Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableColumnsType } from 'antd'
 import { getDateTostring, roundToTwoDecimalPlaces } from './utils'
 import React, { useEffect, useState } from 'react'
@@ -37,15 +37,24 @@ const columns: ColumnsType<DataType> = [
 ]
 const columns2 = [
   {
-    title: '金额',
-    dataIndex: 'amount',
-    width: 80,
+    title: '交易时间',
+    width: 200,
+    dataIndex: 'trans_time_formate',
+    key: 'trans_time_formate',
   },
   {
     title: '内容',
     dataIndex: 'description',
-
-    ellipsis: true,
+    render: (description: string) => (
+      <Tooltip placement="topLeft" title={description}>
+        <Typography.Link ellipsis>{description}</Typography.Link>
+      </Tooltip>
+    ),
+  },
+  {
+    title: '金额',
+    dataIndex: 'amount',
+    width: 80,
   },
   {
     title: '消费对象',
@@ -69,12 +78,7 @@ const columns2 = [
       return <Tag color="orange">{consumer_type[val]}</Tag>
     },
   },
-  {
-    title: '交易时间',
-    width: 200,
-    dataIndex: 'trans_time_formate',
-    key: 'trans_time_formate',
-  },
+
   {
     title: '标签',
     dataIndex: 'tag',
