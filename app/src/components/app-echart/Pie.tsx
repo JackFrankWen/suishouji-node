@@ -10,8 +10,12 @@ const Pie = (props: {
 }) => {
   const [chartOptions, setChartOptions] = useState({})
   const { data } = props
+  const total = data.reduce((acc, curr) => acc + Number(curr.value), 0)
   useEffect(() => {
     setChartOptions({
+      title: {
+        text: `总共¥${total}`,
+      },
       tooltip: {
         trigger: 'item',
         formatter: (val: any) => `${val.value}元`,

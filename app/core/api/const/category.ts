@@ -30,6 +30,7 @@ export const category_type = [
         consumer: family,
         cost_type: basic,
         abc_type: a,
+        budget: 3333,
       },
       {
         value: 10002,

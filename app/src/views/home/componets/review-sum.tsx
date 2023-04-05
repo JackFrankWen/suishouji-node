@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Row, Statistic, Typography } from 'antd'
+import { Card, Col, Divider, Progress, Row, Statistic, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { getDateTostring } from '@/src/components/utils'
 
@@ -53,10 +53,10 @@ export default function Summarize(props: { formValue: any }) {
         })}
         <Col span={6}>
           <Card hoverable>
-            <Statistic title="发展开支" prefix="¥" value="22" />
+            <Statistic title="本月预算" prefix="¥" value="10000" />
+
             <Divider />
-            <Typography.Text> 微信： 33</Typography.Text>
-            <Typography.Text> 支付宝： 33</Typography.Text>
+            <Typography.Text> 上月已经超： 33</Typography.Text>
           </Card>
         </Col>
       </Row>
