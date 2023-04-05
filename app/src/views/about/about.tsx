@@ -2,6 +2,7 @@ import React from 'react'
 import { Tabs } from 'antd'
 import './about.less'
 import RuleTable from './rule-table'
+import BudgetTable from './budget-table'
 const items = [
   {
     label: '规则编辑',
@@ -9,6 +10,15 @@ const items = [
     children: (
       <>
         <RuleTable />
+      </>
+    ),
+  },
+  {
+    label: '预算',
+    key: '2',
+    children: (
+      <>
+        <BudgetTable />
       </>
     ),
   },
