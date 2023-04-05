@@ -158,6 +158,26 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
     toggle()
     setCate(val)
   }
+  const tableSummary = (pageData: any) => {
+    let totalCost = 0
+    console.log(pageData, 'pageData')
+    pageData.forEach((obj: any) => {
+      totalCost += Number(obj.value)
+    })
+    return (
+      <>
+        <Table.Summary.Row>
+          <Table.Summary.Cell index={1}></Table.Summary.Cell>
+          <Table.Summary.Cell index={1} colSpan={2}>
+            汇总
+          </Table.Summary.Cell>
+          <Table.Summary.Cell index={2}>
+            <a>{roundToTwoDecimalPlaces(totalCost)}</a>
+          </Table.Summary.Cell>
+        </Table.Summary.Row>
+      </>
+    )
+  }
   return (
     <>
       <Table
@@ -168,6 +188,7 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
           expandRowByClick: true,
           expandedRowRender: expandedRowRender(onRowClick),
         }}
+        summary={tableSummary}
         dataSource={props.data}
         pagination={false}
       />

@@ -24,6 +24,7 @@ import {
   tag_type,
 } from '@/core/api/const/web'
 import useLoadingButton from '@/src/components/form/useButton'
+import { roundToTwoDecimalPlaces } from '@/src/components/utils'
 
 export interface DataType {
   id: string
@@ -332,11 +333,11 @@ const BasicTable = (props: {
         <Table.Summary.Row>
           <Table.Summary.Cell index={0}>支出</Table.Summary.Cell>
           <Table.Summary.Cell index={1}>
-            <a>{totalCost}</a>
+            <a>{roundToTwoDecimalPlaces(totalCost)}</a>
           </Table.Summary.Cell>
           <Table.Summary.Cell index={2}>收入</Table.Summary.Cell>
           <Table.Summary.Cell index={3}>
-            <a>{totalIncome}</a>
+            <a>{roundToTwoDecimalPlaces(totalIncome)}</a>
           </Table.Summary.Cell>
         </Table.Summary.Row>
       </>

@@ -1,4 +1,4 @@
-import { Table, Tag, Tooltip } from 'antd'
+import { Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
 
@@ -44,6 +44,15 @@ const renderBold = (txt: string, obj: DataType) => {
   }
   return txt
 }
+const renderBoldPrice = (txt: string, obj: DataType) => {
+  if (obj?.children) {
+    return <span style={{ fontWeight: 'bold' }}>{txt}</span>
+  }
+  if (Number(txt) > 100) {
+    return <Typography.Text type="danger">{txt}</Typography.Text>
+  }
+  return txt
+}
 const columns: ColumnsType<DataType> = [
   {
     title: '交易日期',
@@ -67,7 +76,7 @@ const columns: ColumnsType<DataType> = [
   {
     title: '金额',
     dataIndex: 'amount',
-    render: renderBold,
+    render: renderBoldPrice,
     key: 'amount',
     width: 120,
   },
