@@ -47,7 +47,7 @@ export default function ReviewCost(props: { formValue: any }) {
   useEffect(() => {
     const data = getDateTostring(formValue)
     getAbcTotal({ ...data, consumer: consumerVal })
-  }, [formValue, consumerVal2])
+  }, [formValue, consumerVal])
   return (
     <Row gutter={16} className="home-section">
       <Col span={12}>

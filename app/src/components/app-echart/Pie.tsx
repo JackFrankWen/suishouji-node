@@ -14,7 +14,7 @@ const Pie = (props: {
   useEffect(() => {
     setChartOptions({
       title: {
-        text: `总共¥${total}`,
+        subtext: `总共¥${total}`,
       },
       tooltip: {
         trigger: 'item',
