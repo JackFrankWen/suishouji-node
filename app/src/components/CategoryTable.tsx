@@ -195,6 +195,9 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
       {show && (
         <Modal width={1000} footer={null} open={show} onCancel={toggle}>
           <Table
+            pagination={{
+              showSizeChanger: true,
+            }}
             columns={columns2}
             dataSource={modalData}
             size="small"

@@ -30,7 +30,7 @@ export const category_type = [
         consumer: family,
         cost_type: basic,
         abc_type: a,
-        budget: 3333,
+        budget: 1800, // 2000 2500
       },
       {
         value: 10002,
@@ -39,6 +39,7 @@ export const category_type = [
         consumer: family,
         cost_type: basic,
         abc_type: a,
+        budget: 500, // 589
       },
       {
         value: 10003,
@@ -47,6 +48,7 @@ export const category_type = [
         consumer: family,
         cost_type: basic,
         abc_type: a,
+        budget: 300, // 589
       },
       {
         value: 10004,
@@ -55,6 +57,7 @@ export const category_type = [
         consumer: undefined,
         cost_type: chill,
         abc_type: b,
+        budget: 400, // 589
       },
       {
         value: 10005,
@@ -62,6 +65,7 @@ export const category_type = [
         tag: general_cost,
         cost_type: basic,
         abc_type: a,
+        budget: 800, // 589
       },
       {
         value: 10006,
@@ -69,7 +73,8 @@ export const category_type = [
         tag: variable_cost,
         consumer: family,
         cost_type: chill,
-        abc_type: b,
+        abc_type: b, // 489.39166666666665
+        budget: 500, // 589
       },
     ],
   },

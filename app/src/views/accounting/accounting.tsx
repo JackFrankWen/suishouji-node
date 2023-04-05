@@ -75,7 +75,9 @@ const App: React.FC = () => {
         },
         data: {
           ...val,
-          category: val?.category ? JSON.stringify(val.category) : undefined,
+          category: val?.category
+            ? `[${val['category'][0]}, ${val['category'][1]}]`
+            : undefined,
         },
       })
       if (res.modifiedCount) {
