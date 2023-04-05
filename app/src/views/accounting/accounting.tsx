@@ -1,5 +1,5 @@
 import { getDateTostring, toNumberOrUndefiend } from '@/src/components/utils'
-import { message } from 'antd'
+import { Card, message } from 'antd'
 import moment from 'moment'
 
 import React, { useEffect, useState } from 'react'
@@ -105,23 +105,25 @@ const App: React.FC = () => {
 
   return (
     <div className="record-page">
-      <AdvancedSearchForm
-        onChange={setFormValue}
-        formValue={formValue}
-        refresh={refresh}
-      />
-      <BatchUpdateArea
-        onBatchUpdate={onBatchUpdate}
-        onBatchDelete={onBatchDelete}
-      />
-      <DailyTable
-        selectedRows={selectedRows}
-        formValue={formValue}
-        tableData={tableData}
-        setSelectedRows={(a) => {
-          setSelectedRows(a)
-        }}
-      />
+      <Card>
+        <AdvancedSearchForm
+          onChange={setFormValue}
+          formValue={formValue}
+          refresh={refresh}
+        />
+      </Card>
+      <Card style={{ marginTop: '12px' }}>
+        <DailyTable
+          onBatchUpdate={onBatchUpdate}
+          onBatchDelete={onBatchDelete}
+          selectedRows={selectedRows}
+          formValue={formValue}
+          tableData={tableData}
+          setSelectedRows={(a) => {
+            setSelectedRows(a)
+          }}
+        />
+      </Card>
     </div>
   )
 }

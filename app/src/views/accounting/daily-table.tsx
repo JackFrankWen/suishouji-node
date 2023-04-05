@@ -1,4 +1,4 @@
-import { Table, Tag, Tooltip, Typography } from 'antd'
+import { Col, Row, Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
 
@@ -12,6 +12,7 @@ import {
   payment_type,
   tag_type,
 } from '@/core/api/const/web'
+import BatchUpdateArea from './batch-update'
 
 interface DataType {
   name: string
@@ -157,8 +158,16 @@ const TableView = (props: {
   tableData: any
   selectedRows: React.Key[]
   setSelectedRows: (a: any) => void
+  onBatchUpdate: (val: any) => void
+  onBatchDelete: () => void
 }) => {
-  const { selectedRows = [], setSelectedRows, tableData } = props
+  const {
+    selectedRows = [],
+    setSelectedRows,
+    tableData,
+    onBatchUpdate,
+    onBatchDelete,
+  } = props
   const [tableCol, setTableCol] = useState(columns)
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys: selectedRows,
@@ -179,15 +188,25 @@ const TableView = (props: {
   }
   return (
     <div className="edit-area">
-      <TableSettingTool
-        defaultColumns={[...columns]}
-        onChange={(checkedGroup: string[]) => {
-          const data = columns.filter((data: any) =>
-            checkedGroup.includes(data.dataIndex)
-          )
-          setTableCol(data)
-        }}
-      />
+      <Row align="middle" justify="space-around" style={{ padding: '8px 0' }}>
+        <Col span={22}>
+          <BatchUpdateArea
+            onBatchUpdate={onBatchUpdate}
+            onBatchDelete={onBatchDelete}
+          />
+        </Col>
+        <Col span={2} style={{ textAlign: 'end' }}>
+          <TableSettingTool
+            defaultColumns={[...columns]}
+            onChange={(checkedGroup: string[]) => {
+              const data = columns.filter((data: any) =>
+                checkedGroup.includes(data.dataIndex)
+              )
+              setTableCol(data)
+            }}
+          />
+        </Col>
+      </Row>
       <Table
         rowKey="m_id"
         tableLayout="fixed"
