@@ -51,12 +51,12 @@ export default function ReviewCost(props: { formValue: any }) {
   return (
     <Row gutter={16} className="home-section">
       <Col span={12}>
-        <Card title="ABC消费" bordered={false} extra={ConsumerCpt}>
+        <Card title="ABC消费" bordered={false} extra={ConsumerCpt} hoverable>
           <Pie data={abcPieData} />
         </Card>
       </Col>
       <Col span={12}>
-        <Card title="消费目的" bordered={false} extra={ConsumerCpt2}>
+        <Card title="消费目的" bordered={false} extra={ConsumerCpt2} hoverable>
           <Pie data={costPieData} />
         </Card>
       </Col>

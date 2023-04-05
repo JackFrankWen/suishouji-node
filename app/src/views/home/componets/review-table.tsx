@@ -51,7 +51,7 @@ export default function TableSection(props: { formValue: any }) {
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
-        <Card title="分类" bordered={false} extra={extra}>
+        <Card hoverable title="分类" bordered={false} extra={extra}>
           <CategoryTable
             data={category}
             formValue={{

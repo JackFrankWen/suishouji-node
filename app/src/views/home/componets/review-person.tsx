@@ -47,12 +47,12 @@ export default function ReviewPerson(props: { formValue: any }) {
     <>
       <Row gutter={16} className="home-section">
         <Col span={12}>
-          <Card title="支出" bordered={false} extra={ConsumerCpt}>
+          <Card title="支出" bordered={false} extra={ConsumerCpt} hoverable>
             <Pie data={category} />
           </Card>
         </Col>
         <Col span={12}>
-          <Card title="成员消费" bordered={false}>
+          <Card title="成员消费" bordered={false} hoverable>
             <Pie data={member} />
           </Card>
         </Col>

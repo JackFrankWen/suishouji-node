@@ -61,6 +61,7 @@ function BudgetArea(props: { formValue: any }) {
     <Row gutter={16} className="home-section">
       <Col span={24}>
         <Card
+          hoverable
           title="预算对比"
           bordered={false}
           extra={

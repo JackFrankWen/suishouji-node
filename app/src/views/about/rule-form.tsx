@@ -6,6 +6,7 @@ import { cpt_const } from '@/core/api/const/web'
 import { category_type } from '@/core/api/const/category'
 import { toNumberOrUndefiend } from '@/src/components/utils'
 import useLoadingButton from '@/src/components/form/useButton'
+import { DefaultOptionType } from 'antd/es/cascader'
 
 const RuleForm = (props: {
   data?: {
@@ -82,6 +83,7 @@ const RuleForm = (props: {
       initialValues={{
         category: data?.category ? JSON.parse(data?.category) : undefined,
         abc_type: toNumberOrUndefiend(data?.abc_type),
+        rule: data?.rule,
         cost_type: toNumberOrUndefiend(data?.cost_type),
         tag: toNumberOrUndefiend(data?.tag),
         consumer: toNumberOrUndefiend(data?.consumer),
@@ -89,13 +91,34 @@ const RuleForm = (props: {
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      {!data?.m_id && (
+      {data?.m_id ? (
         <Form.Item name="rule">
-          <Input placeholder="规则" />
+          <Input.TextArea
+            rows={6}
+            disabled={data?.m_id ? true : false}
+            placeholder="规则"
+          />
+        </Form.Item>
+      ) : (
+        <Form.Item name="rule">
+          <Input disabled={data?.m_id ? true : false} placeholder="规则" />
         </Form.Item>
       )}
       <Form.Item name="category">
-        <Cascader options={category_type} allowClear placeholder="请选择分类" />
+        <Cascader
+          options={category_type}
+          allowClear
+          placeholder="请选择分类"
+          showSearch={{
+            filter: (inputValue: string, path: DefaultOptionType[]) =>
+              path.some(
+                (option) =>
+                  (option.label as string)
+                    .toLowerCase()
+                    .indexOf(inputValue.toLowerCase()) > -1
+              ),
+          }}
+        />
       </Form.Item>
       <Form.Item name="tag">
         <SelectWrap placeholder="标签" options={cpt_const.tag_type} />

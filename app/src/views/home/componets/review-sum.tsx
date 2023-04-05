@@ -1,4 +1,4 @@
-import { Card, Col, Row, Statistic } from 'antd'
+import { Card, Col, Divider, Row, Statistic, Typography } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { getDateTostring } from '@/src/components/utils'
 
@@ -24,18 +24,42 @@ export default function Summarize(props: { formValue: any }) {
     getMemberTotal(getDateTostring(formValue))
   }, [formValue])
   return (
-    <Row className="home-section">
-      <Col span={24}>
-        <Card title="汇总">
-          {staticData.map((item: any, key: any) => {
-            return (
-              <Card.Grid style={gridStyle} key={key}>
+    <>
+      {/* <Row className="home-section">
+        <Col span={24}>
+          <Card title="汇总">
+            {staticData.map((item: any, key: any) => {
+              return (
+                <Card.Grid style={gridStyle} key={key}>
+                  <Statistic title={item.name} prefix="¥" value={item.value} />
+                </Card.Grid>
+              )
+            })}
+          </Card>
+        </Col>
+      </Row> */}
+      <Row className="home-section" gutter={24}>
+        {staticData.map((item: any, key: any) => {
+          return (
+            <Col span={6} key={key}>
+              <Card hoverable>
                 <Statistic title={item.name} prefix="¥" value={item.value} />
-              </Card.Grid>
-            )
-          })}
-        </Card>
-      </Col>
-    </Row>
+                <Divider />
+                <Typography.Text> 微信： 33</Typography.Text>
+                <Typography.Text> 支付宝： 33</Typography.Text>
+              </Card>
+            </Col>
+          )
+        })}
+        <Col span={6}>
+          <Card hoverable>
+            <Statistic title="发展开支" prefix="¥" value="22" />
+            <Divider />
+            <Typography.Text> 微信： 33</Typography.Text>
+            <Typography.Text> 支付宝： 33</Typography.Text>
+          </Card>
+        </Col>
+      </Row>
+    </>
   )
 }
