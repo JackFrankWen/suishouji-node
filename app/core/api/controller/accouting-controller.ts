@@ -133,3 +133,29 @@ function tranferDailyChild(data: any) {
     }
   })
 }
+
+// 修复历史category 包含空格
+export async function correntHistory(): Promise<any> {
+  try {
+    const dataList = await find({})
+
+    const filterData = filterCategoryNone(dataList)
+    const updateData = getUpdate(filterData)
+    console.log(updateData, 'cangsu ')
+    const result = await update_many_with_diff_value(updateData)
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const filterCategoryNone = (list: any) =>
+  list.filter((val: any) => val.category)
+const getUpdate = (list: any) =>
+  list.map((element: any) => ({
+    query: { _id: element._id.toString() },
+
+    update: {
+      category: (element.category || '').replace(/\s/g, ''),
+    },
+  }))

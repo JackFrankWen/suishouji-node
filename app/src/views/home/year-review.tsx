@@ -65,9 +65,7 @@ function CategoryLine(props: { formValue: any }) {
     getCategoryLine({
       ...getDateTostring(formValue),
       category: {
-        $in: categoryVal.map(
-          (val: [number, number]) => `[${val[0]}, ${val[1]}]`
-        ),
+        $in: categoryVal.map((val: [number, number]) => JSON.stringify(val)),
       },
     })
   }, [formValue, categoryVal])
@@ -134,7 +132,7 @@ function YearReview(props: { formValue: any }) {
       </Row>
 
       <CategoryLine formValue={props.formValue} />
-      <AvgBarSection formValue={props.formValue} />
+      {/* <AvgBarSection formValue={props.formValue} /> */}
       <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />

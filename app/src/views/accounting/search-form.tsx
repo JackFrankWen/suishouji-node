@@ -7,14 +7,18 @@ import {
   Button,
   Cascader,
   Drawer,
+  Dropdown,
   Form,
   Input,
   message,
-  Popconfirm,
+  Modal,
   Radio,
   Row,
   Space,
 } from 'antd'
+import type { MenuProps } from 'antd'
+
+const { confirm } = Modal
 
 import React, { useEffect, useState } from 'react'
 import RuleForm from '../about/rule-form'
@@ -89,6 +93,20 @@ const AdvancedSearchForm = (props: {
       onChange({ ...val, ...getDateTostring(val), ...handleExist({ exist }) })
     }
   }
+  const onMenuClick: MenuProps['onClick'] = async (e) => {
+    if (e.key === '1') {
+      try {
+        const res = await $api.correntHistory()
+        console.log(res, 'ressss')
+        if (res.modifiedCount) {
+          refresh()
+          message.success(`成功更行了${res.modifiedCount}条`)
+        }
+      } catch (error) {}
+    }
+    console.log('click', e)
+  }
+
   return (
     <Form
       form={form}
@@ -180,6 +198,29 @@ const AdvancedSearchForm = (props: {
           </Form.Item>
           <Form.Item>
             <Button onClick={classifyItem}>一键分类</Button>
+          </Form.Item>
+          <Form.Item>
+            <Dropdown.Button
+              menu={{
+                items: [
+                  {
+                    key: '1',
+                    label: '修复历史数据空格',
+                  },
+                  {
+                    key: '2',
+                    label: '2nd item',
+                  },
+                  {
+                    key: '3',
+                    label: '3rd item',
+                  },
+                ],
+                onClick: onMenuClick,
+              }}
+            >
+              慎用
+            </Dropdown.Button>
           </Form.Item>
           {open && (
             <Drawer

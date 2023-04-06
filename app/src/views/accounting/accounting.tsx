@@ -25,9 +25,7 @@ function handleCategory(data: any) {
     return {
       ...data,
       category: {
-        $in: data.category.map(
-          (val: [number, number]) => `[${val[0]}, ${val[1]}]`
-        ),
+        $in: data.category.map((val: [number, number]) => JSON.stringify(val)),
       },
     }
   }
@@ -75,9 +73,7 @@ const App: React.FC = () => {
         },
         data: {
           ...val,
-          category: val?.category
-            ? `[${val['category'][0]}, ${val['category'][1]}]`
-            : undefined,
+          category: val?.category ? JSON.stringify(val.category) : undefined,
         },
       })
       if (res.modifiedCount) {

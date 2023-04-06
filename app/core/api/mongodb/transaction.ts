@@ -34,12 +34,15 @@ export function getComonMatch(param: any) {
     },
     'dddd'
   )
-
-  const match = removeUndefinedProps({
-    trans_time: {
+  let trans_time
+  if (start || end) {
+    trans_time = {
       $gte: moment(start).toDate(),
       $lte: moment(end).toDate(),
-    },
+    }
+  }
+  const match = removeUndefinedProps({
+    trans_time,
     flow_type: 1,
     description,
     consumer,

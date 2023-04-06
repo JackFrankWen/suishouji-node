@@ -25,7 +25,6 @@ const RuleForm = (props: {
 
   const { data } = props
   const onFormLayoutChange = ({ category }: { category: [number, number] }) => {
-    console.log(category, 'category')
     if (category) {
       const found = category_type.find((val) => val.value === category[0])
       if (found) {
