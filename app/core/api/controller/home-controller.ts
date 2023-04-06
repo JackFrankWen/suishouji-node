@@ -83,6 +83,7 @@ export async function getCost(params: {
 function mapData(arr: any) {
   return arr.map((obj: any) => ({
     ...obj,
+    m_id: obj._id.toString(),
     amount: obj.amount.toString(),
   }))
 }

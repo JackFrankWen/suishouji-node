@@ -1,10 +1,12 @@
-import { Modal, Table, Tag, Tooltip, Typography } from 'antd'
+import { message, Modal, Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableColumnsType } from 'antd'
 import { getDateTostring, roundToTwoDecimalPlaces } from './utils'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { ColumnsType } from 'antd/es/table/interface'
 import useModal from './ModalWrap'
 import { abc_type, cost_type, tag_type } from '@/core/api/const/web'
+import type { TableRowSelection } from 'antd/es/table/interface'
+import BatchUpdateArea from '../views/accounting/batch-update'
 
 interface ExpandedDataType {
   name: string
@@ -131,6 +133,7 @@ const expandedRowRender = (toggle: any) => (record: DataType) => {
         onRow={(rowCol) => {
           return {
             onClick: () => {
+              console.log(rowCol, 'rowCol')
               toggle(rowCol.category)
             }, // 点击行
           }
@@ -155,10 +158,11 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
   const [modalData, setModaldata] = useState()
   const getCategory = async (data: any, category: string) => {
     try {
+      console.log(category, 'category')
       const p = getDateTostring(data)
       const res = await $api.getCost({ ...p, category })
       if (res) {
-        console.log(res, '===fff')
+        console.log(res, 'modalta')
         setModaldata(res)
       }
     } catch (error) {
@@ -175,7 +179,6 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
   }
   const tableSummary = (pageData: any) => {
     let totalCost = 0
-    console.log(pageData, 'pageData')
     pageData.forEach((obj: any) => {
       totalCost += Number(obj.value)
     })
@@ -193,6 +196,9 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
       </>
     )
   }
+  const refresh = useCallback(() => {
+    getCategory(formValue, cate)
+  }, [formValue, cate])
   return (
     <>
       <Table
@@ -209,17 +215,75 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
       />
       {show && (
         <Modal width={1000} footer={null} open={show} onCancel={toggle}>
-          <Table
-            pagination={{
-              showSizeChanger: true,
-            }}
-            columns={columns2}
-            dataSource={modalData}
-            size="small"
-            scroll={{ y: 300 }}
-          />
+          <ModalContent modalData={modalData} refresh={refresh} />
         </Modal>
       )}
+    </>
+  )
+}
+function ModalContent(props: { modalData: any; refresh: () => void }) {
+  const [selectedRows, setSelectedRows] = useState<any>([])
+  const { modalData, refresh } = props
+  const rowSelection: TableRowSelection<DataType> = {
+    selectedRowKeys: selectedRows,
+    onChange: (selectedRowKeys: React.Key[]) => {
+      setSelectedRows(selectedRowKeys)
+    },
+  }
+  const onBatchUpdate = async (val: any) => {
+    try {
+      const res = await $api.updateMany({
+        filter: {
+          ids: selectedRows.filter((val: string) => val.length !== 10),
+        },
+        data: {
+          ...val,
+          category: val?.category ? JSON.stringify(val.category) : undefined,
+        },
+      })
+      if (res.modifiedCount) {
+        refresh()
+        setSelectedRows([])
+        message.success(`成功${res.modifiedCount}记录`)
+      }
+      console.log(res, 'update sucess')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const onBatchDelete = async () => {
+    try {
+      const res = await $api.deleteMany({
+        filter: {
+          ids: selectedRows.filter((val: string) => val.length !== 10),
+        },
+      })
+      if (res.deletedCount) {
+        refresh()
+        setSelectedRows([])
+        message.success(`成功删除${res.deletedCount}记录`)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  return (
+    <>
+      <BatchUpdateArea
+        onBatchUpdate={onBatchUpdate}
+        onBatchDelete={onBatchDelete}
+      />
+      <Table
+        pagination={{
+          showSizeChanger: true,
+        }}
+        rowSelection={rowSelection}
+        rowKey="m_id"
+        columns={columns2}
+        dataSource={modalData}
+        size="small"
+        scroll={{ y: 300 }}
+      />
     </>
   )
 }
