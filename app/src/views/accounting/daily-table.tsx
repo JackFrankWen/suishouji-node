@@ -175,7 +175,6 @@ const TableView = (props: {
       setSelectedRows(selectedRowKeys)
     },
   }
-  console.log(selectedRows, 'selectedRows')
   const selectRow = (record: ExpandedDataType | DataType) => {
     const selectedRowKeys = [...selectedRows]
     console.log(record, 'record')

@@ -162,12 +162,12 @@ const RuleTable = () => {
       <Table
         columns={columns}
         dataSource={ruleData}
-        pagination={{
-          defaultPageSize: 10,
-          pageSizeOptions: [10, 20, 50],
-          showSizeChanger: true,
-        }}
-        scroll={{ x: 1500 }}
+        // pagination={{
+        //   defaultPageSize: 10,
+        //   pageSizeOptions: [10, 20, 50],
+        //   showSizeChanger: true,
+        // }}
+        pagination={false}
       />
       {visiable && (
         <Drawer

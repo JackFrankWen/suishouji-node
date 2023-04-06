@@ -90,19 +90,6 @@ const RuleForm = (props: {
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
-      {data?.m_id ? (
-        <Form.Item name="rule">
-          <Input.TextArea
-            rows={6}
-            // disabled={data?.m_id ? true : false}
-            placeholder="规则"
-          />
-        </Form.Item>
-      ) : (
-        <Form.Item name="rule">
-          <Input disabled={data?.m_id ? true : false} placeholder="规则" />
-        </Form.Item>
-      )}
       <Form.Item name="category">
         <Cascader
           options={category_type}
@@ -131,6 +118,19 @@ const RuleForm = (props: {
       <Form.Item name="abc_type">
         <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
       </Form.Item>
+      {data?.m_id ? (
+        <Form.Item name="rule">
+          <Input.TextArea
+            rows={6}
+            // disabled={data?.m_id ? true : false}
+            placeholder="规则"
+          />
+        </Form.Item>
+      ) : (
+        <Form.Item name="rule">
+          <Input disabled={data?.m_id ? true : false} placeholder="规则" />
+        </Form.Item>
+      )}
       <Form.Item>
         <LoadingBtn type="primary" onClick={submitRule}>
           提交

@@ -65,6 +65,12 @@ const columns2 = [
     title: '金额',
     dataIndex: 'amount',
     width: 80,
+    render: (txt: string) => {
+      if (Number(txt) > 100) {
+        return <Typography.Text type="danger">{txt}</Typography.Text>
+      }
+      return txt
+    },
   },
   {
     title: '消费对象',
@@ -272,6 +278,16 @@ function ModalContent(props: { modalData: any; refresh: () => void }) {
       console.log(error)
     }
   }
+  const selectRow = (record: any) => {
+    const selectedRowKeys = [...selectedRows]
+    console.log(record, 'record')
+    if (selectedRowKeys.indexOf(record.m_id) >= 0) {
+      selectedRowKeys.splice(selectedRowKeys.indexOf(record.m_id), 1)
+    } else {
+      selectedRowKeys.push(record.m_id)
+    }
+    setSelectedRows(selectedRowKeys)
+  }
   return (
     <>
       <div style={{ padding: '8px 0' }}>
@@ -286,6 +302,11 @@ function ModalContent(props: { modalData: any; refresh: () => void }) {
           pageSizeOptions: [20, 50, 100],
           showSizeChanger: true,
         }}
+        onRow={(record) => ({
+          onClick: () => {
+            selectRow(record)
+          },
+        })}
         rowSelection={rowSelection}
         rowKey="m_id"
         columns={columns2}
