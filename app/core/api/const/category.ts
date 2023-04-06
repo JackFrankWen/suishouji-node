@@ -394,6 +394,8 @@ export const category_type = [
         value: 70003,
         label: '其他娱乐',
         tag: variable_cost,
+        cost_type: chill,
+        abc_type: c,
       },
     ],
   },
@@ -406,6 +408,8 @@ export const category_type = [
         label: '个人保险',
         tag: fix_cost,
         consumer: family,
+        cost_type: basic,
+        abc_type: b,
       },
       {
         value: 80002,

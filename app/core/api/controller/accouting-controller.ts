@@ -1,5 +1,6 @@
 import { toNumberOrUndefiend } from '@/src/components/utils'
-import { getCategoryObj } from '../const/category'
+import { isValidElement } from 'react'
+import { category_type, getCategoryObj } from '../const/category'
 import {
   CreateRule,
   getALlMatchRule,
@@ -15,6 +16,7 @@ import {
   update_many,
   update_many_with_diff_value,
 } from '../mongodb/transaction'
+import { I_Transaction } from '../mongodb/transaction-schema'
 
 export async function getDailyAmountTotal(params: {
   start: string
@@ -135,7 +137,7 @@ function tranferDailyChild(data: any) {
 }
 
 // 修复历史category 包含空格
-export async function correntHistory(): Promise<any> {
+export async function correntHistorySpace(): Promise<any> {
   try {
     const dataList = await find({})
 
@@ -148,14 +150,63 @@ export async function correntHistory(): Promise<any> {
     console.log(error)
   }
 }
+function getRuleList(data: any) {
+  return data.flatMap((category: any) => category.children)
+}
+// 修复历史 abc 消费目的
+export async function correntHistoryCost(): Promise<any> {
+  try {
+    const dataList = (await find({
+      trans_time: { $lt: new Date('2023-01-01') },
+    })) as I_Transaction[]
+    console.log(dataList, 'cost')
+    // const filterData = filterCategoryNone(dataList)
+    const rules = getRuleList(category_type)
+    const tableData = set_abc_and_cost(dataList, rules)
 
+    console.log(tableData, 'tableData ')
+    const updateData = getUpdateCost(tableData)
+    const result = await update_many_with_diff_value(updateData)
+    return result
+  } catch (error) {
+    console.log(error)
+  }
+}
+function set_abc_and_cost(dataList: I_Transaction[], rules: any) {
+  return dataList.map((val: any) => {
+    for (const element of rules) {
+      const reg = new RegExp(element.value)
+      const hasRule = reg.test(val.category)
+      if (hasRule) {
+        return {
+          _id: val._id.toString(),
+          cost_type: toNumberOrUndefiend(element.cost_type),
+          abc_type: toNumberOrUndefiend(element.abc_type),
+        }
+      }
+    }
+    return {
+      _id: val._id.toString(),
+    }
+  })
+}
 const filterCategoryNone = (list: any) =>
   list.filter((val: any) => val.category)
+
 const getUpdate = (list: any) =>
   list.map((element: any) => ({
     query: { _id: element._id.toString() },
 
     update: {
       category: (element.category || '').replace(/\s/g, ''),
+    },
+  }))
+const getUpdateCost = (list: any) =>
+  list.map((element: any) => ({
+    query: { _id: element._id },
+
+    update: {
+      cost_type: element.cost_type,
+      abc_type: element.abc_type,
     },
   }))

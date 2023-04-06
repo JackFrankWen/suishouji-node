@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react'
 import DailyTable from './daily-table'
 import './accounting.less'
 import AdvancedSearchForm from './search-form'
-import BatchUpdateArea from './batch-update'
 
 function handleExist(data: any) {
   const exsit: any = {}

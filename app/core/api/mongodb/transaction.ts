@@ -26,6 +26,7 @@ export function getComonMatch(param: any) {
     payment_type,
     cost_type,
     description,
+    trans_time,
   } = param
   console.log(
     {
@@ -34,15 +35,15 @@ export function getComonMatch(param: any) {
     },
     'dddd'
   )
-  let trans_time
+  let trans_timeM = trans_time
   if (start || end) {
-    trans_time = {
+    trans_timeM = {
       $gte: moment(start).toDate(),
       $lte: moment(end).toDate(),
     }
   }
   const match = removeUndefinedProps({
-    trans_time,
+    trans_time: trans_timeM,
     flow_type: 1,
     description,
     consumer,

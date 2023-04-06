@@ -96,13 +96,26 @@ const AdvancedSearchForm = (props: {
   const onMenuClick: MenuProps['onClick'] = async (e) => {
     if (e.key === '1') {
       try {
-        const res = await $api.correntHistory()
+        const res = await $api.correntHistorySpace()
         console.log(res, 'ressss')
         if (res.modifiedCount) {
           refresh()
           message.success(`成功更行了${res.modifiedCount}条`)
         }
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
+    } else if (e.key === '2') {
+      try {
+        const res = await $api.correntHistoryCost()
+        console.log(res, 'ressss')
+        if (res.modifiedCount) {
+          refresh()
+          message.success(`成功更行了${res.modifiedCount}条`)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
     console.log('click', e)
   }
@@ -209,7 +222,7 @@ const AdvancedSearchForm = (props: {
                   },
                   {
                     key: '2',
-                    label: '2nd item',
+                    label: '修复历史未分ABC',
                   },
                   {
                     key: '3',

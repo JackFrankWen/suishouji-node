@@ -21,9 +21,8 @@ const App: React.FC = () => {
     >
       <Form.Item label="Form Layout" name="layout">
         <Radio.Group>
-          <Radio.Button value="horizontal">Horizontal</Radio.Button>
-          <Radio.Button value="vertical">Vertical</Radio.Button>
-          <Radio.Button value="inline">Inline</Radio.Button>
+          <Radio.Button value="horizontal">支出</Radio.Button>
+          <Radio.Button value="vertical">收入</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item name="category">
