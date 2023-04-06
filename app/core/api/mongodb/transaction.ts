@@ -125,6 +125,16 @@ export async function get_every_month_amount(param: { start: any; end: any }) {
   return []
 }
 
+function calculateMonthDiff(startDate: string, endDate: string) {
+  const momentStartDate = moment(startDate)
+  const momentEndDate = moment(endDate).add(1, 'day')
+
+  const diffInMonths = momentEndDate.diff(momentStartDate, 'months')
+
+  // 如果相差的天数小于一个月的天数，则算作一个月
+  return diffInMonths
+}
+
 /**
  * 查询各类支出汇总
  * @param {any} param:any
@@ -134,6 +144,8 @@ export async function get_category_total_by_date(param: any) {
   const collection = getCollection()
   if (collection) {
     const match = getComonMatch(param)
+    const monthsDiff = calculateMonthDiff(param.start, param.end)
+
     const res = await collection.aggregate([
       { $match: match },
       {
@@ -147,6 +159,7 @@ export async function get_category_total_by_date(param: any) {
           _id: 0,
           category: '$_id',
           total: '$total_amount',
+          avg: { $divide: ['$total_amount', monthsDiff] },
         },
       },
       {

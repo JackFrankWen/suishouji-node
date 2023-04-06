@@ -8,14 +8,15 @@ import { abc_type, cost_type, tag_type } from '@/core/api/const/web'
 
 interface ExpandedDataType {
   name: string
-  age: number
   category: string
+  avg: string
 }
 interface DataType {
   name: string
-  age: number
+  avg: string
   child: ExpandedDataType[]
 }
+
 const columns: ColumnsType<DataType> = [
   {
     title: '一级分类',
@@ -32,7 +33,14 @@ const columns: ColumnsType<DataType> = [
     title: '金额',
     dataIndex: 'value',
     key: 'value',
-    render: (val) => roundToTwoDecimalPlaces(val),
+    render: (val, obj) => (
+      <Typography.Text>
+        {roundToTwoDecimalPlaces(val)}
+        <Typography.Text type="secondary" style={{ marginLeft: '2px' }}>
+          (平均: {roundToTwoDecimalPlaces(obj.avg)})
+        </Typography.Text>
+      </Typography.Text>
+    ),
   },
 ]
 const columns2 = [
@@ -106,7 +114,14 @@ const expandedRowRender = (toggle: any) => (record: DataType) => {
       title: '金额',
       dataIndex: 'value',
       key: 'value',
-      render: (val) => roundToTwoDecimalPlaces(val),
+      render: (val, obj) => (
+        <Typography.Text>
+          {roundToTwoDecimalPlaces(val)}
+          <Typography.Text type="secondary" style={{ marginLeft: '2px' }}>
+            (平均: {roundToTwoDecimalPlaces(obj.avg)})
+          </Typography.Text>
+        </Typography.Text>
+      ),
     },
   ]
 

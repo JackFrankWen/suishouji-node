@@ -167,7 +167,9 @@ type CategoryReturnType = {
   value: string
   id: string
   name: string
+  avg: string
   child: {
+    avg: string
     category: string
     id: string
     value: string
@@ -178,7 +180,7 @@ type CategoryReturnType = {
 function transferCategory(list: any): CategoryReturnType {
   let newList: CategoryReturnType = []
   const category_obj = getCategoryObj()
-  list.forEach((element: { total: string; category: string }) => {
+  list.forEach((element: { total: string; category: string; avg: string }) => {
     const arr = element.category ? JSON.parse(element.category) : []
     const [parent_id, child_id] = arr
 
@@ -191,10 +193,14 @@ function transferCategory(list: any): CategoryReturnType {
             value: roundToTwoDecimalPlaces(
               Number(obj.value) + Number(element.total.toString())
             ),
+            avg: roundToTwoDecimalPlaces(
+              Number(obj.avg) + Number(element.avg.toString())
+            ),
 
             child: [...obj.child].concat({
               value: element.total.toString(),
               category: element.category,
+              avg: element.avg.toString(),
               id: child_id,
               name: category_obj[child_id],
             }),
@@ -207,11 +213,13 @@ function transferCategory(list: any): CategoryReturnType {
       newList.push({
         value: element.total.toString(),
         id: parent_id,
+        avg: element.avg.toString(),
         name: category_obj[parent_id],
         child: [
           {
             value: element.total.toString(),
             id: parent_id,
+            avg: element.avg.toString(),
             category: element.category,
             name: category_obj[child_id],
           },

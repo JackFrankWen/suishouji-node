@@ -26,6 +26,7 @@ export default function TableSection(props: { formValue: any }) {
       const res = await $api.getCategory(getDateTostring(data))
       if (res) {
         setCategory(res)
+        console.log(res, 'res 分类')
       }
     } catch (error) {
       console.log(error)
