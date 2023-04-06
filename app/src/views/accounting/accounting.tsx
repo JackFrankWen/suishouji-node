@@ -22,11 +22,20 @@ function handleExist(data: any) {
 }
 function handleCategory(data: any) {
   if (data.category && Array.isArray(data.category)) {
-    return {
-      ...data,
-      category: {
-        $in: data.category.map((val: [number, number]) => JSON.stringify(val)),
-      },
+    if (data.category.length > 0) {
+      return {
+        ...data,
+        category: {
+          $in: data.category.map((val: [number, number]) =>
+            JSON.stringify(val)
+          ),
+        },
+      }
+    } else {
+      return {
+        ...data,
+        category: undefined,
+      }
     }
   }
   return { ...data }

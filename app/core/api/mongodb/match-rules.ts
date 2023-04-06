@@ -31,6 +31,21 @@ function getId(data: any) {
   })
 }
 
+interface ObjectWithProps {
+  [key: string]: any
+}
+
+function setObjectPropsValueNullIfUndefined(
+  obj: ObjectWithProps
+): ObjectWithProps {
+  for (const prop in obj) {
+    if (obj.hasOwnProperty(prop) && obj[prop] === undefined) {
+      obj[prop] = null
+    }
+  }
+  return obj
+}
+
 /**
  * findANdupadte
  * @param {any} param:{start:any;end:any}
@@ -39,7 +54,10 @@ function getId(data: any) {
 export function UpdateOne(param: { filter: any; update: any }) {
   console.log(param, 'param')
   return new Promise((resolve, reject) => {
-    MatchRule.findOneAndUpdate(param.filter, removeUndefinedProps(param.update))
+    MatchRule.findOneAndUpdate(
+      param.filter,
+      setObjectPropsValueNullIfUndefined(param.update)
+    )
       .then((res) => {
         resolve({ code: 200, ...res })
       })

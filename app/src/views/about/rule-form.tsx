@@ -94,7 +94,7 @@ const RuleForm = (props: {
         <Form.Item name="rule">
           <Input.TextArea
             rows={6}
-            disabled={data?.m_id ? true : false}
+            // disabled={data?.m_id ? true : false}
             placeholder="规则"
           />
         </Form.Item>

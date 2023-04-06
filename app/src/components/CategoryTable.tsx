@@ -151,8 +151,12 @@ const expandedRowRender = (toggle: any) => (record: DataType) => {
   )
 }
 
-const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
-  const { data, formValue } = props
+const CategoryTable = (props: {
+  data: DataType[]
+  formValue: any
+  refreshTable: () => void
+}) => {
+  const { data, formValue, refreshTable } = props
   const [show, toggle] = useModal()
   const [cate, setCate] = useState<string>('')
   const [modalData, setModaldata] = useState()
@@ -197,6 +201,7 @@ const CategoryTable = (props: { data: DataType[]; formValue: any }) => {
     )
   }
   const refresh = useCallback(() => {
+    refreshTable()
     getCategory(formValue, cate)
   }, [formValue, cate])
   return (
@@ -269,12 +274,16 @@ function ModalContent(props: { modalData: any; refresh: () => void }) {
   }
   return (
     <>
-      <BatchUpdateArea
-        onBatchUpdate={onBatchUpdate}
-        onBatchDelete={onBatchDelete}
-      />
+      <div style={{ padding: '8px 0' }}>
+        <BatchUpdateArea
+          onBatchUpdate={onBatchUpdate}
+          onBatchDelete={onBatchDelete}
+        />
+      </div>
       <Table
         pagination={{
+          defaultPageSize: 20,
+          pageSizeOptions: [20, 50, 100],
           showSizeChanger: true,
         }}
         rowSelection={rowSelection}

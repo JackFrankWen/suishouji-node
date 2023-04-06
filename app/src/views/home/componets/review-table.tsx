@@ -1,5 +1,5 @@
 import { Card, Col, Row, Space } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import CategoryTable from '@/src/components/CategoryTable'
 import { getDateTostring } from '@/src/components/utils'
 import { useConsumer } from '@/src/components/form/useSelect'
@@ -49,11 +49,20 @@ export default function TableSection(props: { formValue: any }) {
       </Space>
     </>
   )
+  const refreshTable = useCallback(() => {
+    getCategory({
+      ...formValue,
+      consumer: consumerVal,
+      abc_type: abcTypeVal,
+      cost_type: costTypeVal,
+    })
+  }, [formValue, consumerVal, abcTypeVal, costTypeVal])
   return (
     <Row gutter={16} className="home-section">
       <Col span={24}>
         <Card hoverable title="分类" bordered={false} extra={extra}>
           <CategoryTable
+            refreshTable={refreshTable}
             data={category}
             formValue={{
               ...formValue,
