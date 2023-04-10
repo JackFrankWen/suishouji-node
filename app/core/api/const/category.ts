@@ -457,6 +457,50 @@ export const category_type = [
     ],
   },
   {
+    value: 91000,
+    label: '主动收入',
+    children: [
+      {
+        value: 91001,
+        label: '工资',
+        tag: variable_cost,
+        consumer: wife,
+        cost_type: develop,
+        abc_type: b,
+      },
+    ],
+  },
+  {
+    value: 92000,
+    label: '被动收入',
+    children: [
+      {
+        value: 92001,
+        label: '股票',
+        tag: variable_cost,
+        consumer: wife,
+        cost_type: develop,
+        abc_type: b,
+      },
+      {
+        value: 92002,
+        label: '基金',
+        tag: variable_cost,
+        consumer: wife,
+        cost_type: develop,
+        abc_type: b,
+      },
+      {
+        value: 92003,
+        label: '理财',
+        tag: variable_cost,
+        consumer: wife,
+        cost_type: develop,
+        abc_type: b,
+      },
+    ],
+  },
+  {
     value: 110000,
     label: '出差旅游',
     children: [

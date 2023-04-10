@@ -442,6 +442,7 @@ export async function update_many_with_diff_value(
   }
   return []
 }
+// 批量删除
 export async function delete_many(param: { filter: any }) {
   const { filter } = param
   const collection = getCollection()
@@ -602,4 +603,16 @@ export async function get_category_line_by_data(param: any) {
     return res
   }
   return []
+}
+
+export async function create_transaction(doc: any) {
+  const collection = getCollection()
+  try {
+    console.log({ ...doc }, 'doc')
+    const p = new collection({ ...doc })
+    const res = await p.save()
+    return { code: 200, ...res }
+  } catch (error) {
+    console.log(error)
+  }
 }

@@ -71,7 +71,9 @@ export async function CreateRule(param: any) {
     const p = new MatchRule({ ...param })
     const res = await p.save()
     return { code: 200, ...res }
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 /**
  * findANdupadte
