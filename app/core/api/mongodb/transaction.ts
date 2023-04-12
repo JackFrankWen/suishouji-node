@@ -27,6 +27,7 @@ export function getComonMatch(param: any) {
     cost_type,
     description,
     trans_time,
+    flow_type,
   } = param
   console.log(
     {
@@ -44,7 +45,7 @@ export function getComonMatch(param: any) {
   }
   const match = removeUndefinedProps({
     trans_time: trans_timeM,
-    flow_type: 1,
+    flow_type: flow_type ? flow_type : 1,
     description,
     consumer,
     tag,
@@ -292,6 +293,40 @@ export async function get_account_total_by_date(param: any) {
         $project: {
           _id: 0,
           name: '$_id.name',
+          value: '$total',
+        },
+      },
+      {
+        $sort: {
+          value: 1,
+        },
+      },
+    ])
+    return res
+  }
+  return []
+}
+export async function get_account_and_payment_total_by_date(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $group: {
+          _id: {
+            account_type: '$account_type',
+            payment_type: '$payment_type',
+          },
+          total: {
+            $sum: '$amount',
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          account_type: '$_id.account_type',
+          payment_type: '$_id.payment_type',
           value: '$total',
         },
       },

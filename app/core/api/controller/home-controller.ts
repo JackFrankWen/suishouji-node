@@ -11,7 +11,9 @@ import {
   get_cost_type_total_by_date,
   get_every_month_amount,
   get_member_total_by_date,
+  get_account_and_payment_total_by_date,
 } from '../mongodb/transaction'
+
 export async function getEveryMonthAmount(params: {
   start: string
   end: string
@@ -19,6 +21,7 @@ export async function getEveryMonthAmount(params: {
   const result = await get_every_month_amount(params)
   return getBarData(result)
 }
+
 export async function getCategoryLine(params: any) {
   try {
     const result = await get_category_line_by_data(params)
@@ -27,6 +30,7 @@ export async function getCategoryLine(params: any) {
     console.log(error)
   }
 }
+
 function transferCategoryName(arr: { category: string; amount: any }[]) {
   const category_obj = getCategoryObj()
   return arr.map((val) => {
@@ -70,6 +74,78 @@ export async function getABCTotal(params: {
 export async function getAccountTotal(params: { start: string; end: string }) {
   const result = await get_account_total_by_date(params)
   return transferAccountrData(result)
+}
+export async function getSumrize(params: { start: string; end: string }) {
+  // const total = find({...params,})
+  const acc = get_account_and_payment_total_by_date(params)
+  const total = get_account_total_by_date(params)
+  const input = get_category_total_by_date({
+    ...params,
+    flow_type: 2,
+  })
+
+  return new Promise((resolve) => {
+    Promise.all([acc, input, total]).then((res) => {
+      resolve(loadData(res))
+      // resolve(res)
+    })
+  })
+}
+function loadData(data: any) {
+  try {
+    const [acc, income, accSum] = data
+    const incomeTotal = income.reduce((acc: any, curr: any) => {
+      return acc + Number(curr.total.toString())
+    }, 0)
+    const total = accSum.reduce((acc: any, curr: any) => {
+      return acc + Number(curr.value.toString())
+    }, 0)
+
+    const obj: any = {
+      husband: {
+        wechat: 0,
+        alipay: 0,
+        total: 0,
+      },
+      wife: {
+        wechat: 0,
+        alipay: 0,
+        total: 0,
+      },
+      total: roundToTwoDecimalPlaces(total),
+      income: roundToTwoDecimalPlaces(incomeTotal),
+    }
+    acc.forEach((val: any) => {
+      if (val.account_type === 1) {
+        // 老公
+        if (val.payment_type === 1) {
+          obj.husband.alipay = val.value.toString()
+        } else if (val.payment_type === 2) {
+          obj.husband.wechat = val.value.toString()
+        }
+      } else if (val.account_type === 2) {
+        // 老婆
+        if (val.payment_type === 1) {
+          obj.wife.alipay = val.value.toString()
+        } else if (val.payment_type === 2) {
+          obj.wife.wechat = val.value.toString()
+        }
+      }
+    })
+    accSum.forEach((val: any) => {
+      if (val.name === 1) {
+        // 老公
+        obj.husband.total = val.value.toString()
+      } else if (val.name === 2) {
+        // 老婆
+        obj.wife.total = val.value.toString()
+      }
+    })
+
+    return obj
+  } catch (error) {
+    console.log(error)
+  }
 }
 export async function getCost(params: {
   start: string
