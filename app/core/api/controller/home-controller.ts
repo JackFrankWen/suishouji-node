@@ -12,6 +12,7 @@ import {
   get_every_month_amount,
   get_member_total_by_date,
   get_account_and_payment_total_by_date,
+  get_consumer_line_by_data,
 } from '../mongodb/transaction'
 
 export async function getEveryMonthAmount(params: {
@@ -30,7 +31,24 @@ export async function getCategoryLine(params: any) {
     console.log(error)
   }
 }
+export async function getConsumeLine(params: any) {
+  try {
+    const result = await get_consumer_line_by_data(params)
+    return transferConsumerName(result)
+  } catch (error) {
+    console.log(error)
+  }
+}
 
+function transferConsumerName(arr: { consumer: string; amount: any }[]) {
+  return arr.map((val) => {
+    return {
+      ...val,
+      name: consumer_type[val.consumer],
+      amount: val.amount.map((val: any) => Number(val.toString())),
+    }
+  })
+}
 function transferCategoryName(arr: { category: string; amount: any }[]) {
   const category_obj = getCategoryObj()
   return arr.map((val) => {

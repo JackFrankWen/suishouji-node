@@ -639,6 +639,108 @@ export async function get_category_line_by_data(param: any) {
   }
   return []
 }
+export async function get_consumer_line_by_data(param: any) {
+  const collection = getCollection()
+  if (collection) {
+    console.log(getComonMatch(param), 'getComonMatch(param)')
+    const res = await collection.aggregate([
+      { $match: getComonMatch(param) },
+      {
+        $group: {
+          _id: {
+            consumer: '$consumer',
+            year: {
+              $year: {
+                date: {
+                  $toDate: '$trans_time',
+                },
+              },
+            },
+            month: {
+              $month: {
+                date: {
+                  $toDate: '$trans_time',
+                },
+              },
+            },
+          },
+          amount: {
+            $sum: '$amount',
+          },
+        },
+      },
+      // Then, group documents again by category and accumulate monthly amounts
+      {
+        $group: {
+          _id: {
+            consumer: '$_id.consumer',
+          },
+          monthlyAmounts: {
+            $push: {
+              month: '$_id.month',
+              year: '$_id.year',
+              amount: '$amount',
+            },
+          },
+        },
+      },
+      // Finally, format the result and sort by year/month
+      {
+        $project: {
+          _id: 0,
+          consumer: '$_id.consumer',
+          amount: {
+            $map: {
+              input: {
+                $range: [1, 13],
+              },
+              as: 'm',
+              in: {
+                $reduce: {
+                  input: '$monthlyAmounts',
+                  initialValue: 0,
+                  in: {
+                    $cond: [
+                      {
+                        $eq: ['$$this.month', '$$m'],
+                      },
+                      '$$this.amount',
+                      '$$value',
+                    ],
+                  },
+                },
+              },
+            },
+          },
+          date: {
+            $map: {
+              input: {
+                $range: [1, 13],
+              },
+              as: 'm',
+              in: {
+                $dateToString: {
+                  date: {
+                    $dateFromParts: {
+                      year: {
+                        $max: '$monthlyAmounts.year',
+                      },
+                      month: '$$m',
+                      day: 1,
+                    },
+                  },
+                  format: '%Y-%m',
+                },
+              },
+            },
+          },
+        },
+      },
+    ])
+    return res
+  }
+  return []
+}
 
 export async function create_transaction(doc: any) {
   const collection = getCollection()

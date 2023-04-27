@@ -97,6 +97,36 @@ function CategoryLine(props: { formValue: any }) {
     </Row>
   )
 }
+function ConsumerLine(props: { formValue: any }) {
+  const { formValue } = props
+  const [monthBar, setMonthbar] = useState<any>()
+  const getConsumeLine = async (data: any) => {
+    try {
+      const res = await $api.getConsumeLine(data)
+      if (res) {
+        setMonthbar(res)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    getConsumeLine({
+      ...getDateTostring(formValue),
+    })
+  }, [formValue])
+  console.log(monthBar, 'CategoryLine')
+  return (
+    <Row gutter={16} className="home-section">
+      <Col span={24}>
+        <Card title="成员消费图" bordered={false}>
+          <Line data={monthBar} />
+        </Card>
+      </Col>
+    </Row>
+  )
+}
+
 function YearReview(props: { formValue: any }) {
   const { formValue } = props
   const [monthBar, setMonthbar] = useState<{
@@ -132,6 +162,7 @@ function YearReview(props: { formValue: any }) {
       </Row>
 
       <CategoryLine formValue={props.formValue} />
+      <ConsumerLine formValue={props.formValue} />
       {/* <AvgBarSection formValue={props.formValue} /> */}
       <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
