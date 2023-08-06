@@ -1,7 +1,7 @@
 import { Col, Row, Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import { ColumnsType } from 'antd/es/table/interface'
-
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import TableSettingTool from '@/src/components/TableSettingTool'
 
@@ -41,8 +41,17 @@ interface ExpandedDataType {
 }
 const renderBold = (txt: string, obj: DataType) => {
   if (obj?.children) {
-    return <span style={{ fontWeight: 'bold' }}>{txt}</span>
+    const dateConst = ['日', '一', '二', '三', '四', '五', '六']
+    const label = dateConst[moment(txt).weekday()]
+    return (
+      <span style={{ fontWeight: 'bold' }}>
+        {txt}
+        <span style={{ marginLeft: 4 }}>星期{label}</span>
+      </span>
+    )
   }
+  console.log(moment(txt).weekday(), '==={moment(txt).weekday()')
+
   return txt
 }
 const renderBoldPrice = (txt: string, obj: DataType) => {
