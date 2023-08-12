@@ -379,13 +379,13 @@ export const category_type = [
     children: [
       {
         value: 70001,
-        label: '聚会',
+        label: '聚会(用其他娱乐)',
         tag: variable_cost,
         abc_type: b,
       },
       {
         value: 70002,
-        label: '游戏（桌游）',
+        label: '游戏（用其他娱乐）',
         tag: variable_cost,
         cost_type: chill,
         abc_type: b,
