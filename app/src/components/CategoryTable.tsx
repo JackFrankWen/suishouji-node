@@ -225,7 +225,7 @@ const CategoryTable = (props: {
         pagination={false}
       />
       {show && (
-        <Modal width={1000} footer={null} open={show} onCancel={toggle}>
+        <Modal width={1200} footer={null} open={show} onCancel={toggle}>
           <ModalContent modalData={modalData} refresh={refresh} />
         </Modal>
       )}
@@ -312,7 +312,7 @@ function ModalContent(props: { modalData: any; refresh: () => void }) {
         columns={columns2}
         dataSource={modalData}
         size="small"
-        scroll={{ y: 300 }}
+        scroll={{ y: 400 }}
       />
     </>
   )
