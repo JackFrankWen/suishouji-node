@@ -2,7 +2,15 @@ import { category_type } from '@/core/api/const/category'
 import { cpt_const } from '@/core/api/const/web'
 import SelectWrap from '@/src/components/form/SelectWrap'
 import { getDateTostring, toNumberOrUndefiend } from '@/src/components/utils'
-import { Button, Cascader, Form, InputNumber, Popconfirm, Space } from 'antd'
+import {
+  Button,
+  Cascader,
+  Form,
+  InputNumber,
+  Popconfirm,
+  Space,
+  Input,
+} from 'antd'
 import type { DefaultOptionType } from 'antd/es/cascader'
 
 import React, { useEffect, useState } from 'react'
@@ -15,7 +23,7 @@ const BatchUpdateArea = (props: {
   const { onBatchUpdate, onBatchDelete } = props
   const onFinish = (values: any) => {
     onBatchUpdate(values)
-    if (values.amount) {
+    if (values.amount || values.description) {
       form.resetFields()
     }
   }
@@ -89,6 +97,9 @@ const BatchUpdateArea = (props: {
       </Form.Item>
       <Form.Item name="amount">
         <InputNumber placeholder="金额" />
+      </Form.Item>
+      <Form.Item name="description">
+        <Input placeholder="描述" />
       </Form.Item>
       <Form.Item shouldUpdate>
         <Space.Compact>

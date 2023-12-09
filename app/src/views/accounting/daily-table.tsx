@@ -102,6 +102,8 @@ const columns: ColumnsType<DataType> = [
         2: '老婆',
         3: '家庭',
         4: '牧牧',
+        5: '爷爷奶奶',
+        6: '二宝',
       }
       if (val === 1) {
         return <Tag color="cyan">{consumer_type[val]}</Tag>
@@ -110,6 +112,10 @@ const columns: ColumnsType<DataType> = [
       } else if (val === 3) {
         return <Tag color="geekblue">{consumer_type[val]}</Tag>
       } else if (val === 4) {
+        return <Tag color="purple">{consumer_type[val]}</Tag>
+      } else if (val === 5) {
+        return <Tag color="lime">{consumer_type[val]}</Tag>
+      } else if (val === 6) {
         return <Tag color="orange">{consumer_type[val]}</Tag>
       }
     },
