@@ -205,6 +205,7 @@ const TableView = (props: {
       <Row align="middle" justify="space-around" style={{ padding: '8px 0' }}>
         <Col span={22}>
           <BatchUpdateArea
+            disabled={selectRow.length === 0}
             onBatchUpdate={onBatchUpdate}
             onBatchDelete={onBatchDelete}
           />

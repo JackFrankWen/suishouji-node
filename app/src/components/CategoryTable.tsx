@@ -4,7 +4,12 @@ import { getDateTostring, roundToTwoDecimalPlaces } from './utils'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ColumnsType } from 'antd/es/table/interface'
 import useModal from './ModalWrap'
-import { abc_type, cost_type, tag_type } from '@/core/api/const/web'
+import {
+  abc_type,
+  account_type,
+  cost_type,
+  tag_type,
+} from '@/core/api/const/web'
 import type { TableRowSelection } from 'antd/es/table/interface'
 import BatchUpdateArea from '../views/accounting/batch-update'
 
@@ -114,6 +119,12 @@ const columns2 = [
     dataIndex: 'abc_type',
     width: 80,
     render: (val: number) => (val ? abc_type[val] : ''),
+  },
+  {
+    title: '账户',
+    dataIndex: 'account_type',
+    width: 90,
+    render: (val: number) => (val ? account_type[val] : ''),
   },
   {
     title: '消费方式',
@@ -300,6 +311,7 @@ function ModalContent(props: { modalData: any; refresh: () => void }) {
     <>
       <div style={{ padding: '8px 0' }}>
         <BatchUpdateArea
+          disabled={selectedRows.length === 0}
           onBatchUpdate={onBatchUpdate}
           onBatchDelete={onBatchDelete}
         />

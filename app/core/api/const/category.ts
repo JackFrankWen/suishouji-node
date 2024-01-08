@@ -4,7 +4,8 @@ const general_cost = 1, // 日常
 const husband = 1,
   wife = 2,
   family = 3,
-  son = 4
+  son = 4,
+  grandPa = 5
 // 1: '生存开销',
 // 2: '发展开销',
 // 3: '享受开销',
@@ -367,7 +368,7 @@ export const category_type = [
         value: 60003,
         label: '孝敬长辈',
         tag: fix_cost,
-        consumer: family,
+        consumer: grandPa,
         cost_type: basic,
         abc_type: a,
       },

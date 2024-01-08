@@ -16,11 +16,12 @@ import type { DefaultOptionType } from 'antd/es/cascader'
 import React, { useEffect, useState } from 'react'
 
 const BatchUpdateArea = (props: {
+  disabled: boolean
   onBatchUpdate: (val: any) => void
   onBatchDelete: () => void
 }) => {
   const [form] = Form.useForm()
-  const { onBatchUpdate, onBatchDelete } = props
+  const { onBatchUpdate, onBatchDelete, disabled } = props
   const onFinish = (values: any) => {
     onBatchUpdate(values)
     if (values.amount || values.description) {
@@ -103,7 +104,7 @@ const BatchUpdateArea = (props: {
       </Form.Item>
       <Form.Item shouldUpdate>
         <Space.Compact>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" disabled={disabled}>
             批量修改
           </Button>
           <Popconfirm
@@ -115,7 +116,7 @@ const BatchUpdateArea = (props: {
             okText="确定"
             cancelText="取消"
           >
-            <Button>批量删除</Button>
+            <Button disabled={disabled}>批量删除</Button>
           </Popconfirm>
         </Space.Compact>
       </Form.Item>
