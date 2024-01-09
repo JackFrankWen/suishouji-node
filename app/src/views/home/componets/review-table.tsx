@@ -18,6 +18,14 @@ export default function TableSection(props: { formValue: any }) {
     options: cpt_const.cost_type,
     placeholder: '消费目的',
   })
+  const [accountTypeVal, accountTypeCpt] = useConsumer({
+    options: cpt_const.account_type,
+    placeholder: '账号',
+  })
+  const [paymentVal, PaymentCpt] = useConsumer({
+    options: cpt_const.payment_type,
+    placeholder: '支付方式',
+  })
 
   const [category, setCategory] = useState<any>([])
 
@@ -38,14 +46,25 @@ export default function TableSection(props: { formValue: any }) {
       consumer: consumerVal,
       abc_type: abcTypeVal,
       cost_type: costTypeVal,
+      account_type: accountTypeVal,
+      payment: paymentVal,
     })
-  }, [formValue, consumerVal, abcTypeVal, costTypeVal])
+  }, [
+    formValue,
+    consumerVal,
+    abcTypeVal,
+    costTypeVal,
+    accountTypeVal,
+    paymentVal,
+  ])
   const extra = (
     <>
       <Space>
-        {abcTypeCpt}
+        {accountTypeCpt}
         {ConsumerCpt}
+        {PaymentCpt}
         {costTypeCpt}
+        {abcTypeCpt}
       </Space>
     </>
   )

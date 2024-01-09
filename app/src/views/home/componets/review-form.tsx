@@ -12,7 +12,7 @@ const useReviewForm = (): [any, any] => {
   const initialValues = {
     type: 'month',
     date: [firstDayOfYear, lastDayOfYear],
-    action: 'check',
+    action: 'review',
   }
   const [formData, setFormData] = useState(initialValues)
 

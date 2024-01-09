@@ -137,10 +137,10 @@ function YearReview(props: { formValue: any }) {
 
       <ReviewMonthBar formValue={props.formValue} />
 
+      <TableSection formValue={props.formValue} />
       <CategoryLine formValue={props.formValue} />
       <ConsumerLine formValue={props.formValue} />
       {/* <AvgBarSection formValue={props.formValue} /> */}
-      <TableSection formValue={props.formValue} />
       <ReviewPerson formValue={props.formValue} />
       <ReviewCost formValue={props.formValue} />
     </>
