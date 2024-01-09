@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Radio } from 'antd'
+import { Button, Form, Input, Radio, Space } from 'antd'
 import RangePickerWrap from '@/src/components/form/RangePickerWrap'
 import moment from 'moment'
 
-const useReviewForm = () => {
+const useReviewForm = (): [any, any] => {
   const [form] = Form.useForm()
   const now = moment().subtract(1, 'month') // get the current date/time in Moment.js format
 
   const firstDayOfYear = now.clone().startOf('month') // get the first day of the current year
   const lastDayOfYear = now.clone().endOf('month') // get
-  const initialValues = { type: 'month', date: [firstDayOfYear, lastDayOfYear] }
+  const initialValues = {
+    type: 'month',
+    date: [firstDayOfYear, lastDayOfYear],
+    action: 'check',
+  }
   const [formData, setFormData] = useState(initialValues)
 
   const onFormLayoutChange = (val: any) => {
@@ -27,6 +31,12 @@ const useReviewForm = () => {
       onValuesChange={onFormLayoutChange}
       style={{ maxWidth: 600 }}
     >
+      <Form.Item label="分析种类" name="action">
+        <Radio.Group>
+          <Radio value="review">分析</Radio>
+          <Radio value="check">对账</Radio>
+        </Radio.Group>
+      </Form.Item>
       <Form.Item label="分析种类" name="type">
         <Radio.Group>
           <Radio.Button value="year">年度账单分析</Radio.Button>
@@ -36,10 +46,13 @@ const useReviewForm = () => {
       <Form.Item label="时间" name="date">
         <RangePickerWrap bordered />
       </Form.Item>
+
       <Form.Item>
-        <Button type="primary" htmlType="submit">
-          复盘
-        </Button>
+        <Space>
+          <Button type="primary" htmlType="submit">
+            复盘
+          </Button>
+        </Space>
       </Form.Item>
     </Form>
   )

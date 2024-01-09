@@ -45,6 +45,7 @@ const RangePickerWrap = (props: {
     const thisYear = getFirstDayAndLastDay(0, 'year')
     const lastYear = getFirstDayAndLastDay(1, 'year')
     const lastTwoyear = getFirstDayAndLastDay(2, 'year')
+    const lastThreeyear = getFirstDayAndLastDay(3, 'year')
     return (
       <Space>
         <a onClick={() => setClickDate(curMonth)}>当月</a>
@@ -53,6 +54,7 @@ const RangePickerWrap = (props: {
         <a onClick={() => setClickDate(thisYear)}>今年</a>
         <a onClick={() => setClickDate(lastYear)}>去年</a>
         <a onClick={() => setClickDate(lastTwoyear)}>前年</a>
+        <a onClick={() => setClickDate(lastThreeyear)}>大前年</a>
       </Space>
     )
   }

@@ -1,24 +1,18 @@
-import { message, Modal, Table, Tag, Tooltip, Typography } from 'antd'
 import type { TableColumnsType } from 'antd'
+import { Modal, Table, Typography } from 'antd'
 import { getDateTostring, roundToTwoDecimalPlaces } from './utils'
 import React, { useCallback, useEffect, useState } from 'react'
 import { ColumnsType } from 'antd/es/table/interface'
 import useModal from './ModalWrap'
-import {
-  abc_type,
-  account_type,
-  cost_type,
-  tag_type,
-} from '@/core/api/const/web'
-import type { TableRowSelection } from 'antd/es/table/interface'
-import BatchUpdateArea from '../views/accounting/batch-update'
+import { DetailTable } from '@/src/components/DetailTable'
+import { modalTableCol } from '@/src/components/DetailTableCol'
 
 interface ExpandedDataType {
   name: string
   category: string
   avg: string
 }
-interface DataType {
+export interface DataType {
   name: string
   avg: string
   child: ExpandedDataType[]
@@ -48,89 +42,6 @@ const columns: ColumnsType<DataType> = [
         </Typography.Text>
       </Typography.Text>
     ),
-  },
-]
-const columns2 = [
-  {
-    title: '交易时间',
-    width: 200,
-    dataIndex: 'trans_time_formate',
-    key: 'trans_time_formate',
-  },
-  {
-    title: '内容',
-    dataIndex: 'description',
-    render: (description: string) => (
-      <Tooltip placement="topLeft" title={description}>
-        <Typography.Link ellipsis>{description}</Typography.Link>
-      </Tooltip>
-    ),
-  },
-  {
-    title: '金额',
-    dataIndex: 'amount',
-    width: 80,
-    render: (txt: string) => {
-      if (Number(txt) > 100) {
-        return <Typography.Text type="danger">{txt}</Typography.Text>
-      }
-      return txt
-    },
-  },
-  {
-    title: '消费对象',
-    width: 80,
-    dataIndex: 'consumer',
-    key: 'consumer',
-    render: (val: number) => {
-      const consumer_type = {
-        1: '老公',
-        2: '老婆',
-        3: '家庭',
-        4: '牧牧',
-        5: '爷爷奶奶',
-        6: '二宝',
-      }
-      if (val === 1) {
-        return <Tag color="cyan">{consumer_type[val]}</Tag>
-      } else if (val === 2) {
-        return <Tag color="magenta">{consumer_type[val]}</Tag>
-      } else if (val === 3) {
-        return <Tag color="geekblue">{consumer_type[val]}</Tag>
-      } else if (val === 4) {
-        return <Tag color="purple">{consumer_type[val]}</Tag>
-      } else if (val === 5) {
-        return <Tag color="lime">{consumer_type[val]}</Tag>
-      } else if (val === 6) {
-        return <Tag color="orange">{consumer_type[val]}</Tag>
-      }
-      return <Tag color="orange">{consumer_type[val]}</Tag>
-    },
-  },
-
-  {
-    title: '标签',
-    dataIndex: 'tag',
-    width: 90,
-    render: (val: number) => (val ? tag_type[val] : ''),
-  },
-  {
-    title: 'ABC类',
-    dataIndex: 'abc_type',
-    width: 80,
-    render: (val: number) => (val ? abc_type[val] : ''),
-  },
-  {
-    title: '账户',
-    dataIndex: 'account_type',
-    width: 90,
-    render: (val: number) => (val ? account_type[val] : ''),
-  },
-  {
-    title: '消费方式',
-    dataIndex: 'cost_type',
-    width: 100,
-    render: (val: number) => (val ? cost_type[val] : ''),
   },
 ]
 const expandedRowRender = (toggle: any) => (record: DataType) => {
@@ -245,95 +156,14 @@ const CategoryTable = (props: {
       />
       {show && (
         <Modal width={1200} footer={null} open={show} onCancel={toggle}>
-          <ModalContent modalData={modalData} refresh={refresh} />
+          <DetailTable
+            modalData={modalData}
+            refresh={refresh}
+            columns={modalTableCol}
+            defaultPageSize={40}
+          />
         </Modal>
       )}
-    </>
-  )
-}
-function ModalContent(props: { modalData: any; refresh: () => void }) {
-  const [selectedRows, setSelectedRows] = useState<any>([])
-  const { modalData, refresh } = props
-  const rowSelection: TableRowSelection<DataType> = {
-    selectedRowKeys: selectedRows,
-    onChange: (selectedRowKeys: React.Key[]) => {
-      setSelectedRows(selectedRowKeys)
-    },
-  }
-  const onBatchUpdate = async (val: any) => {
-    try {
-      const res = await $api.updateMany({
-        filter: {
-          ids: selectedRows.filter((val: string) => val.length !== 10),
-        },
-        data: {
-          ...val,
-          category: val?.category ? JSON.stringify(val.category) : undefined,
-        },
-      })
-      if (res.modifiedCount) {
-        refresh()
-        setSelectedRows([])
-        message.success(`成功${res.modifiedCount}记录`)
-      }
-      console.log(res, 'update sucess')
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const onBatchDelete = async () => {
-    try {
-      const res = await $api.deleteMany({
-        filter: {
-          ids: selectedRows.filter((val: string) => val.length !== 10),
-        },
-      })
-      if (res.deletedCount) {
-        refresh()
-        setSelectedRows([])
-        message.success(`成功删除${res.deletedCount}记录`)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  const selectRow = (record: any) => {
-    const selectedRowKeys = [...selectedRows]
-    console.log(record, 'record')
-    if (selectedRowKeys.indexOf(record.m_id) >= 0) {
-      selectedRowKeys.splice(selectedRowKeys.indexOf(record.m_id), 1)
-    } else {
-      selectedRowKeys.push(record.m_id)
-    }
-    setSelectedRows(selectedRowKeys)
-  }
-  return (
-    <>
-      <div style={{ padding: '8px 0' }}>
-        <BatchUpdateArea
-          disabled={selectedRows.length === 0}
-          onBatchUpdate={onBatchUpdate}
-          onBatchDelete={onBatchDelete}
-        />
-      </div>
-      <Table
-        pagination={{
-          defaultPageSize: 20,
-          pageSizeOptions: [20, 50, 100],
-          showSizeChanger: true,
-        }}
-        onRow={(record) => ({
-          onClick: () => {
-            selectRow(record)
-          },
-        })}
-        rowSelection={rowSelection}
-        rowKey="m_id"
-        columns={columns2}
-        dataSource={modalData}
-        size="small"
-        scroll={{ y: 400 }}
-      />
     </>
   )
 }

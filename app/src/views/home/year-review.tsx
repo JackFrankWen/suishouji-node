@@ -10,6 +10,7 @@ import Summarize from './componets/review-sum'
 import TableSection from './componets/review-table'
 import Line from '@/src/components/app-echart/Line'
 import { category_type } from '@/core/api/const/category'
+import { ReviewMonthBar } from '@/src/views/home/componets/review-month-bar'
 //home-section
 
 function AvgBarSection(props: { formValue: any }) {
@@ -129,37 +130,12 @@ function ConsumerLine(props: { formValue: any }) {
 
 function YearReview(props: { formValue: any }) {
   const { formValue } = props
-  const [monthBar, setMonthbar] = useState<{
-    label: string[]
-    value: string[]
-  }>({ label: [], value: [] })
-
-  const getMonthBar = async (data: any) => {
-    try {
-      const res = await $api.getEveryMonthAmount(data)
-      console.log(res)
-      if (res) {
-        setMonthbar(res)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getMonthBar(getDateTostring(props.formValue))
-  }, [formValue])
 
   return (
     <>
       <Summarize formValue={props.formValue} />
 
-      <Row className="home-section" gutter={16}>
-        <Col span={24}>
-          <Card bordered={false}>
-            <Bar {...monthBar} />
-          </Card>
-        </Col>
-      </Row>
+      <ReviewMonthBar formValue={props.formValue} />
 
       <CategoryLine formValue={props.formValue} />
       <ConsumerLine formValue={props.formValue} />

@@ -34,7 +34,7 @@ export function getComonMatch(param: any) {
       start,
       end,
     },
-    'dddd'
+    'serach time'
   )
   let trans_timeM = trans_time
   if (start || end) {
@@ -95,10 +95,11 @@ function addCommonFeilds() {
  * @returns {any}
  */
 export async function get_every_month_amount(param: { start: any; end: any }) {
+  console.log(param, 'parampppp')
   const collection = getCollection()
   if (collection) {
     const match = getComonMatch(param)
-
+    console.log(match, 'every month mactddd')
     const res = await collection
       // @ts-ignore
       .aggregate([

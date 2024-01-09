@@ -1,9 +1,23 @@
-import { Card, Col, Row, Modal, Space } from 'antd'
-import React, { useEffect, useState } from 'react'
+import { Card, Col, Row } from 'antd'
+import React from 'react'
 import './home.less'
 import useReviewForm from './componets/review-form'
 import MonthReivew from './month-review'
 import YearReview from './year-review'
+import { CheckBill } from '@/src/views/home/checkBill'
+
+function AnalysBill(props: { formValue: any }) {
+  return (
+    <div>
+      {props.formValue.type === 'month' && (
+        <MonthReivew formValue={props.formValue} />
+      )}
+      {props.formValue.type === 'year' && (
+        <YearReview formValue={props.formValue} />
+      )}
+    </div>
+  )
+}
 
 const App: React.FC = () => {
   const [formValue, Form] = useReviewForm()
@@ -52,8 +66,8 @@ const App: React.FC = () => {
             </Card>
           </Col>
         </Row>
-        {formValue.type === 'month' && <MonthReivew formValue={formValue} />}
-        {formValue.type === 'year' && <YearReview formValue={formValue} />}
+        {formValue.action === 'review' && <AnalysBill formValue={formValue} />}
+        {formValue.action === 'check' && <CheckBill formValue={formValue} />}
       </div>
     </div>
   )

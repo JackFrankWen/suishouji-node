@@ -61,9 +61,15 @@ function transferCategoryName(arr: { category: string; amount: any }[]) {
     }
   })
 }
-export async function getCategory(params: { start: string; end: string }) {
+export async function getCategory(
+  params: { start: string; end: string },
+  needSort = true
+) {
   const result = await get_category_total_by_date(params)
-  return sortByValue(transferCategory(result))
+  if (needSort) {
+    return sortByValue(transferCategory(result))
+  }
+  return transferCategory(result)
 }
 export async function getCategoryAvg(params: { start: string; end: string }) {
   const { start, end } = params
@@ -168,7 +174,7 @@ function loadData(data: any) {
 export async function getCost(params: {
   start: string
   end: string
-  category: string
+  category?: string
 }) {
   const result = await get_cost_record(params)
   return mapData(result)
