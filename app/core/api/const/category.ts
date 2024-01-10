@@ -381,6 +381,7 @@ export const category_type = [
       {
         value: 70001,
         label: '聚会(用其他娱乐)',
+        disabled: true,
         tag: variable_cost,
         abc_type: b,
       },
@@ -388,6 +389,7 @@ export const category_type = [
         value: 70002,
         label: '游戏（用其他娱乐）',
         tag: variable_cost,
+        disabled: true,
         cost_type: chill,
         abc_type: b,
       },
