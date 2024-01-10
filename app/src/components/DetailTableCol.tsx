@@ -106,5 +106,5 @@ export const detailTableCol = [
   },
 ]
 export const modalTableCol = detailTableCol.filter(
-  (val) => !['category', 'account_type'].includes(val.dataIndex)
+  (val) => !['category'].includes(val.dataIndex)
 )
