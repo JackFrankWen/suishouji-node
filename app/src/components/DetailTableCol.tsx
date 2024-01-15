@@ -1,4 +1,4 @@
-import { Tag, Tooltip, Typography } from 'antd'
+import { Tooltip, Typography } from 'antd'
 import {
   abc_type,
   account_type,
@@ -7,6 +7,8 @@ import {
 } from '@/core/api/const/web'
 import React from 'react'
 import { getCategoryObj } from '@/core/api/const/category'
+import { getConsumerTag } from '@/src/components/GetConsumerTag'
+
 export const detailTableCol = [
   {
     title: '交易时间',
@@ -50,33 +52,12 @@ export const detailTableCol = [
     },
   },
   {
-    title: '消费对象',
+    title: '消费成员',
     width: 80,
     dataIndex: 'consumer',
     key: 'consumer',
     render: (val: number) => {
-      const consumer_type = {
-        1: '老公',
-        2: '老婆',
-        3: '家庭',
-        4: '牧牧',
-        5: '爷爷奶奶',
-        6: '溪溪',
-      }
-      if (val === 1) {
-        return <Tag color="cyan">{consumer_type[val]}</Tag>
-      } else if (val === 2) {
-        return <Tag color="magenta">{consumer_type[val]}</Tag>
-      } else if (val === 3) {
-        return <Tag color="geekblue">{consumer_type[val]}</Tag>
-      } else if (val === 4) {
-        return <Tag color="purple">{consumer_type[val]}</Tag>
-      } else if (val === 5) {
-        return <Tag color="lime">{consumer_type[val]}</Tag>
-      } else if (val === 6) {
-        return <Tag color="orange">{consumer_type[val]}</Tag>
-      }
-      return <Tag color="orange">{consumer_type[val]}</Tag>
+      return getConsumerTag(val)
     },
   },
 

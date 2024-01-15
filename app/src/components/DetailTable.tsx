@@ -12,11 +12,13 @@ export function DetailTable(props: {
   defaultPageSize?: number
 }) {
   const [selectedRows, setSelectedRows] = useState<any>([])
+  const [chosenItem, setChoseItem] = useState<any>([])
   const { modalData, refresh, columns, defaultPageSize = 10 } = props
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys: selectedRows,
-    onChange: (selectedRowKeys: React.Key[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows) => {
       setSelectedRows(selectedRowKeys)
+      setChoseItem(selectedRows)
     },
   }
   const onBatchUpdate = async (val: any) => {
@@ -66,7 +68,10 @@ export function DetailTable(props: {
     }
     setSelectedRows(selectedRowKeys)
   }
-  console.log(modalData, 'modalData')
+  console.log(selectedRows, 'modalData')
+  const selectedAmount = chosenItem.reduce((pre: number, cur: any) => {
+    return pre + Number(cur.amount)
+  }, 0)
   return (
     <>
       <div style={{ padding: '8px 0' }}>
@@ -76,6 +81,11 @@ export function DetailTable(props: {
           onBatchDelete={onBatchDelete}
         />
       </div>
+      {selectedRows.length > 0 && (
+        <div style={{ padding: '8px 0' }}>
+          <span>选中金额 {selectedAmount} 元</span>
+        </div>
+      )}
       <Table
         pagination={{
           defaultPageSize, // default show 10 records per page
