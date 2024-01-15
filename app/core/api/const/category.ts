@@ -115,7 +115,7 @@ export const category_type = [
       },
       {
         value: 50005,
-        label: '化妆美容品', // 护肤品 金额太大
+        label: '化妆护肤', // 护肤品 金额太大
         tag: variable_cost,
         cost_type: basic,
         abc_type: a,
@@ -132,6 +132,7 @@ export const category_type = [
       {
         value: 50007,
         label: '汽车用品',
+        disabled: true,
         tag: variable_cost,
         cost_type: fix_cost,
         abc_type: a,
@@ -241,6 +242,7 @@ export const category_type = [
   {
     value: 40000,
     label: '宝宝费用',
+    disabled: true,
     children: [
       {
         value: 40001,
@@ -248,6 +250,7 @@ export const category_type = [
         tag: fix_cost,
         consumer: son,
         cost_type: basic,
+
         abc_type: a,
       },
       {
@@ -368,7 +371,6 @@ export const category_type = [
         value: 60003,
         label: '孝敬长辈',
         tag: fix_cost,
-        consumer: grandPa,
         cost_type: basic,
         abc_type: a,
       },
@@ -433,7 +435,7 @@ export const category_type = [
   },
   {
     value: 90000,
-    label: '个人投资',
+    label: '个人发展',
     children: [
       {
         value: 90001,
@@ -446,6 +448,13 @@ export const category_type = [
       {
         value: 90002,
         label: '书包杂志',
+        tag: variable_cost,
+        cost_type: develop,
+        abc_type: b,
+      },
+      {
+        value: 90004,
+        label: '教育培训',
         tag: variable_cost,
         cost_type: develop,
         abc_type: b,
