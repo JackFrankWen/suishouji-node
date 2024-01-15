@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import { getCategoryString } from '@/core/api/const/category'
 import RuleForm from './rule-form'
 import useLoadingButton from '@/src/components/form/useButton'
+import { getConsumerTag } from '@/src/components/GetConsumerTag'
 
 interface DataType {
   key: string
@@ -59,21 +60,7 @@ const RuleTable = () => {
       dataIndex: 'consumer',
       key: 'consumer',
       render: (val: number) => {
-        const consumer_type = {
-          1: '老公',
-          2: '老婆',
-          3: '家庭',
-          4: '牧牧',
-        }
-        if (val === 1) {
-          return <Tag color="cyan">{consumer_type[val]}</Tag>
-        } else if (val === 2) {
-          return <Tag color="magenta">{consumer_type[val]}</Tag>
-        } else if (val === 3) {
-          return <Tag color="geekblue">{consumer_type[val]}</Tag>
-        } else if (val === 4) {
-          return <Tag color="orange">{consumer_type[val]}</Tag>
-        }
+        return getConsumerTag(val)
       },
     },
 

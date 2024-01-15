@@ -16,6 +16,7 @@ export const consumer_type = {
   4: '牧牧',
   5: '爷爷奶奶',
   6: '溪溪',
+  7: '姥姥姥爷',
 }
 export const tag_type = {
   1: '日常支出',
