@@ -482,7 +482,7 @@ export const category_type = [
       },
       {
         value: 90005,
-        label: '文化',
+        label: '仪式文化',
         tag: variable_cost,
         cost_type: develop,
         abc_type: b,
