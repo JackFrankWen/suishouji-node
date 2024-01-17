@@ -86,6 +86,10 @@ export default function TableSection(props: { formValue: any }) {
             formValue={{
               ...formValue,
               consumer: consumerVal,
+              abc_type: abcTypeVal,
+              cost_type: costTypeVal,
+              account_type: accountTypeVal,
+              payment: paymentVal,
             }}
           />
         </Card>
