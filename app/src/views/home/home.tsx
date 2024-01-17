@@ -1,4 +1,4 @@
-import { Card, Col, Row } from 'antd'
+import { Affix, Button, Card, Col, Modal, Row } from 'antd'
 import React from 'react'
 import './home.less'
 import useReviewForm from './componets/review-form'
@@ -68,6 +68,34 @@ const App: React.FC = () => {
         </Row>
         {formValue.action === 'review' && <AnalysBill formValue={formValue} />}
         {formValue.action === 'check' && <CheckBill formValue={formValue} />}
+        <Affix
+          style={{ position: 'absolute', bottom: 20, right: 20 }}
+          offsetBottom={120}
+        >
+          <Button
+            type="primary"
+            shape="circle"
+            onClick={() => {
+              Modal.info({
+                title: '记账规则',
+                content: (
+                  <div>
+                    <p>1.分类.</p>
+                    <p>2.对账（a.确认导入总金额 b.确认分类正确）</p>
+                    <p>
+                      3.分析（a、总支出多少 b、每个人支出多少 c、超预算多少
+                      d、确定哪些享受开销）
+                    </p>
+                    <p>4.控制下月支出</p>
+                  </div>
+                ),
+                onOk() {},
+              })
+            }}
+          >
+            手册
+          </Button>
+        </Affix>
       </div>
     </div>
   )
