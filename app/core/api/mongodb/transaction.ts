@@ -151,7 +151,6 @@ export async function get_category_total_by_date(param: any) {
   if (collection) {
     const match = getComonMatch(param)
     const monthsDiff = calculateMonthDiff(param.start, param.end)
-
     const res = await collection.aggregate([
       { $match: match },
       {

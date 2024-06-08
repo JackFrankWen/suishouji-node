@@ -81,20 +81,11 @@ const BatchUpdateArea = (props: {
           options={cpt_const.account_type}
         />
       </Form.Item>
-      <Form.Item name="tag">
-        <SelectWrap placeholder="标签" options={cpt_const.tag_type} />
-      </Form.Item>
       <Form.Item name="payment_type">
         <SelectWrap placeholder="付款方式" options={cpt_const.payment_type} />
       </Form.Item>
       <Form.Item name="consumer">
         <SelectWrap placeholder="消费成员" options={cpt_const.consumer_type} />
-      </Form.Item>
-      <Form.Item name="abc_type">
-        <SelectWrap placeholder="ABC分类" options={cpt_const.abc_type} />
-      </Form.Item>
-      <Form.Item name="cost_type">
-        <SelectWrap placeholder="消费目的" options={cpt_const.cost_type} />
       </Form.Item>
       <Form.Item name="amount">
         <InputNumber placeholder="金额" />
