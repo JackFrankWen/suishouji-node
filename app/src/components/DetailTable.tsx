@@ -13,7 +13,7 @@ export function DetailTable(props: {
 }) {
   const [selectedRows, setSelectedRows] = useState<any>([])
   const [chosenItem, setChoseItem] = useState<any>([])
-  const { modalData, refresh, columns } = props
+  const { modalData, refresh, columns, defaultPageSize } = props
   const rowSelection: TableRowSelection<DataType> = {
     selectedRowKeys: selectedRows,
     onChange: (selectedRowKeys: React.Key[], selectedRows) => {
@@ -88,7 +88,7 @@ export function DetailTable(props: {
       )}
       <Table
         pagination={{
-          defaultPageSize: 10, // default show 10 records per page
+          defaultPageSize, // default show 10 records per page
           pageSizeOptions: [10, 50, 100],
           showSizeChanger: true,
         }}

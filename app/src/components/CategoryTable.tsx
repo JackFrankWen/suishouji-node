@@ -160,7 +160,7 @@ const CategoryTable = (props: {
             modalData={modalData}
             refresh={refresh}
             columns={modalTableCol}
-            defaultPageSize={40}
+            defaultPageSize={100}
           />
         </Modal>
       )}
